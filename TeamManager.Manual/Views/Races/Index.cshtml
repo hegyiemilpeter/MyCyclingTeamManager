@@ -1,0 +1,36 @@
+﻿@model IList<Race>
+@{ 
+    ViewBag.Title = "Races";
+}
+
+<h4>Races</h4>
+
+@if (Model == null || Model.Count == 0)
+{
+    <div>No races in the database.</div>
+}
+else
+{
+    <table>
+        <tr>
+            <td>Date</td>
+            <td>Race name</td>
+            <td></td>
+            <td>Distances</td>
+        </tr>
+        @foreach (var race in Model)
+        {
+            <tr>
+                <td>@race.Date.ToString("yyyy.MM.dd")</td>
+                <td>@race.Name</td>
+                <td>@race.Remark</td>
+                <td>
+                    @foreach (var distance in race.Distances)
+                    {
+                        @distance.RaceType @:(@distance.Distance) <br />
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}
