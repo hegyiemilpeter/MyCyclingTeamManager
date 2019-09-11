@@ -1,0 +1,19 @@
+﻿@model Race
+
+<h4>Add race</h4>
+<div>
+    <form method="post" asp-action="Add">
+        <div>
+            <label asp-for="Name">Name: </label>
+            <input asp-for="Name" />
+        </div>
+        <div>
+            <label asp-for="Date">Date: </label>
+            <input asp-for="Date" />
+        </div>
+        <div>
+            <label asp-for="Remark">Remark: </label>
+            <input asp-for="Remark" />
+        </div>
+    </form>
+</div>

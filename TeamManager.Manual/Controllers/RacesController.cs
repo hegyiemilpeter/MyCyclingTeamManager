@@ -39,5 +39,22 @@ namespace TeamManager.Manual.Controllers
         {
             return View(Races);
         }
+
+        public IActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Add(Race race)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            Races.Add(race);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
