@@ -8,11 +8,8 @@ namespace TeamManager.Manual.Controllers
 {
     public class RacesController : Controller
     {
-        private static IList<RaceViewModel> Races
-        {
-            get
-            {
-                return new List<RaceViewModel>()
+        private static IList<RaceViewModel> Races { get; set; } = 
+            new List<RaceViewModel>()
                 {
                     new RaceViewModel() {
                         Name = "Bükk Kupa",
@@ -48,29 +45,30 @@ namespace TeamManager.Manual.Controllers
                         Distances = new List<int> { 60, 120, 150 }
                     }
                 };
-            }
-        }
-
+            
         public IActionResult Index()
         {
             return View(Races);
         }
 
+        [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult Add(Race race)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View();
-        //    }
+        [HttpPost]
+        public IActionResult Add(RaceViewModel race)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(race);
+            }
 
-        //    Races.Add(race);
-        //    return RedirectToAction(nameof(Index));
-        //}
+            race.Id = Races.Count + 1;
+
+            Races.Add(race);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

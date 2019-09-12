@@ -1,9 +1,11 @@
 ﻿@model IList<RaceViewModel>
-@{ 
+@{
     ViewBag.Title = "Races";
 }
 
 <h4>Races</h4>
+
+<a asp-action="Add">Add new</a>
 
 @if (Model == null || Model.Count == 0)
 {
@@ -24,39 +26,39 @@ else
         </tr>
         @foreach (var race in Model)
         {
-    <tr>
-        <td>@race.Date.ToString("yyyy.MM.dd")</td>
-        <td>@race.Name</td>
-        <td>@race.TypeOfRace</td>
-        <td>
-            @{
-                string cityString = race.City;
-                if (!string.IsNullOrWhiteSpace(race.Country))
-                {
-                    cityString += $" ({race.Country})";
-                }
-            }
-            @cityString
-        </td>
-        <td>
-            @{
-                string distancesString = null;
-                foreach (var distance in race.Distances)
-                {
-                    distancesString += distance + " km,";
-                }
-            }
-            @distancesString
-        </td>
-        <td>@race.EntryDeadline.ToString("yyyy.MM.dd")</td>
-        <td>
-            @if (!string.IsNullOrWhiteSpace(race.Website))
-            {
-                <a href="@race.Website" target="_blank">here</a>
-            }
-        </td>
-        <td>@race.PointWeight</td>
-    </tr>
+            <tr>
+                <td>@race.Date?.ToString("yyyy.MM.dd")</td>
+                <td>@race.Name</td>
+                <td>@race.TypeOfRace</td>
+                <td>
+                    @{
+                        string cityString = race.City;
+                        if (!string.IsNullOrWhiteSpace(race.Country))
+                        {
+                            cityString += $" ({race.Country})";
+                        }
+                    }
+                    @cityString
+                </td>
+                <td>
+                    @{
+                        string distancesString = null;
+                        foreach (var distance in race.Distances)
+                        {
+                            distancesString += distance + " km,";
+                        }
+                    }
+                    @distancesString
+                </td>
+                <td>@race.EntryDeadline?.ToString("yyyy.MM.dd")</td>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(race.Website))
+                    {
+                        <a href="@race.Website" target="_blank">here</a>
+                    }
+                </td>
+                <td>@race.PointWeight</td>
+            </tr>
         }
     </table>
 }

@@ -1,4 +1,17 @@
-﻿@*@model Race
+﻿@using TeamManager.Manual.Data
+@model RaceViewModel
+
+<script type="text/javascript">
+    function addDistanceButtonClick() {
+
+        var newDistanceField = document.createElement("input");
+        newDistanceField.setAttribute("type", "number");
+        newDistanceField.setAttribute("name", "Distances[]");
+        newDistanceField.setAttribute("id", "Distances[]");
+
+        document.getElementById("distances").appendChild(newDistanceField);
+    }
+</script>
 
 <h4>Add race</h4>
 <div>
@@ -6,15 +19,69 @@
         <div>
             <label asp-for="Name">Name: </label>
             <input asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div>
             <label asp-for="Date">Date: </label>
             <input asp-for="Date" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="EntryDeadline">Entry deadline: </label>
+            <input asp-for="EntryDeadline" />
+            <span asp-validation-for="EntryDeadline" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="TypeOfRace">Type of race </label>
+            @Html.DropDownListFor(x => Model.TypeOfRace, Html.GetEnumSelectList<RaceType>(), "Select a race type", new { @class = "form-control" })
+            <span asp-validation-for="TypeOfRace" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Country">Country: </label>
+            <input asp-for="Country" />
+            <span asp-validation-for="Country" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="City">City: </label>
+            <input asp-for="City" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="PointWeight">Point weight: </label>
+            <input asp-for="PointWeight" />
+            <span asp-validation-for="PointWeight" class="text-danger"></span>
         </div>
         <div>
             <label asp-for="Remark">Remark: </label>
             <input asp-for="Remark" />
+            <span asp-validation-for="Remark" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Website">Wesite: </label>
+            <input asp-for="Website" />
+            <span asp-validation-for="Website" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Distances">Distances: </label>
+            <div id="distances">
+                @if (Model != null && Model.Distances != null && Model.Distances.Count > 0)
+                {
+                    foreach (var distance in Model.Distances)
+                    {
+                        <input type="number" id="Distances[]" name="Distances[]" value="@distance" />
+                    }
+                }
+                else
+                {
+                    <input type="number" id="Distances[]" name="Distances[]" />
+                }
+                <span asp-validation-for="Distances" class="text-danger"></span>
+            </div>
+            <input type="button" id="addDistanceButton" onclick="addDistanceButtonClick()" value="new distance" />
+        </div> 
+        <div>
+            <input type="submit" value="Add" />
         </div>
     </form>
-</div>*@
-<h1>Todo</h1>
+</div>
+
