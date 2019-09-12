@@ -1,4 +1,4 @@
-﻿namespace TeamManager.Manual.Models
+﻿namespace TeamManager.Manual.Data
 {
     public enum RaceType
     {
