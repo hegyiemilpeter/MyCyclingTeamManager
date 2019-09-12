@@ -1,4 +1,4 @@
-﻿@model IList<Race>
+﻿@model IList<RaceViewModel>
 @{ 
     ViewBag.Title = "Races";
 }
@@ -15,22 +15,48 @@ else
         <tr>
             <td>Date</td>
             <td>Race name</td>
-            <td></td>
+            <td>Type</td>
+            <td>City</td>
             <td>Distances</td>
+            <td>Entry deadline</td>
+            <td>Website</td>
+            <td>Points</td>
         </tr>
         @foreach (var race in Model)
         {
-            <tr>
-                <td>@race.Date.ToString("yyyy.MM.dd")</td>
-                <td>@race.Name</td>
-                <td>@race.Remark</td>
-                <td>
-                    @foreach (var distance in race.Distances)
-                    {
-                        @distance.RaceType @:(@distance.Distance) <br />
-                    }
-                </td>
-            </tr>
+    <tr>
+        <td>@race.Date.ToString("yyyy.MM.dd")</td>
+        <td>@race.Name</td>
+        <td>@race.TypeOfRace</td>
+        <td>
+            @{
+                string cityString = race.City;
+                if (!string.IsNullOrWhiteSpace(race.Country))
+                {
+                    cityString += $" ({race.Country})";
+                }
+            }
+            @cityString
+        </td>
+        <td>
+            @{
+                string distancesString = null;
+                foreach (var distance in race.Distances)
+                {
+                    distancesString += distance + " km,";
+                }
+            }
+            @distancesString
+        </td>
+        <td>@race.EntryDeadline.ToString("yyyy.MM.dd")</td>
+        <td>
+            @if (!string.IsNullOrWhiteSpace(race.Website))
+            {
+                <a href="@race.Website" target="_blank">here</a>
+            }
+        </td>
+        <td>@race.PointWeight</td>
+    </tr>
         }
     </table>
 }
