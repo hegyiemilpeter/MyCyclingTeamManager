@@ -3,62 +3,64 @@
     ViewBag.Title = "Races";
 }
 
-<h4>Races</h4>
-
-<a asp-action="Add">Add new</a>
+<h1>Races</h1>
+<a asp-action="Add" class="btn btn-primary btn-sm">+ New</a>
 
 @if (Model == null || Model.Count == 0)
 {
-    <div>No races in the database.</div>
+    <h5>No races in the database.</h5>
 }
 else
 {
-    <table>
-        <tr>
-            <td>Date</td>
-            <td>Race name</td>
-            <td>Type</td>
-            <td>City</td>
-            <td>Distances</td>
-            <td>Entry deadline</td>
-            <td>Website</td>
-            <td>Points</td>
-        </tr>
-        @foreach (var race in Model)
-        {
+    <div class="m-3">
+        <table class="table">
             <tr>
-                <td>@race.Date?.ToString("yyyy.MM.dd")</td>
-                <td>@race.Name</td>
-                <td>@race.TypeOfRace</td>
-                <td>
-                    @{
-                        string cityString = race.City;
-                        if (!string.IsNullOrWhiteSpace(race.Country))
-                        {
-                            cityString += $" ({race.Country})";
-                        }
-                    }
-                    @cityString
-                </td>
-                <td>
-                    @{
-                        string distancesString = null;
-                        for (int i = 0; i < race.Distances.Count; i++)
-                        {
-                            distancesString += i == race.Distances.Count - 1 ? race.Distances[i] + " km " :  race.Distances[i] + " km, ";
-                        }
-                    }
-                    @distancesString
-                </td>
-                <td>@race.EntryDeadline?.ToString("yyyy.MM.dd hh:mm")</td>
-                <td>
-                    @if (!string.IsNullOrWhiteSpace(race.Website))
-                    {
-                        <a href="@race.Website" target="_blank">here</a>
-                    }
-                </td>
-                <td>@race.PointWeight</td>
+                <th>Date</th>
+                <th>Race name</th>
+                <th>Type</th>
+                <th>City</th>
+                <th>Distances</th>
+                <th>Entry deadline</th>
+                <th>Website</th>
+                <th>Points</th>
             </tr>
-        }
-    </table>
+            @foreach (var race in Model)
+            {
+                <tr>
+                    <td>@race.Date?.ToString("yyyy.MM.dd")</td>
+                    <td>@race.Name</td>
+                    <td>@race.TypeOfRace</td>
+                    <td>
+                        @{
+                            string cityString = race.City;
+                            if (!string.IsNullOrWhiteSpace(race.Country))
+                            {
+                                cityString += $" ({race.Country})";
+                            }
+                        }
+                        @cityString
+                    </td>
+                    <td>
+                        @{
+                            string distancesString = null;
+                            for (int i = 0; i < race.Distances.Count; i++)
+                            {
+                                distancesString += i == race.Distances.Count - 1 ? race.Distances[i] + " km " : race.Distances[i] + " km, ";
+                            }
+                        }
+                        @distancesString
+                    </td>
+                    <td>@race.EntryDeadline?.ToString("yyyy.MM.dd hh:mm")</td>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(race.Website))
+                        {
+                            <a href="@race.Website" target="_blank">here</a>
+                        }
+                    </td>
+                    <td>@race.PointWeight</td>
+                </tr>
+            }
+        </table>
+    </div>
 }
+<a asp-action="Index" asp-controller="Home" class="btn btn-primary btn-sm">Back to home</a>

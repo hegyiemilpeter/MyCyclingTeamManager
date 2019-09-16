@@ -1,92 +1,124 @@
 ﻿@using TeamManager.Manual.Data
 @model RaceViewModel
+@{
+    ViewBag.Title = "Add race";
+}
 
 <script type="text/javascript">
     function addDistanceButtonClick() {
+
+        var newDistanceDiv = document.createElement("div");
+        newDistanceDiv.setAttribute("class", "col col-sm-1");
 
         var newDistanceField = document.createElement("input");
         newDistanceField.setAttribute("type", "number");
         newDistanceField.setAttribute("name", "Distances");
         newDistanceField.setAttribute("id", "Distances");
+        newDistanceField.setAttribute("class", "m-2 form-control");
 
-        var lineBreak = document.createElement("br");
+        newDistanceDiv.appendChild(newDistanceField);
 
-        document.getElementById("distances-container").appendChild(newDistanceField);
-        document.getElementById("distances-container").appendChild(lineBreak);
+        document.getElementById("distances-container").appendChild(newDistanceDiv);
+    }
+
+    function removeDistanceButtonClick() {
+
+        var container = document.getElementById("distances-container");
+        var items = container.childNodes.length;
+
+        // Container has 3 childs by default
+        if (items > 3) {
+            container.removeChild(container.childNodes[items - 1]);
+        }
     }
 </script>
 
-<h4>Add race</h4>
-<div>
-    <form method="post" asp-action="Add">
-        <div asp-validation-summary="ModelOnly"></div>
-        <div>
-            <label asp-for="Name">Name: </label>
-            <input asp-for="Name" />
+<h1>Add race</h1>
+<input type="button" id="addDistanceButton" onclick="addDistanceButtonClick()" value="New distance" class="btn btn-light" />
+<input type="button" id="addDistanceButton" onclick="removeDistanceButtonClick()" value="Remove distance" class="btn btn-light" />
+<hr />
+<form method="post" asp-action="Add">
+    <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
+    <div class="row">
+        <div class="col-md form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-        <div>
-            <label asp-for="Date">Date: </label>
-            <input asp-for="Date" />
+        <div class="col-md form-group">
+            <label asp-for="Date"></label>
+            <input asp-for="Date" class="form-control" />
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
-        <div>
-            <label asp-for="EntryDeadline">Entry deadline: </label>
-            <input asp-for="EntryDeadline" />
+        <div class="col-md form-group">
+            <label asp-for="EntryDeadline">Entry deadline</label>
+            <input asp-for="EntryDeadline" class="form-control" />
             <span asp-validation-for="EntryDeadline" class="text-danger"></span>
         </div>
-        <div>
-            <label asp-for="TypeOfRace">Type of race </label>
-            <select asp-for="TypeOfRace" asp-items="@new SelectList(Enum.GetNames(typeof(RaceType)))"></select>
+    </div>
+    <div class="row">
+        <div class="col-md form-group">
+            <label asp-for="TypeOfRace">Type of race</label>
+            <select asp-for="TypeOfRace" asp-items="@new SelectList(Enum.GetNames(typeof(RaceType)))" class="form-control"></select>
             <span asp-validation-for="TypeOfRace" class="text-danger"></span>
         </div>
-        <div>
-            <label asp-for="Country">Country: </label>
-            <input asp-for="Country" />
+        <div class="col-md form-group">
+            <label asp-for="Country"></label>
+            <input asp-for="Country" class="form-control" />
             <span asp-validation-for="Country" class="text-danger"></span>
         </div>
-        <div>
-            <label asp-for="City">City: </label>
-            <input asp-for="City" />
+        <div class="col-md form-group">
+            <label asp-for="City"></label>
+            <input asp-for="City" class="form-control" />
             <span asp-validation-for="City" class="text-danger"></span>
         </div>
-        <div>
-            <label asp-for="PointWeight">Point weight: </label>
-            <input asp-for="PointWeight" />
+    </div>
+    <div class="row">
+        <div class="col-md form-group">
+            <label asp-for="PointWeight">Point weight</label>
+            <input asp-for="PointWeight" class="form-control" />
             <span asp-validation-for="PointWeight" class="text-danger"></span>
         </div>
-        <div>
-            <label asp-for="Remark">Remark: </label>
-            <input asp-for="Remark" />
+        <div class="col-md form-group">
+            <label asp-for="Remark"></label>
+            <input asp-for="Remark" class="form-control" />
             <span asp-validation-for="Remark" class="text-danger"></span>
         </div>
-        <div>
-            <label asp-for="Website">Wesite: </label>
-            <input asp-for="Website" />
+        <div class="col-md form-group">
+            <label asp-for="Website"></label>
+            <input asp-for="Website" class="form-control" />
             <span asp-validation-for="Website" class="text-danger"></span>
         </div>
-        <div>
-            <label asp-for="Distances">Distances: </label>
-            <div id="distances-container">
+    </div>
+    <div class="row">
+        <div class="col-lg">
+            <label asp-for="Distances">Distances (km)</label>
+            <div class="form-row" id="distances-container">
                 @if (Model != null && Model.Distances != null && Model.Distances.Count > 0)
                 {
                     foreach (var distance in Model.Distances)
                     {
-                        <input type="number" id="Distances" name="Distances" value="@distance" />
-                        <br />
+                        <div class="col col-sm-1">
+                            <input type="number" id="Distances" name="Distances" value="@distance" class="m-2 form-control" />
+                        </div>
                     }
                 }
                 else
                 {
-                    <input type="number" id="Distances" name="Distances" />
+                    <div class="col col-sm-1">
+                        <input type="number" id="Distances" name="Distances" class="m-2 form-control" />
+                    </div>
                 }
-                <span asp-validation-for="Distances" class="text-danger"></span>
             </div>
-            <input type="button" id="addDistanceButton" onclick="addDistanceButtonClick()" value="new distance" />
-        </div> 
-        <div>
-            <input type="submit" value="Add" />
+            <span asp-validation-for="Distances" class="text-danger"></span>
         </div>
-    </form>
-</div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md">
+            <input type="submit" value="Add" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-link">Back to races</a>
+        </div>
+    </div>
+</form>
 
