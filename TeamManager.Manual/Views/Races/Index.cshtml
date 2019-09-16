@@ -43,14 +43,14 @@ else
                 <td>
                     @{
                         string distancesString = null;
-                        foreach (var distance in race.Distances)
+                        for (int i = 0; i < race.Distances.Count; i++)
                         {
-                            distancesString += distance + " km,";
+                            distancesString += i == race.Distances.Count - 1 ? race.Distances[i] + " km " :  race.Distances[i] + " km, ";
                         }
                     }
                     @distancesString
                 </td>
-                <td>@race.EntryDeadline?.ToString("yyyy.MM.dd")</td>
+                <td>@race.EntryDeadline?.ToString("yyyy.MM.dd hh:mm")</td>
                 <td>
                     @if (!string.IsNullOrWhiteSpace(race.Website))
                     {

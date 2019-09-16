@@ -6,16 +6,20 @@
 
         var newDistanceField = document.createElement("input");
         newDistanceField.setAttribute("type", "number");
-        newDistanceField.setAttribute("name", "Distances[]");
-        newDistanceField.setAttribute("id", "Distances[]");
+        newDistanceField.setAttribute("name", "Distances");
+        newDistanceField.setAttribute("id", "Distances");
 
-        document.getElementById("distances").appendChild(newDistanceField);
+        var lineBreak = document.createElement("br");
+
+        document.getElementById("distances-container").appendChild(newDistanceField);
+        document.getElementById("distances-container").appendChild(lineBreak);
     }
 </script>
 
 <h4>Add race</h4>
 <div>
     <form method="post" asp-action="Add">
+        <div asp-validation-summary="ModelOnly"></div>
         <div>
             <label asp-for="Name">Name: </label>
             <input asp-for="Name" />
@@ -33,7 +37,7 @@
         </div>
         <div>
             <label asp-for="TypeOfRace">Type of race </label>
-            @Html.DropDownListFor(x => Model.TypeOfRace, Html.GetEnumSelectList<RaceType>(), "Select a race type", new { @class = "form-control" })
+            <select asp-for="TypeOfRace" asp-items="@new SelectList(Enum.GetNames(typeof(RaceType)))"></select>
             <span asp-validation-for="TypeOfRace" class="text-danger"></span>
         </div>
         <div>
@@ -63,17 +67,18 @@
         </div>
         <div>
             <label asp-for="Distances">Distances: </label>
-            <div id="distances">
+            <div id="distances-container">
                 @if (Model != null && Model.Distances != null && Model.Distances.Count > 0)
                 {
                     foreach (var distance in Model.Distances)
                     {
-                        <input type="number" id="Distances[]" name="Distances[]" value="@distance" />
+                        <input type="number" id="Distances" name="Distances" value="@distance" />
+                        <br />
                     }
                 }
                 else
                 {
-                    <input type="number" id="Distances[]" name="Distances[]" />
+                    <input type="number" id="Distances" name="Distances" />
                 }
                 <span asp-validation-for="Distances" class="text-danger"></span>
             </div>

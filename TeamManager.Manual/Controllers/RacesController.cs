@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 
@@ -54,12 +55,13 @@ namespace TeamManager.Manual.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            return View(new RaceViewModel());
         }
 
         [HttpPost]
         public IActionResult Add(RaceViewModel race)
         {
+            race.Validate(ModelState);
             if (!ModelState.IsValid)
             {
                 return View(race);
