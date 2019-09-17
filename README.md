@@ -18,3 +18,4 @@ A team manager application for my cycling team, build with ASP.NET Core 2.2 from
 * Upload and view images for races
 * Bulk upload
 * Upload of scanned bills 
+* E-mail notification about important deadlines
