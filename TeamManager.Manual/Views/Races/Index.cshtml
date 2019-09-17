@@ -1,4 +1,6 @@
-﻿@model IList<RaceViewModel>
+﻿@using TeamManager.Manual.Data
+@using System.Linq
+@model IList<RaceViewModel>
 @{
     ViewBag.Title = "Races";
 }
@@ -29,7 +31,8 @@ else
                 <tr>
                     <td>@race.Date?.ToString("yyyy.MM.dd")</td>
                     <td>@race.Name</td>
-                    <td>@race.TypeOfRace</td>
+                    <td>@(race.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(race.TypeOfRace.Value) : "")
+                    </td>
                     <td>
                         @{
                             string cityString = race.City;
@@ -50,7 +53,7 @@ else
                         }
                         @distancesString
                     </td>
-                    <td>@race.EntryDeadline?.ToString("yyyy.MM.dd hh:mm")</td>
+                    <td>@race.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
                     <td>
                         @if (!string.IsNullOrWhiteSpace(race.Website))
                         {
