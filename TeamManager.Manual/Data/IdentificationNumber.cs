@@ -6,7 +6,7 @@ namespace TeamManager.Manual.Data
     {
         [Key]
         public int Id { get; set; }
-        public int RiderId { get; set; }
+        public int UserId { get; set; }
         public IdentificationNumberType Type { get; set; }
         public string Value { get; set; }
     }

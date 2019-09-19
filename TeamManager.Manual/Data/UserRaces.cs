@@ -2,11 +2,11 @@
 
 namespace TeamManager.Manual.Data
 {
-    public class RiderRaces
+    public class UserRaces
     {
         [Key]
         public int Id { get; set; }
-        public int RiderId { get; set; }
+        public int UserId { get; set; }
         public int RaceId { get; set; }
         public bool? IsEntryRequired { get; set; }
         public bool? IsEntryPaid { get; set; }
