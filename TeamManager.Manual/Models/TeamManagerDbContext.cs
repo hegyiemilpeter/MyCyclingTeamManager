@@ -7,6 +7,8 @@ namespace TeamManager.Manual.Models
 {
     public class TeamManagerDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
+        public DbSet<Address> Addresses { get; set; }
+
         public TeamManagerDbContext(DbContextOptions<TeamManagerDbContext> options) : base(options)
         {
         }

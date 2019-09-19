@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
+using TeamManager.Manual.Models.ViewModels;
 
 namespace TeamManager.Manual.Controllers
 {

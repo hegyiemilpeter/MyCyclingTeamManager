@@ -35,6 +35,8 @@ namespace TeamManager.Manual
                 {
                     options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => $"This field is required.");
                 });
+
+            services.AddScoped<CustomUserManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

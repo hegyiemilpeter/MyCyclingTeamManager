@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Models.ViewModels
 {
     public class RaceViewModel : Race
     {

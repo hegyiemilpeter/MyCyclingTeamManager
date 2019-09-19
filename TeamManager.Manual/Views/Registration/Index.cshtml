@@ -1,0 +1,95 @@
+﻿@using TeamManager.Manual.Data
+@model RegistrationViewModel
+
+@{ 
+    ViewBag.Title = "Registration";
+}
+
+<h1>Registration</h1>
+<hr />
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="Index" method="post">
+    <div class="row">
+        <div class="col">
+            <h3>Login data</h3>
+            <div class="form-group">
+                <label asp-for="Email">E-mail</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword">Password confirmation</label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <h3>Personal data</h3>
+            <div class="form-group">
+                <label asp-for="FirstName">First name</label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName">Last name</label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate">Birth date</label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber">Phone number</label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender"></label>
+                <select asp-for="Gender" asp-items="@Html.GetEnumSelectList<Gender>()" class="form-control">
+                    <option label="Select your gender" value=""></option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TShirtSize">T-shirt size</label>
+                <select asp-for="TShirtSize" asp-items="@Html.GetEnumSelectList<Size>()" class="form-control">
+                    <option label="Select your T-shirt size" value=""></option>
+                </select>
+                <span asp-validation-for="TShirtSize" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <h3>Address</h3>
+            <div class="form-group">
+                <label asp-for="ZipCode">Zip code</label>
+                <input asp-for="ZipCode" class="form-control" />
+                <span asp-validation-for="ZipCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Street"></label>
+                <input asp-for="Street" class="form-control" />
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HouseNumber">House number</label>
+                <input asp-for="HouseNumber" class="form-control" />
+                <span asp-validation-for="HouseNumber" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <input type="submit" value="Registrate" class="btn btn-primary" />
+    <a asp-action="Index" asp-controller="Races" class="btn btn-link">Back to races</a>
+</form>
