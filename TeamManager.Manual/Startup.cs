@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
+using TeamManager.Manual.Models.Interfaces;
 
 namespace TeamManager.Manual
 {
@@ -37,6 +38,7 @@ namespace TeamManager.Manual
                 });
 
             services.AddScoped<CustomUserManager>();
+            services.AddScoped<IRaceManager, RaceManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,7 +2,7 @@
 
 namespace TeamManager.Manual.Data
 {
-    public class RaceDistances
+    public class RaceDistance
     {
         [Key]
         public int Id { get; set; }

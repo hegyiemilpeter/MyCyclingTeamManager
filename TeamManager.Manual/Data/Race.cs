@@ -27,6 +27,6 @@ namespace TeamManager.Manual.Data
         public int PointWeight { get; set; }
         public string Remark { get; set; }
 
-        public virtual IEnumerable<RaceDistances> Distances { get; set; }
+        public virtual IEnumerable<RaceDistance> Distances { get; set; }
     }
 }

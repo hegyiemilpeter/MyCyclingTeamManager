@@ -9,7 +9,7 @@ namespace TeamManager.Manual.Models
     {
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Race> Races { get; set; }
-        public DbSet<RaceDistances> Distances { get; set; }
+        public DbSet<RaceDistance> Distances { get; set; }
 
         public TeamManagerDbContext(DbContextOptions<TeamManagerDbContext> options) : base(options)
         {
@@ -19,7 +19,7 @@ namespace TeamManager.Manual.Models
         {
             builder.HasDefaultSchema("TeamManager");
 
-            builder.Entity<RaceDistances>()
+            builder.Entity<RaceDistance>()
                 .HasOne(p => p.Race)
                 .WithMany(p => p.Distances)
                 .HasForeignKey(p => p.RaceId)

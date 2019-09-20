@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TeamManager.Manual.Data;
 
 namespace TeamManager.Manual.Models.ViewModels
@@ -14,6 +15,10 @@ namespace TeamManager.Manual.Models.ViewModels
             if (DistanceLengths == null || DistanceLengths.Count == 0)
             {
                 modelState.AddModelError(nameof(DistanceLengths), "At least one distance is required.");
+            }
+            else if(DistanceLengths.Any(d => d <= 0))
+            {
+                modelState.AddModelError(nameof(DistanceLengths), "All distances should be greater than 0.");
             }
 
             if (modelState.GetFieldValidationState(nameof(Date)) == ModelValidationState.Valid &&
