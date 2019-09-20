@@ -5,15 +5,15 @@ using TeamManager.Manual.Data;
 
 namespace TeamManager.Manual.Models.ViewModels
 {
-    public class RaceViewModel : Race
+    public class RaceModel : Race
     {
-        public IList<int> Distances { get; set; }
+        public IList<int> DistanceLengths { get; set; }
 
         public void Validate(ModelStateDictionary modelState)
         {
-            if (Distances == null || Distances.Count == 0)
+            if (DistanceLengths == null || DistanceLengths.Count == 0)
             {
-                modelState.AddModelError("Distances", "At least one distance is required.");
+                modelState.AddModelError(nameof(DistanceLengths), "At least one distance is required.");
             }
 
             if (modelState.GetFieldValidationState(nameof(Date)) == ModelValidationState.Valid &&

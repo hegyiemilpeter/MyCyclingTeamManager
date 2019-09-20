@@ -10,10 +10,10 @@ namespace TeamManager.Manual.Controllers
 {
     public class RacesController : Controller
     {
-        private static IList<RaceViewModel> Races { get; set; } = 
-            new List<RaceViewModel>()
+        private static IList<RaceModel> Races { get; set; } = 
+            new List<RaceModel>()
                 {
-                    new RaceViewModel() {
+                    new RaceModel() {
                         Name = "Bükk Kupa",
                         Date = new DateTime(2019,09,09),
                         Remark = "hegyi időfutam",
@@ -22,9 +22,9 @@ namespace TeamManager.Manual.Controllers
                         Id = 1,
                         PointWeight = 1,
                         TypeOfRace = RaceType.Road_TimeTrial,
-                        Distances = new List<int> { 15 }
+                        DistanceLengths = new List<int> { 15 }
                     },
-                    new RaceViewModel() {
+                    new RaceModel() {
                         Name = "Tour de Velence",
                         Date = new DateTime(2019,09,14),
                         City = "Velence",
@@ -33,9 +33,9 @@ namespace TeamManager.Manual.Controllers
                         PointWeight = 1,
                         TypeOfRace = RaceType.Road_RoadRace,
                         Website = "http://www.tosport.hu",
-                        Distances = new List<int> { 55, 130 }
+                        DistanceLengths = new List<int> { 55, 130 }
                     },
-                    new RaceViewModel() {
+                    new RaceModel() {
                         Name = "Ljubljana Marathon",
                         Date = new DateTime(2019,10,14),
                         City = "Ljubljana",
@@ -44,7 +44,7 @@ namespace TeamManager.Manual.Controllers
                         Id = 3,
                         PointWeight = 2,
                         TypeOfRace = RaceType.Road_RoadRace,
-                        Distances = new List<int> { 60, 120, 150 }
+                        DistanceLengths = new List<int> { 60, 120, 150 }
                     }
                 };
             
@@ -56,11 +56,11 @@ namespace TeamManager.Manual.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new RaceViewModel());
+            return View(new RaceModel());
         }
 
         [HttpPost]
-        public IActionResult Add(RaceViewModel race)
+        public IActionResult Add(RaceModel race)
         {
             race.Validate(ModelState);
             if (!ModelState.IsValid)

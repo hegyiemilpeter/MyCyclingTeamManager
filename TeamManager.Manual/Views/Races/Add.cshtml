@@ -1,5 +1,5 @@
 ﻿@using TeamManager.Manual.Data
-@model RaceViewModel
+@model RaceModel
 @{
     ViewBag.Title = "Add race";
 }
@@ -63,25 +63,25 @@
     </div>
     <div class="row">
         <div class="col-lg">
-            <label asp-for="Distances">Distances (km)</label>
+            <label asp-for="DistanceLengths">Distances (km)</label>
             <div class="form-row" id="distances-container">
-                @if (Model != null && Model.Distances != null && Model.Distances.Count > 0)
+                @if (Model != null && Model.DistanceLengths != null && Model.DistanceLengths.Count > 0)
                 {
-                    foreach (var distance in Model.Distances)
+                    foreach (var distance in Model.DistanceLengths)
                     {
                         <div class="col col-sm-1">
-                            <input type="number" id="Distances" name="Distances" value="@distance" class="m-2 form-control" />
+                            <input type="number" id="DistanceLengths" name="DistanceLengths" value="@distance" class="m-2 form-control" />
                         </div>
                     }
                 }
                 else
                 {
                     <div class="col col-sm-1">
-                        <input type="number" id="Distances" name="Distances" class="m-2 form-control" />
+                        <input type="number" id="DistanceLengths" name="DistanceLengths" class="m-2 form-control" />
                     </div>
                 }
             </div>
-            <span asp-validation-for="Distances" class="text-danger"></span>
+            <span asp-validation-for="DistanceLengths" class="text-danger"></span>
         </div>
     </div>
     <hr />
@@ -102,8 +102,8 @@
 
             var newDistanceField = document.createElement("input");
             newDistanceField.setAttribute("type", "number");
-            newDistanceField.setAttribute("name", "Distances");
-            newDistanceField.setAttribute("id", "Distances");
+            newDistanceField.setAttribute("name", "DistanceLengths");
+            newDistanceField.setAttribute("id", "DistanceLengths");
             newDistanceField.setAttribute("class", "m-2 form-control");
 
             newDistanceDiv.appendChild(newDistanceField);

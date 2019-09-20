@@ -1,6 +1,6 @@
 ﻿@using TeamManager.Manual.Data
 @using System.Linq
-@model IList<RaceViewModel>
+@model IList<RaceModel>
 @{
     ViewBag.Title = "Races";
 }
@@ -46,9 +46,9 @@ else
                     <td>
                         @{
                             string distancesString = null;
-                            for (int i = 0; i < race.Distances.Count; i++)
+                            for (int i = 0; i < race.DistanceLengths.Count; i++)
                             {
-                                distancesString += i == race.Distances.Count - 1 ? race.Distances[i] + " km " : race.Distances[i] + " km, ";
+                                distancesString += i == race.DistanceLengths.Count - 1 ? race.DistanceLengths[i] + " km " : race.DistanceLengths[i] + " km, ";
                             }
                         }
                         @distancesString
