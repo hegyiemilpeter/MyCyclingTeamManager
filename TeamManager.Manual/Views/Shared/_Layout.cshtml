@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using TeamManager.Manual.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -7,10 +11,30 @@
     <link rel="stylesheet" href="~/lib/bootstrap-4.3.1-dist/css/bootstrap.css" />
 </head>
 <body>
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" asp-action="Index" asp-controller="Home">
+                Green Riders Team Manager
+            </a>
+            <ul class="nav">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                  <li class="nav-item">
+                    <a class="nav-link disabled">User: @User.Identity.Name</a>
+                  </li>
+                  <li>
+                    <a asp-action="Logout" asp-controller="Account" class="nav-link active">Logout</a>
+                  </li>
+                }
+                else
+                {
+                    <a asp-action="Login" asp-controller="Account" class="nav-link">Login</a>
+                }
+            </ul>
+        </nav>
     <div class="container">
         @RenderBody()
     </div>
-<script src="~/lib/bootstrap-4.3.1-dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap-4.3.1-dist/js/bootstrap.js"></script>
     @RenderSection("Scripts", false)
 </body>
 </html>

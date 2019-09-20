@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using TeamManager.Manual.Data;
@@ -10,6 +11,7 @@ using TeamManager.Manual.Models.ViewModels;
 
 namespace TeamManager.Manual.Controllers
 {
+    [Authorize]
     public class RacesController : Controller
     {
         private IRaceManager raceManager { get; }
