@@ -15,10 +15,12 @@ namespace TeamManager.Manual.Controllers
     public class RacesController : Controller
     {
         private IRaceManager raceManager { get; }
+        private CustomUserManager userManager { get; }
 
-        public RacesController(IRaceManager raceMgr)
+        public RacesController(IRaceManager raceMgr, CustomUserManager userMgr)
         {
             raceManager = raceMgr;
+            userManager = userMgr;
         }
             
         public IActionResult Index() => View(raceManager.ListRaces());
@@ -40,15 +42,38 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
+            RaceDetailsModel model = new RaceDetailsModel();
             RaceModel race = raceManager.GetById(id);
             if(race == null)
             {
                 return NotFound();
             }
 
-            return View(race);
+            model.BaseModel = race;
+            model.EntriedRiders = await raceManager.ListEntriedUsersAsync(id);
+
+            User user = await userManager.FindByNameAsync(User.Identity.Name);
+            model.UserApplied = model.EntriedRiders.Contains(user);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Entry(int id)
+        {
+            RaceModel race = raceManager.GetById(id);
+            if (race == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userManager.FindByNameAsync(User.Identity.Name);
+            await raceManager.AddEntryAsync(user, race);
+
+            ViewBag.Message = $"Successful entry for {race.Name}";
+            return RedirectToAction(nameof(Details), new { id = race.Id });
         }
     }
 }

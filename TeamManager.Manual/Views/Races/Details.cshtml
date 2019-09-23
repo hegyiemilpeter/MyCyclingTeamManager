@@ -1,55 +1,83 @@
-﻿@model RaceModel
+﻿@model RaceDetailsModel
 @using TeamManager.Manual.Data
 
 @{
-    ViewData["Title"] = Model.Name;
+    ViewData["Title"] = Model.BaseModel.Name;
 }
 
-<h1>@Model.Name</h1>
+<h1>@Model.BaseModel.Name</h1>
+@if (ViewBag.Message != null && !string.IsNullOrEmpty(ViewBag.Message.ToString()))
+{
+    <span class="alert alert-info">ViewBag.Message</span>
+}
+@if (!Model.UserApplied && Model.BaseModel.EntryDeadline > DateTime.Now)
+{
+    <form asp-action="Entry" method="post">
+        <input name="id" id="id" type="hidden" value="@Model.BaseModel.Id" />
+        <input type="submit" class="btn btn-success" value="Apply" />
+    </form>
+}
 <div class="row">
     <table class="col-md-6 table">
         <tr>
             <th>Date</th>
-            <td>@Model.Date?.ToString("yyyy.MM.dd")</td>
+            <td>@Model.BaseModel.Date?.ToString("yyyy.MM.dd")</td>
         </tr>
         <tr>
             <th>Locality</th>
-            <td>@Model.CityString</td>
+            <td>@Model.BaseModel.CityString</td>
         </tr>
         <tr>
             <th>Distances</th>
-            <td>@Model.DistancesString</td>
+            <td>@Model.BaseModel.DistancesString</td>
         </tr>
         <tr>
             <th>Entry deadline</th>
-            <td>@Model.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
+            <td>@Model.BaseModel.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
         </tr>
         <tr>
             <th>Race type</th>
-            <td>@(Model.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(Model.TypeOfRace.Value) : "")</td>
+            <td>@(Model.BaseModel.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(Model.BaseModel.TypeOfRace.Value) : "")</td>
         </tr>
         <tr>
             <th>Website</th>
             <td>
-                @if (!string.IsNullOrEmpty(Model.Website))
+                @if (!string.IsNullOrEmpty(Model.BaseModel.Website))
                 {
-                    <a href="@Model.Website">@Model.Website</a>
+                    <a href="@Model.BaseModel.Website">@Model.BaseModel.Website</a>
                 }
             </td>
         </tr>
         <tr>
             <th>Remark</th>
-            <td>@Model.Remark</td>
+            <td>@Model.BaseModel.Remark</td>
         </tr>
         <tr>
             <th>Points</th>
-            <td>@Model.PointWeight</td>
+            <td>@Model.BaseModel.PointWeight</td>
+        </tr>
+        <tr>
+            <th>Applied riders</th>
+            <td>
+                @if (Model.EntriedRiders == null || Model.EntriedRiders.Count == 0)
+                {
+                    @:-
+                }
+                else
+                {
+                <ul>
+                    @foreach (var item in Model.EntriedRiders)
+                    {
+                        <li>
+                            @item.FullName
+                        </li>
+                    }
+                </ul>
+                }
+
+            </td>
         </tr>
     </table>
 </div>
-<form asp-action="Subscribe" method="post">
-    <input asp-for="Id" type="hidden" value="@Model.Id" />
-    <input type="submit" class="btn btn-success" value="Apply"/>
-    <a asp-action="Index" class="btn btn-primary">Back</a>
-</form>
+<a asp-action="Index" class="btn btn-primary">Back</a>
 

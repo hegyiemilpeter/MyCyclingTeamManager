@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Models.ViewModels
+namespace TeamManager.Manual.Models
 {
     public class RaceModel : Race
     {

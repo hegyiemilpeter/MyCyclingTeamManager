@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TeamManager.Manual.Data;
+using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
 using TeamManager.Manual.Models.ViewModels;
 
@@ -57,6 +58,37 @@ namespace TeamManager.Manual.Models
             return ToRaceModel(raceWithTheGivenId);
         }
 
+        public async Task AddEntryAsync(User user, Race race)
+        {
+            if(user != null && race != null)
+            {
+                if(race.EntryDeadline.HasValue && race.EntryDeadline.Value <= DateTime.Now)
+                {
+                    throw new DeadlineException();
+                }
+
+                UserRace alreadyExistingEntity = dbContext.UserRaces.SingleOrDefault(ur => ur.RaceId == race.Id && ur.UserId == user.Id);
+                if(alreadyExistingEntity != null)
+                {
+                    alreadyExistingEntity.IsEntryRequired = true;
+                    dbContext.Entry<UserRace>(alreadyExistingEntity).State = EntityState.Modified;
+                    await dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    UserRace userRace = new UserRace()
+                    {
+                        RaceId = race.Id,
+                        UserId = user.Id,
+                        IsEntryRequired = true
+                    };
+
+                    dbContext.UserRaces.Add(userRace);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+        }
+
         private static RaceModel ToRaceModel(Race r)
         {
             RaceModel raceModel = new RaceModel()
@@ -93,6 +125,17 @@ namespace TeamManager.Manual.Models
                 TypeOfRace = raceModel.TypeOfRace,
                 Website = raceModel.Website
             };
+        }
+
+        public async Task<IList<User>> ListEntriedUsersAsync(int id)
+        {
+            IEnumerable<int> userIds = dbContext.UserRaces.Where(x => x.RaceId == id).Select(x => x.UserId).ToList();
+            if(userIds == null)
+            {
+                return new List<User>();
+            }
+
+            return await dbContext.Users.Where(x => userIds.Contains(x.Id)).ToListAsync();
         }
     }
 }

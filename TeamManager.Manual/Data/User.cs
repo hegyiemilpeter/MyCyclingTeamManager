@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TeamManager.Manual.Data
 {
@@ -18,5 +19,8 @@ namespace TeamManager.Manual.Data
         public Size TShirtSize { get; set; }
         public int CollectedPoints { get; set; }
         public int ConsumedPoints { get; set; }
+
+        [NotMapped]
+        public string FullName => FirstName + " " + LastName;
     }
 }

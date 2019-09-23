@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TeamManager.Manual.Data
 {
-    public class UserRaces
+    public class UserRace
     {
         [Key]
         public int Id { get; set; }
@@ -14,5 +15,8 @@ namespace TeamManager.Manual.Data
         public bool? IsTakePartAsStaff { get; set; }
         public int? CategoryResult { get; set; }
         public int? AbsoluteResult { get; set; }
+
+        public virtual Race Race { get; set; }
+        public virtual User User { get; set; }
     }
 }

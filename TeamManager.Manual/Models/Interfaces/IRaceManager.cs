@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.ViewModels;
 
 namespace TeamManager.Manual.Models.Interfaces
@@ -13,5 +14,9 @@ namespace TeamManager.Manual.Models.Interfaces
         IList<RaceModel> ListRaces();
 
         RaceModel GetById(int id);
+
+        Task AddEntryAsync(User user, Race race);
+
+        Task<IList<User>> ListEntriedUsersAsync(int id);
     }
 }

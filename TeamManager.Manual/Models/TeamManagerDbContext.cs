@@ -11,6 +11,8 @@ namespace TeamManager.Manual.Models
         public DbSet<Race> Races { get; set; }
         public DbSet<RaceDistance> Distances { get; set; }
 
+        public DbSet<UserRace> UserRaces { get; set; }
+
         public TeamManagerDbContext(DbContextOptions<TeamManagerDbContext> options) : base(options)
         {
         }
@@ -23,6 +25,18 @@ namespace TeamManager.Manual.Models
                 .HasOne(p => p.Race)
                 .WithMany(p => p.Distances)
                 .HasForeignKey(p => p.RaceId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserRace>()
+                .HasOne(ur => ur.Race)
+                .WithMany()
+                .HasForeignKey(ur => ur.RaceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<UserRace>()
+                .HasOne(ur => ur.User)
+                .WithMany()
+                .HasForeignKey(ur => ur.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(builder);
