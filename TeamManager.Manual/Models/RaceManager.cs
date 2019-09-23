@@ -42,33 +42,40 @@ namespace TeamManager.Manual.Models
         {
             return dbContext.Races
                 .Include(r => r.Distances)
-                .Select(r => GetRaceModel(r))
+                .Select(r => ToRaceModel(r))
                 .ToList();
         }
 
-        private static RaceModel GetRaceModel(Race r)
+        public RaceModel GetById(int id)
         {
-            RaceModel raceModel = ToRaceModel(r);
-            raceModel.DistanceLengths = raceModel.Distances.Select(d => d.Distance).ToList();
-            return raceModel;
+            Race raceWithTheGivenId = dbContext.Races.Include(r => r.Distances).FirstOrDefault(r => r.Id == id);
+            if(raceWithTheGivenId == null)
+            {
+                return null;
+            }
+
+            return ToRaceModel(raceWithTheGivenId);
         }
 
-        private static RaceModel ToRaceModel(Race race)
+        private static RaceModel ToRaceModel(Race r)
         {
-            return new RaceModel()
+            RaceModel raceModel = new RaceModel()
             {
-                City = race.City,
-                Country = race.Country,
-                Date = race.Date,
-                Distances = race.Distances,
-                EntryDeadline = race.EntryDeadline,
-                Id = race.Id,
-                Name = race.Name,
-                PointWeight = race.PointWeight,
-                Remark = race.Remark,
-                TypeOfRace = race.TypeOfRace,
-                Website = race.Website
+                City = r.City,
+                Country = r.Country,
+                Date = r.Date,
+                Distances = r.Distances,
+                EntryDeadline = r.EntryDeadline,
+                Id = r.Id,
+                Name = r.Name,
+                PointWeight = r.PointWeight,
+                Remark = r.Remark,
+                TypeOfRace = r.TypeOfRace,
+                Website = r.Website
             };
+
+            raceModel.DistanceLengths = raceModel.Distances.Select(d => d.Distance).ToList();
+            return raceModel;
         }
 
         private static Race ToRace(RaceModel raceModel)

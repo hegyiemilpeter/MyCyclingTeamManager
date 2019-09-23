@@ -1,0 +1,55 @@
+﻿@model RaceModel
+@using TeamManager.Manual.Data
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<h1>@Model.Name</h1>
+<div class="row">
+    <table class="col-md-6 table">
+        <tr>
+            <th>Date</th>
+            <td>@Model.Date?.ToString("yyyy.MM.dd")</td>
+        </tr>
+        <tr>
+            <th>Locality</th>
+            <td>@Model.CityString</td>
+        </tr>
+        <tr>
+            <th>Distances</th>
+            <td>@Model.DistancesString</td>
+        </tr>
+        <tr>
+            <th>Entry deadline</th>
+            <td>@Model.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
+        </tr>
+        <tr>
+            <th>Race type</th>
+            <td>@(Model.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(Model.TypeOfRace.Value) : "")</td>
+        </tr>
+        <tr>
+            <th>Website</th>
+            <td>
+                @if (!string.IsNullOrEmpty(Model.Website))
+                {
+                    <a href="@Model.Website">@Model.Website</a>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Remark</th>
+            <td>@Model.Remark</td>
+        </tr>
+        <tr>
+            <th>Points</th>
+            <td>@Model.PointWeight</td>
+        </tr>
+    </table>
+</div>
+<form asp-action="Subscribe" method="post">
+    <input asp-for="Id" type="hidden" value="@Model.Id" />
+    <input type="submit" class="btn btn-success" value="Apply"/>
+    <a asp-action="Index" class="btn btn-primary">Back</a>
+</form>
+

@@ -10,6 +10,34 @@ namespace TeamManager.Manual.Models.ViewModels
     {
         public IList<int> DistanceLengths { get; set; }
 
+        public string DistancesString
+        {
+            get
+            {
+                string distancesString = null;
+                for (int i = 0; i < DistanceLengths.Count; i++)
+                {
+                    distancesString += i == DistanceLengths.Count - 1 ? DistanceLengths[i] + " km " : DistanceLengths[i] + " km, ";
+                }
+
+                return distancesString;
+            }
+        }
+
+        public string CityString
+        {
+            get
+            {
+                string cityString = City;
+                if (!string.IsNullOrWhiteSpace(Country))
+                {
+                    cityString += $" ({Country})";
+                }
+
+                return cityString;
+            }
+        }
+
         public void Validate(ModelStateDictionary modelState)
         {
             if (DistanceLengths == null || DistanceLengths.Count == 0)

@@ -38,5 +38,17 @@ namespace TeamManager.Manual.Controllers
             await raceManager.AddRaceAsync(race);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            RaceModel race = raceManager.GetById(id);
+            if(race == null)
+            {
+                return NotFound();
+            }
+
+            return View(race);
+        }
     }
 }

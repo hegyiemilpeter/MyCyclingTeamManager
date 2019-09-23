@@ -23,8 +23,7 @@ else
                 <th>City</th>
                 <th>Distances</th>
                 <th>Entry deadline</th>
-                <th>Website</th>
-                <th>Points</th>
+                <th></th>
             </tr>
             @foreach (var race in Model)
             {
@@ -34,33 +33,15 @@ else
                     <td>@(race.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(race.TypeOfRace.Value) : "")
                     </td>
                     <td>
-                        @{
-                            string cityString = race.City;
-                            if (!string.IsNullOrWhiteSpace(race.Country))
-                            {
-                                cityString += $" ({race.Country})";
-                            }
-                        }
-                        @cityString
+                        @race.CityString
                     </td>
                     <td>
-                        @{
-                            string distancesString = null;
-                            for (int i = 0; i < race.DistanceLengths.Count; i++)
-                            {
-                                distancesString += i == race.DistanceLengths.Count - 1 ? race.DistanceLengths[i] + " km " : race.DistanceLengths[i] + " km, ";
-                            }
-                        }
-                        @distancesString
+                        @race.DistancesString
                     </td>
                     <td>@race.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
                     <td>
-                        @if (!string.IsNullOrWhiteSpace(race.Website))
-                        {
-                            <a href="@race.Website" target="_blank">here</a>
-                        }
+                        <a asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@race.Id">View</a>
                     </td>
-                    <td>@race.PointWeight</td>
                 </tr>
             }
         </table>

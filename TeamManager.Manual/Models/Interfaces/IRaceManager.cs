@@ -11,5 +11,7 @@ namespace TeamManager.Manual.Models.Interfaces
         Task AddRaceAsync(RaceModel raceModel);
 
         IList<RaceModel> ListRaces();
+
+        RaceModel GetById(int id);
     }
 }
