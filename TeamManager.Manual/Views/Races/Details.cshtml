@@ -6,17 +6,9 @@
 }
 
 <h1>@Model.BaseModel.Name</h1>
-@if (ViewBag.Message != null && !string.IsNullOrEmpty(ViewBag.Message.ToString()))
-{
-    <span class="alert alert-info">ViewBag.Message</span>
-}
-@if (!Model.UserApplied && Model.BaseModel.EntryDeadline > DateTime.Now)
-{
-    <form asp-action="Entry" method="post">
-        <input name="id" id="id" type="hidden" value="@Model.BaseModel.Id" />
-        <input type="submit" class="btn btn-success" value="Apply" />
-    </form>
-}
+
+
+
 <div class="row">
     <table class="col-md-6 table">
         <tr>
@@ -65,19 +57,38 @@
                 }
                 else
                 {
-                <ul>
-                    @foreach (var item in Model.EntriedRiders)
-                    {
-                        <li>
-                            @item.FullName
-                        </li>
-                    }
-                </ul>
+                    <ul>
+                        @foreach (var item in Model.EntriedRiders)
+                        {
+                            <li>
+                                @item.FullName
+                            </li>
+                        }
+                    </ul>
                 }
 
             </td>
         </tr>
     </table>
 </div>
-<a asp-action="Index" class="btn btn-primary">Back</a>
+<div class="row">
+    @if (Model.BaseModel.EntryDeadline > DateTime.Now)
+    {
+        if (!Model.UserApplied)
+        {
+            <form asp-action="Entry" method="post" class="form-inline">
+                <input name="id" id="id" type="hidden" value="@Model.BaseModel.Id" />
+                <input type="submit" class="btn btn-success m-1" value="Apply" />
+            </form>
+        }
+        else
+        {
+            <form asp-action="RemoveEntry" method="post" class="form-inline">
+                <input name="id" id="id" type="hidden" value="@Model.BaseModel.Id" />
+                <input type="submit" class="btn btn-danger m-1" value="Remove entry" />
+            </form>
+        }
+    }
+    <a asp-action="Index" class="btn btn-primary m-1">Back</a>
+</div>
 

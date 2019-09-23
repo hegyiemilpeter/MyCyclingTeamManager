@@ -72,8 +72,22 @@ namespace TeamManager.Manual.Controllers
             User user = await userManager.FindByNameAsync(User.Identity.Name);
             await raceManager.AddEntryAsync(user, race);
 
-            ViewBag.Message = $"Successful entry for {race.Name}";
-            return RedirectToAction(nameof(Details), new { id = race.Id });
+            return RedirectToAction(nameof(Details), new { id = race.Id, message = $"Successful entry for {race.Name}" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveEntry(int id)
+        {
+            RaceModel race = raceManager.GetById(id);
+            if (race == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userManager.FindByNameAsync(User.Identity.Name);
+            await raceManager.RemoveEntryAsync(user, race);
+
+            return RedirectToAction(nameof(Details), new { id = race.Id, message = $"Successful remove entry for {race.Name}" });
         }
     }
 }

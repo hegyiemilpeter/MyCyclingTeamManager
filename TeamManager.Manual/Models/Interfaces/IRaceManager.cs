@@ -17,6 +17,8 @@ namespace TeamManager.Manual.Models.Interfaces
 
         Task AddEntryAsync(User user, Race race);
 
+        Task RemoveEntryAsync(User user, Race race);
+
         Task<IList<User>> ListEntriedUsersAsync(int id);
     }
 }

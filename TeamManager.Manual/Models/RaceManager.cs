@@ -25,7 +25,7 @@ namespace TeamManager.Manual.Models
             dbContext.Races.Add(race);
             await dbContext.SaveChangesAsync();
 
-            if(raceModel.DistanceLengths != null)
+            if (raceModel.DistanceLengths != null)
             {
                 foreach (var length in raceModel.DistanceLengths)
                 {
@@ -50,7 +50,7 @@ namespace TeamManager.Manual.Models
         public RaceModel GetById(int id)
         {
             Race raceWithTheGivenId = dbContext.Races.Include(r => r.Distances).FirstOrDefault(r => r.Id == id);
-            if(raceWithTheGivenId == null)
+            if (raceWithTheGivenId == null)
             {
                 return null;
             }
@@ -58,17 +58,28 @@ namespace TeamManager.Manual.Models
             return ToRaceModel(raceWithTheGivenId);
         }
 
+        public async Task<IList<User>> ListEntriedUsersAsync(int id)
+        {
+            IEnumerable<int> userIds = dbContext.UserRaces.Where(x => x.RaceId == id && x.IsEntryRequired.HasValue && x.IsEntryRequired.Value).Select(x => x.UserId).ToList();
+            if (userIds == null)
+            {
+                return new List<User>();
+            }
+
+            return await dbContext.Users.Where(x => userIds.Contains(x.Id)).ToListAsync();
+        }
+
         public async Task AddEntryAsync(User user, Race race)
         {
-            if(user != null && race != null)
+            if (user != null && race != null)
             {
-                if(race.EntryDeadline.HasValue && race.EntryDeadline.Value <= DateTime.Now)
+                if (race.EntryDeadline.HasValue && race.EntryDeadline.Value <= DateTime.Now)
                 {
                     throw new DeadlineException();
                 }
 
                 UserRace alreadyExistingEntity = dbContext.UserRaces.SingleOrDefault(ur => ur.RaceId == race.Id && ur.UserId == user.Id);
-                if(alreadyExistingEntity != null)
+                if (alreadyExistingEntity != null)
                 {
                     alreadyExistingEntity.IsEntryRequired = true;
                     dbContext.Entry<UserRace>(alreadyExistingEntity).State = EntityState.Modified;
@@ -88,6 +99,26 @@ namespace TeamManager.Manual.Models
                 }
             }
         }
+
+        public async Task RemoveEntryAsync(User user, Race race)
+        {
+            if (user != null && race != null)
+            {
+                if (race.EntryDeadline.HasValue && race.EntryDeadline.Value <= DateTime.Now)
+                {
+                    throw new DeadlineException();
+                }
+
+                UserRace alreadyExistingEntity = dbContext.UserRaces.SingleOrDefault(ur => ur.RaceId == race.Id && ur.UserId == user.Id);
+                if(alreadyExistingEntity != null)
+                {
+                    alreadyExistingEntity.IsEntryRequired = false;
+                    dbContext.Entry<UserRace>(alreadyExistingEntity).State = EntityState.Modified;
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+        }
+        
 
         private static RaceModel ToRaceModel(Race r)
         {
@@ -125,17 +156,6 @@ namespace TeamManager.Manual.Models
                 TypeOfRace = raceModel.TypeOfRace,
                 Website = raceModel.Website
             };
-        }
-
-        public async Task<IList<User>> ListEntriedUsersAsync(int id)
-        {
-            IEnumerable<int> userIds = dbContext.UserRaces.Where(x => x.RaceId == id).Select(x => x.UserId).ToList();
-            if(userIds == null)
-            {
-                return new List<User>();
-            }
-
-            return await dbContext.Users.Where(x => userIds.Contains(x.Id)).ToListAsync();
         }
     }
 }
