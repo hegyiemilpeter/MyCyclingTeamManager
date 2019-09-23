@@ -7,8 +7,6 @@
 
 <h1>@Model.BaseModel.Name</h1>
 
-
-
 <div class="row">
     <table class="col-md-6 table">
         <tr>
@@ -76,7 +74,7 @@
     {
         if (!Model.UserApplied)
         {
-            <form asp-action="Entry" method="post" class="form-inline">
+            <form asp-action="AddEntry" method="post" class="form-inline">
                 <input name="id" id="id" type="hidden" value="@Model.BaseModel.Id" />
                 <input type="submit" class="btn btn-success m-1" value="Apply" />
             </form>

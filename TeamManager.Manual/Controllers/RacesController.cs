@@ -1,29 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
-using TeamManager.Manual.Models.ViewModels;
 
 namespace TeamManager.Manual.Controllers
 {
     [Authorize]
     public class RacesController : Controller
     {
-        private IRaceManager raceManager { get; }
-        private CustomUserManager userManager { get; }
+        private IRaceManager RaceManager { get; }
+        private CustomUserManager UserManager { get; }
 
         public RacesController(IRaceManager raceMgr, CustomUserManager userMgr)
         {
-            raceManager = raceMgr;
-            userManager = userMgr;
+            RaceManager = raceMgr;
+            UserManager = userMgr;
         }
             
-        public IActionResult Index() => View(raceManager.ListRaces());
+        public IActionResult Index() => View(RaceManager.ListRaces());
 
         [HttpGet]
         public IActionResult Add() =>  View(new RaceModel());
@@ -37,7 +34,7 @@ namespace TeamManager.Manual.Controllers
                 return View(race);
             }
 
-            await raceManager.AddRaceAsync(race);
+            await RaceManager.AddRaceAsync(race);
             return RedirectToAction(nameof(Index));
         }
 
@@ -45,49 +42,45 @@ namespace TeamManager.Manual.Controllers
         public async Task<IActionResult> Details(int id)
         {
             RaceDetailsModel model = new RaceDetailsModel();
-            RaceModel race = raceManager.GetById(id);
+            RaceModel race = RaceManager.GetById(id);
             if(race == null)
             {
                 return NotFound();
             }
 
             model.BaseModel = race;
-            model.EntriedRiders = await raceManager.ListEntriedUsersAsync(id);
+            model.EntriedRiders = await RaceManager.ListEntriedUsersAsync(id);
 
-            User user = await userManager.FindByNameAsync(User.Identity.Name);
+            User user = await UserManager.FindByNameAsync(User.Identity.Name);
             model.UserApplied = model.EntriedRiders.Contains(user);
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Entry(int id)
+        public async Task<IActionResult> AddEntry(int id)
         {
-            RaceModel race = raceManager.GetById(id);
-            if (race == null)
-            {
-                return NotFound();
-            }
-
-            User user = await userManager.FindByNameAsync(User.Identity.Name);
-            await raceManager.AddEntryAsync(user, race);
-
-            return RedirectToAction(nameof(Details), new { id = race.Id, message = $"Successful entry for {race.Name}" });
+            return await EditEntry(id, RaceManager.AddEntryAsync);
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveEntry(int id)
         {
-            RaceModel race = raceManager.GetById(id);
+            return await EditEntry(id, RaceManager.RemoveEntryAsync);
+        }
+
+        private async Task<IActionResult> EditEntry(int id, Func<User,Race, Task> functionToPerform)
+        {
+            RaceModel race = RaceManager.GetById(id);
             if (race == null)
             {
                 return NotFound();
             }
 
-            User user = await userManager.FindByNameAsync(User.Identity.Name);
-            await raceManager.RemoveEntryAsync(user, race);
+            User user = await UserManager.FindByNameAsync(User.Identity.Name);
+            await functionToPerform.Invoke(user, race);
 
-            return RedirectToAction(nameof(Details), new { id = race.Id, message = $"Successful remove entry for {race.Name}" });
+            return RedirectToAction(nameof(Details), new { id = race.Id });
         }
     }
 }
