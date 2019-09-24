@@ -42,7 +42,7 @@ namespace TeamManager.Manual.Controllers
         public async Task<IActionResult> Details(int id)
         {
             RaceDetailsModel model = new RaceDetailsModel();
-            RaceModel race = RaceManager.GetById(id);
+            RaceModel race = RaceManager.GetRaceById(id);
             if(race == null)
             {
                 return NotFound();
@@ -60,17 +60,32 @@ namespace TeamManager.Manual.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            RaceDetailsModel model = new RaceDetailsModel();
-            RaceModel race = RaceManager.GetById(id);
+            RaceModel race = RaceManager.GetRaceById(id);
             if (race == null)
             {
                 return NotFound();
             }
 
-            model.BaseModel = race;
-            model.EntriedRiders = await RaceManager.ListEntriedUsersAsync(id);
+            return View(race);
+        }
 
-            return View(model);
+        [HttpPost]
+        public async Task<IActionResult> Edit(RaceModel race)
+        {
+            race.Validate(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return View(race);
+            }
+
+            await RaceManager.UpdateRaceAsync(race);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await RaceManager.DeleteRaceAsync(id);
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
@@ -87,7 +102,7 @@ namespace TeamManager.Manual.Controllers
 
         private async Task<IActionResult> EditEntry(int id, Func<User,Race, Task> functionToPerform)
         {
-            RaceModel race = RaceManager.GetById(id);
+            RaceModel race = RaceManager.GetRaceById(id);
             if (race == null)
             {
                 return NotFound();

@@ -1,8 +1,8 @@
-﻿@model RaceDetailsModel
+﻿@model RaceModel
 @using TeamManager.Manual.Data
 
 @{
-    ViewData["Title"] = $"Edit - {Model.BaseModel.Name}";
+    ViewData["Title"] = $"Edit - {Model.Name}";
 }
 
 <h1>Edit race</h1>
@@ -10,65 +10,66 @@
 <input type="button" id="removeRaceDistanceButton" onclick="removeRaceDistanceButtonClick()" value="Remove distance" class="btn btn-light" />
 <hr />
 <form method="post" asp-action="Edit">
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
     <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
     <div class="row">
         <div class="col-md form-group">
-            <label asp-for="BaseModel.Name"></label>
-            <input asp-for="BaseModel.Name" class="form-control" />
-            <span asp-validation-for="BaseModel.Name" class="text-danger"></span>
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="col-md form-group">
-            <label asp-for="BaseModel.Date"></label>
-            <input asp-for="BaseModel.Date" class="form-control" />
-            <span asp-validation-for="BaseModel.Date" class="text-danger"></span>
+            <label asp-for="Date"></label>
+            <input asp-for="Date" class="form-control" />
+            <span asp-validation-for="Date" class="text-danger"></span>
         </div>
         <div class="col-md form-group">
-            <label asp-for="BaseModel.EntryDeadline">Entry deadline</label>
-            <input asp-for="BaseModel.EntryDeadline" class="form-control" />
-            <span asp-validation-for="BaseModel.EntryDeadline" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md form-group">
-            <label asp-for="BaseModel.TypeOfRace">Type of race</label>
-            <select asp-for="BaseModel.TypeOfRace" asp-items="@EnumHelper<RaceType>.GetSelectListItems()" class="form-control"></select>
-            <span asp-validation-for="BaseModel.TypeOfRace" class="text-danger"></span>
-        </div>
-        <div class="col-md form-group">
-            <label asp-for="BaseModel.Country"></label>
-            <input asp-for="BaseModel.Country" class="form-control" />
-            <span asp-validation-for="BaseModel.Country" class="text-danger"></span>
-        </div>
-        <div class="col-md form-group">
-            <label asp-for="BaseModel.City"></label>
-            <input asp-for="BaseModel.City" class="form-control" />
-            <span asp-validation-for="BaseModel.City" class="text-danger"></span>
+            <label asp-for="EntryDeadline">Entry deadline</label>
+            <input asp-for="EntryDeadline" class="form-control" />
+            <span asp-validation-for="EntryDeadline" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-md form-group">
-            <label asp-for="BaseModel.PointWeight">Point weight</label>
-            <input asp-for="BaseModel.PointWeight" class="form-control" />
-            <span asp-validation-for="BaseModel.PointWeight" class="text-danger"></span>
+            <label asp-for="TypeOfRace">Type of race</label>
+            <select asp-for="TypeOfRace" asp-items="@EnumHelper<RaceType>.GetSelectListItems()" class="form-control"></select>
+            <span asp-validation-for="TypeOfRace" class="text-danger"></span>
         </div>
         <div class="col-md form-group">
-            <label asp-for="BaseModel.Remark"></label>
-            <input asp-for="BaseModel.Remark" class="form-control" />
-            <span asp-validation-for="BaseModel.Remark" class="text-danger"></span>
+            <label asp-for="Country"></label>
+            <input asp-for="Country" class="form-control" />
+            <span asp-validation-for="Country" class="text-danger"></span>
         </div>
         <div class="col-md form-group">
-            <label asp-for="BaseModel.Website"></label>
-            <input asp-for="BaseModel.Website" class="form-control" />
-            <span asp-validation-for="BaseModel.Website" class="text-danger"></span>
+            <label asp-for="City"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md form-group">
+            <label asp-for="PointWeight">Point weight</label>
+            <input asp-for="PointWeight" class="form-control" />
+            <span asp-validation-for="PointWeight" class="text-danger"></span>
+        </div>
+        <div class="col-md form-group">
+            <label asp-for="Remark"></label>
+            <input asp-for="Remark" class="form-control" />
+            <span asp-validation-for="Remark" class="text-danger"></span>
+        </div>
+        <div class="col-md form-group">
+            <label asp-for="Website"></label>
+            <input asp-for="Website" class="form-control" />
+            <span asp-validation-for="Website" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-lg">
-            <label asp-for="BaseModel.DistanceLengths">Distances (km)</label>
+            <label asp-for="DistanceLengths">Distances (km)</label>
             <div class="form-row" id="distances-container">
-                @if (Model != null && Model.BaseModel.DistanceLengths != null && Model.BaseModel.DistanceLengths.Count > 0)
+                @if (Model != null && Model.DistanceLengths != null && Model.DistanceLengths.Count > 0)
                 {
-                    foreach (var distance in Model.BaseModel.DistanceLengths)
+                    foreach (var distance in Model.DistanceLengths)
                     {
                         <div class="col col-sm-1">
                             <input type="number" id="DistanceLengths" name="DistanceLengths" value="@distance" class="m-2 form-control" />
@@ -82,7 +83,7 @@
                     </div>
                 }
             </div>
-            <span asp-validation-for="BaseModel.DistanceLengths" class="text-danger"></span>
+            <span asp-validation-for="DistanceLengths" class="text-danger"></span>
         </div>
     </div>
     <hr />

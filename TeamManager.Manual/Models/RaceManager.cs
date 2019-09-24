@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
-using TeamManager.Manual.Models.ViewModels;
 
 namespace TeamManager.Manual.Models
 {
@@ -47,7 +46,7 @@ namespace TeamManager.Manual.Models
                 .ToList();
         }
 
-        public RaceModel GetById(int id)
+        public RaceModel GetRaceById(int id)
         {
             Race raceWithTheGivenId = dbContext.Races.Include(r => r.Distances).FirstOrDefault(r => r.Id == id);
             if (raceWithTheGivenId == null)
@@ -112,8 +111,7 @@ namespace TeamManager.Manual.Models
                 UserRace alreadyExistingEntity = dbContext.UserRaces.SingleOrDefault(ur => ur.RaceId == race.Id && ur.UserId == user.Id);
                 if(alreadyExistingEntity != null)
                 {
-                    alreadyExistingEntity.IsEntryRequired = false;
-                    dbContext.Entry<UserRace>(alreadyExistingEntity).State = EntityState.Modified;
+                    dbContext.UserRaces.Remove(alreadyExistingEntity);
                     await dbContext.SaveChangesAsync();
                 }
             }
@@ -156,6 +154,64 @@ namespace TeamManager.Manual.Models
                 TypeOfRace = raceModel.TypeOfRace,
                 Website = raceModel.Website
             };
+        }
+
+        public async Task UpdateRaceAsync(RaceModel model)
+        {
+            Race raceToUpdate = dbContext.Races.Find(model.Id);
+            if(raceToUpdate == null)
+            {
+                throw new KeyNotFoundException(model.Id.ToString());
+            }
+
+            raceToUpdate.City = model.City;
+            raceToUpdate.Country = model.Country;
+            raceToUpdate.Date = model.Date;
+            raceToUpdate.EntryDeadline = model.EntryDeadline;
+            raceToUpdate.Name = model.Name;
+            raceToUpdate.PointWeight = model.PointWeight;
+            raceToUpdate.Remark = model.Remark;
+            raceToUpdate.TypeOfRace = model.TypeOfRace;
+            raceToUpdate.Website = model.Website;
+
+            // Add new distances
+            foreach (var distance in model.DistanceLengths)
+            {
+                if(!dbContext.Distances.Any(x => x.RaceId == raceToUpdate.Id && x.Distance == distance))
+                {
+                    RaceDistance newDistance = new RaceDistance()
+                    {
+                        Distance = distance,
+                        RaceId = raceToUpdate.Id
+                    };
+
+                    dbContext.Distances.Add(newDistance);
+                }
+            }
+
+            // Remove not used distances
+            var distances = dbContext.Distances.Where(x => x.RaceId == raceToUpdate.Id);
+            foreach (var distance in distances)
+            {
+                if (!model.DistanceLengths.Contains(distance.Distance))
+                {
+                    dbContext.Distances.Remove(distance);
+                }
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteRaceAsync(int id)
+        {
+            Race raceToUpdate = dbContext.Races.Find(id);
+            if (raceToUpdate == null)
+            {
+                throw new KeyNotFoundException(id.ToString());
+            }
+
+            dbContext.Races.Remove(raceToUpdate);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

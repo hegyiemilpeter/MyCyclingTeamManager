@@ -6,7 +6,14 @@
 }
 
 <h1>@Model.BaseModel.Name</h1>
-
+@if(Model.EntriedRiders == null || Model.EntriedRiders.Count == 0 && Model.BaseModel.EntryDeadline > DateTime.Now)
+{
+    <a asp-action="Delete" class="btn btn-danger m-1" asp-route-id="@Model.BaseModel.Id">Delete race</a>
+}
+else
+{
+    <div class="alert alert-danger">Race cannot be deleted, because there are entried riders or the entry deadline is over.</div>
+}
 <div class="row">
     <table class="col-md-6 table">
         <tr>
