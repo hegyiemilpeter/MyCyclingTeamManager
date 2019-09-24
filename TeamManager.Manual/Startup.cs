@@ -35,6 +35,10 @@ namespace TeamManager.Manual
                 .AddMvcOptions(options =>
                 {
                     options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => $"This field is required.");
+
+                    // Later can be refactored to use endpoint routing
+                    // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-3.0
+                    options.EnableEndpointRouting = false;
                 });
 
             services.AddScoped<CustomUserManager>();
@@ -42,15 +46,18 @@ namespace TeamManager.Manual
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.EnvironmentName == "Development")
             {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseStaticFiles();
+            
             app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseMvcWithDefaultRoute();
         }
     }
