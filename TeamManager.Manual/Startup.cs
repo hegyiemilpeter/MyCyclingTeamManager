@@ -58,6 +58,7 @@ namespace TeamManager.Manual
             }
 
             app.UseStaticFiles();
+            app.UseStatusCodePages();
             
             app.UseAuthentication();
             app.UseAuthorization();

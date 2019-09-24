@@ -41,6 +41,7 @@ else
                     <td>@race.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
                     <td>
                         <a asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@race.Id">View</a>
+                        <a asp-action="Edit" class="btn btn-sm btn-outline-dark" asp-route-id="@race.Id">Edit</a>
                     </td>
                 </tr>
             }

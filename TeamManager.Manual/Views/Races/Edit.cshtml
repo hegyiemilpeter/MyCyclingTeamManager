@@ -1,0 +1,100 @@
+﻿@model RaceDetailsModel
+@using TeamManager.Manual.Data
+
+@{
+    ViewData["Title"] = $"Edit - {Model.BaseModel.Name}";
+}
+
+<h1>Edit race</h1>
+<input type="button" id="addRaceDistanceButton" onclick="addRaceDistanceButtonClick()" value="New distance" class="btn btn-light" />
+<input type="button" id="removeRaceDistanceButton" onclick="removeRaceDistanceButtonClick()" value="Remove distance" class="btn btn-light" />
+<hr />
+<form method="post" asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
+    <div class="row">
+        <div class="col-md form-group">
+            <label asp-for="BaseModel.Name"></label>
+            <input asp-for="BaseModel.Name" class="form-control" />
+            <span asp-validation-for="BaseModel.Name" class="text-danger"></span>
+        </div>
+        <div class="col-md form-group">
+            <label asp-for="BaseModel.Date"></label>
+            <input asp-for="BaseModel.Date" class="form-control" />
+            <span asp-validation-for="BaseModel.Date" class="text-danger"></span>
+        </div>
+        <div class="col-md form-group">
+            <label asp-for="BaseModel.EntryDeadline">Entry deadline</label>
+            <input asp-for="BaseModel.EntryDeadline" class="form-control" />
+            <span asp-validation-for="BaseModel.EntryDeadline" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md form-group">
+            <label asp-for="BaseModel.TypeOfRace">Type of race</label>
+            <select asp-for="BaseModel.TypeOfRace" asp-items="@EnumHelper<RaceType>.GetSelectListItems()" class="form-control"></select>
+            <span asp-validation-for="BaseModel.TypeOfRace" class="text-danger"></span>
+        </div>
+        <div class="col-md form-group">
+            <label asp-for="BaseModel.Country"></label>
+            <input asp-for="BaseModel.Country" class="form-control" />
+            <span asp-validation-for="BaseModel.Country" class="text-danger"></span>
+        </div>
+        <div class="col-md form-group">
+            <label asp-for="BaseModel.City"></label>
+            <input asp-for="BaseModel.City" class="form-control" />
+            <span asp-validation-for="BaseModel.City" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md form-group">
+            <label asp-for="BaseModel.PointWeight">Point weight</label>
+            <input asp-for="BaseModel.PointWeight" class="form-control" />
+            <span asp-validation-for="BaseModel.PointWeight" class="text-danger"></span>
+        </div>
+        <div class="col-md form-group">
+            <label asp-for="BaseModel.Remark"></label>
+            <input asp-for="BaseModel.Remark" class="form-control" />
+            <span asp-validation-for="BaseModel.Remark" class="text-danger"></span>
+        </div>
+        <div class="col-md form-group">
+            <label asp-for="BaseModel.Website"></label>
+            <input asp-for="BaseModel.Website" class="form-control" />
+            <span asp-validation-for="BaseModel.Website" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg">
+            <label asp-for="BaseModel.DistanceLengths">Distances (km)</label>
+            <div class="form-row" id="distances-container">
+                @if (Model != null && Model.BaseModel.DistanceLengths != null && Model.BaseModel.DistanceLengths.Count > 0)
+                {
+                    foreach (var distance in Model.BaseModel.DistanceLengths)
+                    {
+                        <div class="col col-sm-1">
+                            <input type="number" id="DistanceLengths" name="DistanceLengths" value="@distance" class="m-2 form-control" />
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col col-sm-1">
+                        <input type="number" id="DistanceLengths" name="DistanceLengths" class="m-2 form-control" />
+                    </div>
+                }
+            </div>
+            <span asp-validation-for="BaseModel.DistanceLengths" class="text-danger"></span>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-link">Back to races</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/Distances.js"></script>
+}
+

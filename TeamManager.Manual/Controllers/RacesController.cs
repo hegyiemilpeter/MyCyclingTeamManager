@@ -57,6 +57,22 @@ namespace TeamManager.Manual.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            RaceDetailsModel model = new RaceDetailsModel();
+            RaceModel race = RaceManager.GetById(id);
+            if (race == null)
+            {
+                return NotFound();
+            }
+
+            model.BaseModel = race;
+            model.EntriedRiders = await RaceManager.ListEntriedUsersAsync(id);
+
+            return View(model);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddEntry(int id)
         {

@@ -5,8 +5,8 @@
 }
 
 <h1>Add race</h1>
-<input type="button" id="addDistanceButton" onclick="addDistanceButtonClick()" value="New distance" class="btn btn-light" />
-<input type="button" id="removeDistanceButton" onclick="removeDistanceButtonClick()" value="Remove distance" class="btn btn-light" />
+<input type="button" id="addRaceDistanceButton" onclick="addRaceDistanceButtonClick()" value="New distance" class="btn btn-light" />
+<input type="button" id="removeRaceDistanceButton" onclick="removeRaceDistanceButtonClick()" value="Remove distance" class="btn btn-light" />
 <hr />
 <form method="post" asp-action="Add">
     <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
@@ -94,32 +94,5 @@
 </form>
 
 @section Scripts {
-    <script type="text/javascript">
-        function addDistanceButtonClick() {
-
-            var newDistanceDiv = document.createElement("div");
-            newDistanceDiv.setAttribute("class", "col col-sm-1");
-
-            var newDistanceField = document.createElement("input");
-            newDistanceField.setAttribute("type", "number");
-            newDistanceField.setAttribute("name", "DistanceLengths");
-            newDistanceField.setAttribute("id", "DistanceLengths");
-            newDistanceField.setAttribute("class", "m-2 form-control");
-
-            newDistanceDiv.appendChild(newDistanceField);
-
-            document.getElementById("distances-container").appendChild(newDistanceDiv);
-        }
-
-        function removeDistanceButtonClick() {
-
-            var container = document.getElementById("distances-container");
-            var items = container.childNodes.length;
-
-            // Container has 3 childs by default
-            if (items > 3) {
-                container.removeChild(container.childNodes[items - 1]);
-            }
-        }
-    </script>
+    <script type="text/javascript" src="~/js/Distances.js"></script></script>
 }
