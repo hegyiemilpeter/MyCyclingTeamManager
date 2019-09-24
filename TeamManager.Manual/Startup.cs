@@ -28,7 +28,11 @@ namespace TeamManager.Manual
                 dbContextOptions.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddIdentity<User, IdentityRole<int>>()
+            services
+                .AddIdentity<User, IdentityRole<int>>(options =>
+                    {
+                        options.User.RequireUniqueEmail = true;
+                    })
                 .AddEntityFrameworkStores<TeamManagerDbContext>();
 
             services.AddMvc()
