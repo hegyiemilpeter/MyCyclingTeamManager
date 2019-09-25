@@ -6,11 +6,9 @@
 }
 
 <h1>Races</h1>
-<a asp-action="Add" class="btn btn-primary btn-sm">+ New</a>
-<a asp-action="Add" asp-controller="RaceResults" class="btn btn-primary btn-sm">+ Result</a>
-
 @if (Model == null || Model.Count == 0)
 {
+    <hr />
     <h5>No races in the database.</h5>
 }
 else
@@ -33,21 +31,22 @@ else
                     <td>@race.Name</td>
                     <td>
                         @(race.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(race.TypeOfRace.Value) : "")
-                </td>
-                <td>
-                    @race.CityString
-                </td>
-                <td>
-                    @race.DistancesString
-                </td>
-                <td>@race.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
-                <td>
-                    <a asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@race.Id">View</a>
-                    <a asp-action="Edit" class="btn btn-sm btn-outline-dark" asp-route-id="@race.Id">Edit</a>
-                </td>
-            </tr>
-        }
+                    </td>
+                    <td>
+                        @race.CityString
+                    </td>
+                    <td>
+                        @race.DistancesString
+                    </td>
+                    <td>@race.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
+                    <td>
+                        <a asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@race.Id">View</a>
+                        <a asp-action="Edit" class="btn btn-sm btn-outline-dark" asp-route-id="@race.Id">Edit</a>
+                    </td>
+                </tr>
+            }
         </table>
     </div>
 }
-<a asp-action="Index" asp-controller="Home" class="btn btn-primary btn-sm">Back to home</a>
+<a asp-action="Add" class="btn btn-primary btn-sm">+ New</a>
+<a asp-action="Add" asp-controller="RaceResults" class="btn btn-primary btn-sm">+ Result</a>

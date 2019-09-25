@@ -61,7 +61,7 @@ namespace TeamManager.Manual.Controllers
             User user = await UserManager.FindByNameAsync(User.Identity.Name);
             await RaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsDriver, model.IsTakePartAsStaff);
 
-            return RedirectToAction("Index", "Races");
+            return RedirectToAction("MyResults");
         }
     }
 }

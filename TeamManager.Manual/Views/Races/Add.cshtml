@@ -5,9 +5,9 @@
 }
 
 <h1>Add race</h1>
+<hr />
 <input type="button" id="addRaceDistanceButton" onclick="addRaceDistanceButtonClick()" value="New distance" class="btn btn-light" />
 <input type="button" id="removeRaceDistanceButton" onclick="removeRaceDistanceButtonClick()" value="Remove distance" class="btn btn-light" />
-<hr />
 <form method="post" asp-action="Add">
     <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
     <div class="row">
