@@ -13,6 +13,11 @@
     <input type="hidden" asp-for="Id" value="@Model.Id" />
     <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
     <div class="row">
+        <div class="col-sm form-group">
+            <label asp-for="OwnOrganizedEvent">Own</label>
+            <input type="checkbox" asp-for="OwnOrganizedEvent" class="form-control" />
+            <span asp-validation-for="OwnOrganizedEvent" class="text-danger"></span>
+        </div>
         <div class="col-md form-group">
             <label asp-for="Name"></label>
             <input asp-for="Name" class="form-control" />

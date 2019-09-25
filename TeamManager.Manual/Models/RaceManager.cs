@@ -172,7 +172,8 @@ namespace TeamManager.Manual.Models
                 PointWeight = r.PointWeight,
                 Remark = r.Remark,
                 TypeOfRace = r.TypeOfRace,
-                Website = r.Website
+                Website = r.Website,
+                OwnOrganizedEvent = r.OwnOrganizedEvent
             };
 
             raceModel.DistanceLengths = raceModel.Distances.Select(d => d.Distance).ToList();
@@ -192,7 +193,8 @@ namespace TeamManager.Manual.Models
                 PointWeight = raceModel.PointWeight,
                 Remark = raceModel.Remark,
                 TypeOfRace = raceModel.TypeOfRace,
-                Website = raceModel.Website
+                Website = raceModel.Website,
+                OwnOrganizedEvent = raceModel.OwnOrganizedEvent
             };
         }
 
@@ -213,6 +215,7 @@ namespace TeamManager.Manual.Models
             raceToUpdate.Remark = model.Remark;
             raceToUpdate.TypeOfRace = model.TypeOfRace;
             raceToUpdate.Website = model.Website;
+            raceToUpdate.OwnOrganizedEvent = model.OwnOrganizedEvent;
 
             // Add new distances
             foreach (var distance in model.DistanceLengths)

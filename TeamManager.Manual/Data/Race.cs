@@ -26,6 +26,7 @@ namespace TeamManager.Manual.Data
         public string Website { get; set; }
         public int PointWeight { get; set; }
         public string Remark { get; set; }
+        public bool OwnOrganizedEvent { get; set; }
 
         public virtual IEnumerable<RaceDistance> Distances { get; set; }
     }

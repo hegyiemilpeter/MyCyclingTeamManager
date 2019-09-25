@@ -16,6 +16,7 @@ else
     <div class="m-3">
         <table class="table">
             <tr>
+                <th></th>
                 <th>Date</th>
                 <th>Race name</th>
                 <th>Type</th>
@@ -27,6 +28,16 @@ else
             @foreach (var race in Model)
             {
                 <tr>
+                    @if (race.OwnOrganizedEvent)
+                    {
+                        <td>
+                            <span class="badge badge-danger">!</span>
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                     <td>@race.Date?.ToString("yyyy.MM.dd")</td>
                     <td>@race.Name</td>
                     <td>
