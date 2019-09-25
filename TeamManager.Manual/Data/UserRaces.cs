@@ -13,6 +13,8 @@ namespace TeamManager.Manual.Data
         public bool? IsEntryPaid { get; set; }
         public bool? IsPointsDisabled { get; set; }
         public bool? IsTakePartAsStaff { get; set; }
+        public bool? IsTakePartAsDriver { get; set; }
+
         public int? CategoryResult { get; set; }
         public int? AbsoluteResult { get; set; }
 

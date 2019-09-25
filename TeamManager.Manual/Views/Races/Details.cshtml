@@ -94,6 +94,10 @@ else
             </form>
         }
     }
+    @if(Model.BaseModel.Date < DateTime.Now)
+    {
+        <a asp-action="Add" asp-controller="RaceResults" asp-route-id="@Model.BaseModel.Id" class="btn btn-success m-1">Add result</a>
+    }
     <a asp-action="Index" class="btn btn-primary m-1">Back</a>
 </div>
 

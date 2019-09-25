@@ -116,7 +116,40 @@ namespace TeamManager.Manual.Models
                 }
             }
         }
-        
+
+        public async Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff)
+        {
+            await AddResultAsync(user, GetRaceById(raceId), absoluteResult, categoryResult, driver, staff);
+        }
+
+        public async Task AddResultAsync(User user, Race race, int? absoluteResult, int? categoryResult, bool? driver, bool? staff)
+        {
+            UserRace userRace = dbContext.UserRaces.SingleOrDefault(x => x.RaceId == race.Id && x.UserId == user.Id);
+            bool update = userRace != null;
+            if(!update)
+            {
+                userRace = new UserRace();
+                userRace.UserId = user.Id;
+                userRace.RaceId = race.Id;
+            }
+
+            userRace.IsTakePartAsDriver = driver;
+            userRace.IsTakePartAsStaff = staff;
+            userRace.CategoryResult = categoryResult;
+            userRace.AbsoluteResult = absoluteResult;
+
+            if (update)
+            {
+                dbContext.Entry<UserRace>(userRace).State = EntityState.Modified;
+            }
+            else
+            {
+                dbContext.UserRaces.Add(userRace);
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
 
         private static RaceModel ToRaceModel(Race r)
         {
