@@ -23,6 +23,14 @@ namespace TeamManager.Manual.Controllers
             UserManager = userManager;
         }
 
+        public async Task<IActionResult> MyResults() 
+        {
+            User user = await UserManager.FindByNameAsync(User.Identity.Name);
+            var model = await RaceManager.GetRaceResultsByUser(user);
+
+            return View(model);
+        }
+
         public IActionResult Add(int? id = null)
         {
            AddResultViewModel model = new AddResultViewModel();

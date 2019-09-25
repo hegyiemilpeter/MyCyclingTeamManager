@@ -1,0 +1,33 @@
+﻿@using TeamManager.Manual.Data
+@model IList<UserRace>
+
+@{
+    ViewData["Title"] = "My results";
+}
+
+<h1>My results</h1>
+<hr />
+<div class="row">
+    <table class="table">
+        <tr class="table-primary">
+            <th>Race</th>
+            <th>Absolute result</th>
+            <th>Category result</th>
+            <th>Driver</th>
+            <th>Staff</th>
+        </tr>
+        @foreach (var raceResults in Model)
+        {
+        <tr>
+            <td>@raceResults.Race.Name</td>
+            <td>@raceResults.AbsoluteResult</td>
+            <td>@raceResults.CategoryResult</td>
+            <td>@if (raceResults.IsTakePartAsDriver.HasValue && raceResults.IsTakePartAsDriver.Value)
+            {<span class="badge badge-pill badge-success">Yes</span>}</td>
+            <td>@if (raceResults.IsTakePartAsStaff.HasValue && raceResults.IsTakePartAsStaff.Value)
+            {<span class="badge badge-pill badge-success">Yes</span>}</td>
+        </tr>
+        }
+    </table>
+</div>
+<a asp-action="Index" asp-controller="Home" class="btn btn-primary">Home</a>

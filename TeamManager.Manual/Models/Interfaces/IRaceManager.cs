@@ -28,5 +28,7 @@ namespace TeamManager.Manual.Models.Interfaces
         Task AddResultAsync(User user, Race race, int? absoluteResult, int? categoryResult, bool? driver, bool? staff);
 
         Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff);
+
+        Task<IList<UserRace>> GetRaceResultsByUser(User user);
     }
 }

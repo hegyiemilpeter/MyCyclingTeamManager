@@ -11,27 +11,41 @@
     <link rel="stylesheet" href="~/lib/bootstrap-4.3.1-dist/css/bootstrap.css" />
 </head>
 <body>
-        <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand" asp-action="Index" asp-controller="Home">
-                <img src="~/img/green_riders_logo.jpg" width="45" height="45" alt="">
-                 | Team Manager
-            </a>
-            <ul class="nav">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                  <li class="nav-item">
-                    <a class="nav-link disabled">User: @User.Identity.Name</a>
-                  </li>
-                  <li>
-                    <a asp-action="Logout" asp-controller="Account" class="nav-link active">Logout</a>
-                  </li>
-                }
-                else
-                {
-                    <a asp-action="Login" asp-controller="Account" class="nav-link">Login</a>
-                }
-            </ul>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-action="Index" asp-controller="Home">
+                    <img src="~/img/green_riders_logo.jpg" width="45" height="45" alt="">
+                    | Team Manager
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Races" class="nav-link">Races</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="MyResults" asp-controller="RaceResults" class="nav-link">My results</a>
+                        </li>
+                    </ul>
+                </div>
+                <nav class="navbar-nav">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <span class="nav-item">
+                            User: @User.Identity.Name |  <a asp-action="Logout" asp-controller="Account">Logout</a>
+                        </span>
+                    }
+                    else
+                    {
+                        <a asp-action="Login" asp-controller="Account" class="nav-item">Login</a>
+                    }
+                </nav>
+            </div>
         </nav>
+    </header>
     <div class="container">
         @RenderBody()
     </div>

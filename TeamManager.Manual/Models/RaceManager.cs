@@ -150,6 +150,13 @@ namespace TeamManager.Manual.Models
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task<IList<UserRace>> GetRaceResultsByUser(User user)
+        {
+            var releavantRaces = dbContext.UserRaces
+                .Include(x => x.Race)
+                .Where(x => x.UserId == user.Id && (x.AbsoluteResult.HasValue || x.CategoryResult.HasValue || (x.IsTakePartAsDriver.HasValue && x.IsTakePartAsDriver.Value) || (x.IsTakePartAsStaff.HasValue && x.IsTakePartAsStaff.Value)));
+            return releavantRaces.ToList();
+        }
 
         private static RaceModel ToRaceModel(Race r)
         {
