@@ -57,5 +57,16 @@ namespace TeamManager.Manual.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
+        public async Task<IActionResult> Details(string userName)
+        {
+            UserModel  user = await userManager.GetUserByNameAsync(userName);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
     }
 }

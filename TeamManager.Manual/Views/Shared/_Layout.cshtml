@@ -34,9 +34,8 @@
                 <nav class="navbar-nav">
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <span class="nav-item">
-                            User: @User.Identity.Name |  <a asp-action="Logout" asp-controller="Account">Logout</a>
-                        </span>
+                        <a asp-action="Details" asp-controller="Account" asp-route-userName="@User.Identity.Name" class="nav-item m-1">My profile</a>
+                        <a asp-action="Logout" asp-controller="Account" class="nav-item m-1">Logout</a>
                     }
                     else
                     {

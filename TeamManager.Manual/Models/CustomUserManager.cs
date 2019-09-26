@@ -62,5 +62,68 @@ namespace TeamManager.Manual.Models
                 return identityResult;
             }
         }
+
+        public async Task<UserModel> GetUserByNameAsync(string name)
+        {
+            User user = await base.FindByNameAsync(name);
+            if (user == null)
+            {
+                return null;
+            }
+
+            UserModel response = CreateUserModel(user);
+            return response;
+        }
+
+        private UserModel CreateUserModel(User user)
+        {
+            UserModel response = new UserModel()
+            {
+                BirthDate = user.BirthDate,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                Gender = user.Gender,
+                Id = user.Id,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                TShirtSize = user.TShirtSize
+            };
+
+            Address usersAddress = _dbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);
+            if (usersAddress != null)
+            {
+                response.ZipCode = usersAddress.ZipCode;
+                response.City = usersAddress.City;
+                response.HouseNumber = usersAddress.HouseNumber;
+                response.Street = usersAddress.Street;
+            }
+
+            IEnumerable<IdentificationNumber> identificationNumbers = _dbContext.IdentificationNumbers.Where(x => x.UserId == user.Id);
+            if (identificationNumbers != null && identificationNumbers.Count() > 0)
+            {
+                foreach (var number in identificationNumbers)
+                {
+                    switch (number.Type)
+                    {
+                        case IdentificationNumberType.AKESZ:
+                            response.AKESZ = number.Value;
+                            break;
+                        case IdentificationNumberType.UCILicence:
+                            response.UCI = number.Value;
+                            break;
+                        case IdentificationNumberType.OtProba:
+                            response.Otproba = number.Value;
+                            break;
+                        case IdentificationNumberType.TriathleteLicence:
+                            response.Triathlon = number.Value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            return response;
+        }
     }
 }
