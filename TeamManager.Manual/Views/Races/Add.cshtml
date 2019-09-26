@@ -7,64 +7,7 @@
 <h1>Add race</h1>
 <hr />
 <form method="post" asp-action="Add">
-    <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
-    <div class="row">
-        <div class="col-sm form-group">
-            <label asp-for="OwnOrganizedEvent">Own</label>
-            <input type="checkbox" asp-for="OwnOrganizedEvent" class="form-control" />
-            <span asp-validation-for="OwnOrganizedEvent" class="text-danger"></span>
-        </div>
-        <div class="col-md form-group">
-            <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-        <div class="col-md form-group">
-            <label asp-for="Date"></label>
-            <input asp-for="Date" class="form-control" />
-            <span asp-validation-for="Date" class="text-danger"></span>
-        </div>
-        <div class="col-md form-group">
-            <label asp-for="EntryDeadline">Entry deadline</label>
-            <input asp-for="EntryDeadline" class="form-control" />
-            <span asp-validation-for="EntryDeadline" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md form-group">
-            <label asp-for="TypeOfRace">Type of race</label>
-            <select asp-for="TypeOfRace" asp-items="@EnumHelper<RaceType>.GetSelectListItems()" class="form-control"></select>
-            <span asp-validation-for="TypeOfRace" class="text-danger"></span>
-        </div>
-        <div class="col-md form-group">
-            <label asp-for="Country"></label>
-            <input asp-for="Country" class="form-control" />
-            <span asp-validation-for="Country" class="text-danger"></span>
-        </div>
-        <div class="col-md form-group">
-            <label asp-for="City"></label>
-            <input asp-for="City" class="form-control" />
-            <span asp-validation-for="City" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md form-group">
-            <label asp-for="PointWeight">Point weight</label>
-            <input asp-for="PointWeight" class="form-control" />
-            <span asp-validation-for="PointWeight" class="text-danger"></span>
-        </div>
-        <div class="col-md form-group">
-            <label asp-for="Remark"></label>
-            <input asp-for="Remark" class="form-control" />
-            <span asp-validation-for="Remark" class="text-danger"></span>
-        </div>
-        <div class="col-md form-group">
-            <label asp-for="Website"></label>
-            <input asp-for="Website" class="form-control" />
-            <span asp-validation-for="Website" class="text-danger"></span>
-        </div>
-    </div>
-    @await Html.PartialAsync("_AddDistancePartial", Model)
+    @await Html.PartialAsync("_RaceFieldsPartial", Model)
     <hr />
     <div class="row">
         <div class="col-md">
