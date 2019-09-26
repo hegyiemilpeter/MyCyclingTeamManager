@@ -26,7 +26,24 @@ namespace TeamManager.Manual.Controllers
         public async Task<IActionResult> MyResults() 
         {
             User user = await UserManager.FindByNameAsync(User.Identity.Name);
-            var model = await RaceManager.GetRaceResultsByUser(user);
+            IList<UserRace> results = await RaceManager.GetRaceResultsByUser(user);
+
+            List<ResultViewModel> model = new List<ResultViewModel>();
+            if(results != null)
+            {
+                foreach (var result in results)
+                {
+                    model.Add(new ResultViewModel()
+                    {
+                        AbsoluteResult = result.AbsoluteResult,
+                        CategoryResult = result.CategoryResult,
+                        IsDriver = result.IsTakePartAsDriver.HasValue && result.IsTakePartAsDriver.Value,
+                        IsStaff = result.IsTakePartAsStaff.HasValue && result.IsTakePartAsStaff.Value,
+                        Points = PointCalculator.CalculatePoints(result.Race.PointWeight, result.Race.OwnOrganizedEvent, result.CategoryResult, result.IsTakePartAsStaff, result.IsTakePartAsDriver),
+                        Race = result.Race.Name
+                    });
+                }
+            }
 
             return View(model);
         }

@@ -1,5 +1,5 @@
 ﻿@using TeamManager.Manual.Data
-@model IList<UserRace>
+@model IList<ResultViewModel>
 
 @{
     ViewData["Title"] = "My results";
@@ -14,18 +14,23 @@
             <th>Category result</th>
             <th>Driver</th>
             <th>Staff</th>
+            <th>Points</th>
         </tr>
-        @foreach (var raceResults in Model)
+        @foreach (var result in Model)
         {
         <tr>
-            <td>@raceResults.Race.Name</td>
-            <td>@raceResults.AbsoluteResult</td>
-            <td>@raceResults.CategoryResult</td>
-            <td>@if (raceResults.IsTakePartAsDriver.HasValue && raceResults.IsTakePartAsDriver.Value)
+            <td>@result.Race</td>
+            <td>@result.AbsoluteResult</td>
+            <td>@result.CategoryResult</td>
+            <td>@if (result.IsDriver)
             {<span class="badge badge-pill badge-success">Yes</span>}</td>
-            <td>@if (raceResults.IsTakePartAsStaff.HasValue && raceResults.IsTakePartAsStaff.Value)
+            <td>@if (result.IsStaff)
             {<span class="badge badge-pill badge-success">Yes</span>}</td>
+            <td>@result.Points</td>
         </tr>
         }
     </table>
+</div>
+<div>
+    All gained points: @Model.Sum(x => x.Points)
 </div>
