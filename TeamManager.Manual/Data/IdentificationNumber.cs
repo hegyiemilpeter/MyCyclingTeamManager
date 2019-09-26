@@ -9,5 +9,7 @@ namespace TeamManager.Manual.Data
         public int UserId { get; set; }
         public IdentificationNumberType Type { get; set; }
         public string Value { get; set; }
+
+        public User User { get; set; }
     }
 }

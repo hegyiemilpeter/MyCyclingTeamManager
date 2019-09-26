@@ -20,7 +20,7 @@ namespace TeamManager.Manual.Models
             _dbContext = dbContext;
         }
 
-        public async Task<IdentityResult> CreateAsync(User user, string password, Address address)
+        public async Task<IdentityResult> CreateAsync(User user, string password, Address address, Dictionary<IdentificationNumberType, string> identifiers)
         {
             user.UserName = user.FirstName.ToLower() + "." + user.LastName.ToLower() + "." + user.BirthDate.ToString("yyyyMMdd");
 
@@ -38,12 +38,27 @@ namespace TeamManager.Manual.Models
                 user.AddressId = address.Id;
                 _dbContext.Entry(user).State = EntityState.Modified;
 
+                if(identifiers != null && identifiers.Count > 0)
+                {
+                    foreach (var identifier in identifiers)
+                    {
+                        IdentificationNumber identificationNumber = new IdentificationNumber()
+                        {
+                            Type = identifier.Key,
+                            Value = identifier.Value,
+                            UserId = user.Id
+                        };
+
+                        _dbContext.IdentificationNumbers.Add(identificationNumber);
+                    }
+                }
+
                 await _dbContext.SaveChangesAsync();
                 return identityResult;
             }
             catch
             {
-                identityResult.Errors.Append(new IdentityError() { Description = $"The address creation / assignation failed for {user.FirstName} {user.LastName}." });
+                identityResult.Errors.Append(new IdentityError() { Description = $"Update with address and/or identification number failed for {user.FirstName} {user.LastName}." });
                 return identityResult;
             }
         }

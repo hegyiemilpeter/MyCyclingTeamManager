@@ -88,6 +88,29 @@
                 <span asp-validation-for="HouseNumber" class="text-danger"></span>
             </div>
         </div>
+        <div class="col">
+            <h3>Identifiers</h3>
+            <div class="form-group">
+                <label asp-for="AKESZ"></label>
+                <input asp-for="AKESZ" class="form-control" />
+                <span asp-validation-for="AKESZ" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UCI">UCI licence</label>
+                <input asp-for="UCI" class="form-control" />
+                <span asp-validation-for="UCI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Triathlon">Triathlon licence</label>
+                <input asp-for="Triathlon" class="form-control" />
+                <span asp-validation-for="UCI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Otproba">5proba number</label>
+                <input asp-for="Otproba" class="form-control" />
+                <span asp-validation-for="Otproba" class="text-danger"></span>
+            </div>
+        </div>
     </div>
     <hr />
     <input type="submit" value="Registrate" class="btn btn-primary" />

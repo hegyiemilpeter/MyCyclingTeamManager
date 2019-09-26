@@ -51,7 +51,8 @@ namespace TeamManager.Manual.Controllers
                 TShirtSize = model.TShirtSize.Value
             };
 
-            IdentityResult createResult = await userManager.CreateAsync(user, model.Password, address);
+            Dictionary<IdentificationNumberType, string> identifiers = CreateIdentifiersDictionaty(model);
+            IdentityResult createResult = await userManager.CreateAsync(user, model.Password, address, identifiers);
             if (!createResult.Succeeded)
             {
                 AddModelError(createResult);
@@ -59,6 +60,16 @@ namespace TeamManager.Manual.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private Dictionary<IdentificationNumberType, string> CreateIdentifiersDictionaty(RegistrationViewModel model)
+        {
+            Dictionary<IdentificationNumberType, string> response = new Dictionary<IdentificationNumberType, string>();
+            if (!string.IsNullOrEmpty(model.AKESZ)) { response.Add(IdentificationNumberType.AKESZ, model.AKESZ); }
+            if (!string.IsNullOrEmpty(model.Otproba)) { response.Add(IdentificationNumberType.OtProba, model.Otproba); }
+            if (!string.IsNullOrEmpty(model.UCI)) { response.Add(IdentificationNumberType.UCILicence, model.UCI); }
+            if (!string.IsNullOrEmpty(model.Triathlon)) { response.Add(IdentificationNumberType.TriathleteLicence, model.Triathlon); }
+            return response;
         }
 
         private void AddModelError(IdentityResult createResult)

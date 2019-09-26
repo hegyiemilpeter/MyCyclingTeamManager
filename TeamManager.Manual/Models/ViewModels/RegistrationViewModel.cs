@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using TeamManager.Manual.Data;
 
@@ -66,12 +67,25 @@ namespace TeamManager.Manual.Models.ViewModels
 
         #endregion
 
+        #region Identifiers
+
+        public string AKESZ { get; set; }
+
+        public string Otproba { get; set; }
+
+        public string UCI { get; set; }
+
+        public string Triathlon { get; set; }
+
+        #endregion
+
         public void Validate(ModelStateDictionary modelState)
         {
             if(BirthDate > (new DateTime(DateTime.Today.Year, 12, 31).AddYears(-7)))
             {
                 modelState.AddModelError(nameof(BirthDate), "You have to be at least 6 years old to be part of the system.");
             }
+
         }
     }
 }
