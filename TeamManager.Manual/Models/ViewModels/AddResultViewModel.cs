@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +15,7 @@ namespace TeamManager.Manual.Models.ViewModels
         public int? CategoryResult { get; set; }
         public bool IsTakePartAsStaff { get; set; }
         public bool IsTakePartAsDriver { get; set; }
+        public IFormFile Image { get; set; }
 
         public IEnumerable<SelectListItem> GetRaceSelectList
         {
@@ -44,6 +46,16 @@ namespace TeamManager.Manual.Models.ViewModels
             if(!AbsoluteResult.HasValue && !CategoryResult.HasValue && !IsTakePartAsDriver && !IsTakePartAsStaff)
             {
                 modelState.AddModelError("", "At least one result is required.");
+            }
+
+            if((AbsoluteResult.HasValue || CategoryResult.HasValue) && Image == null)
+            {
+                modelState.AddModelError("Image", "Image is required when you send a result.");
+            }
+
+            if ((AbsoluteResult.HasValue || CategoryResult.HasValue) && Image != null && (Image.ContentType != "image/jpeg" && Image.ContentType != "image/png"))
+            {
+                modelState.AddModelError("Image", "PNG or JPG format is required for images.");
             }
         }
     }
