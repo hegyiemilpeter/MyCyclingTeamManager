@@ -58,7 +58,7 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
             RaceModel race = RaceManager.GetRaceById(id);
             if (race == null)
@@ -86,32 +86,6 @@ namespace TeamManager.Manual.Controllers
         {
             await RaceManager.DeleteRaceAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddEntry(int id)
-        {
-            return await EditEntry(id, RaceManager.AddEntryAsync);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RemoveEntry(int id)
-        {
-            return await EditEntry(id, RaceManager.RemoveEntryAsync);
-        }
-
-        private async Task<IActionResult> EditEntry(int id, Func<User,Race, Task> functionToPerform)
-        {
-            RaceModel race = RaceManager.GetRaceById(id);
-            if (race == null)
-            {
-                return NotFound();
-            }
-
-            User user = await UserManager.FindByNameAsync(User.Identity.Name);
-            await functionToPerform.Invoke(user, race);
-
-            return RedirectToAction(nameof(Details), new { id = race.Id });
         }
     }
 }

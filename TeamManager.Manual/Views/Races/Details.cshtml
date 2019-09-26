@@ -83,14 +83,14 @@ else
     {
         if (!Model.UserApplied)
         {
-            <form asp-action="AddEntry" method="post" class="form-inline">
+            <form asp-action="AddEntry" asp-controller="RaceEntries" method="post" class="form-inline">
                 <input name="id" id="id" type="hidden" value="@Model.BaseModel.Id" />
                 <input type="submit" class="btn btn-success m-1" value="Apply" />
             </form>
         }
         else
         {
-            <form asp-action="RemoveEntry" method="post" class="form-inline">
+            <form asp-action="RemoveEntry" asp-controller="RaceEntries" method="post" class="form-inline">
                 <input name="id" id="id" type="hidden" value="@Model.BaseModel.Id" />
                 <input type="submit" class="btn btn-danger m-1" value="Remove entry" />
             </form>
