@@ -23,7 +23,7 @@ namespace TeamManager.Manual.Models
 
             builder.Entity<RaceDistance>()
                 .HasOne(p => p.Race)
-                .WithMany(p => p.Distances)
+                .WithMany()
                 .HasForeignKey(p => p.RaceId)
                 .OnDelete(DeleteBehavior.Cascade);
 

@@ -12,13 +12,13 @@ namespace TeamManager.Manual.Controllers
 {
     public class AccountController : Controller
     {
-        public CustomUserManager UserManager { get; }
-        public SignInManager<User> SignInManager { get; }
+        private readonly CustomUserManager userManager;
+        private readonly SignInManager<User> signInManager;
 
         public AccountController(CustomUserManager customUserManager, SignInManager<User> signInMgr)
         {
-            UserManager = customUserManager;
-            SignInManager = signInMgr;
+            userManager = customUserManager;
+            signInManager = signInMgr;
         }
 
         public IActionResult Login(string returnUrl)
@@ -36,11 +36,11 @@ namespace TeamManager.Manual.Controllers
                 return View(model);
             }
 
-            User user = await UserManager.FindByEmailAsync(model.Email);
+            User user = await userManager.FindByEmailAsync(model.Email);
             if(user != null)
             {
-                await SignInManager.SignOutAsync();
-                var result = await SignInManager.PasswordSignInAsync(user, model.Password, false, true);
+                await signInManager.SignOutAsync();
+                var result = await signInManager.PasswordSignInAsync(user, model.Password, false, true);
                 if (result.Succeeded)
                 {
                     return Redirect(returnUrl ?? "/");
@@ -54,7 +54,7 @@ namespace TeamManager.Manual.Controllers
         
         public async Task<IActionResult> Logout()
         {
-            await SignInManager.SignOutAsync();
+            await signInManager.SignOutAsync();
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }

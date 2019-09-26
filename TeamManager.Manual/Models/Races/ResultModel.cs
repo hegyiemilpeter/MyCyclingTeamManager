@@ -1,7 +1,9 @@
-﻿namespace TeamManager.Manual.Models.ViewModels
+﻿namespace TeamManager.Manual.Models
 {
-    public class ResultViewModel
+    public class ResultModel
     {
+        public int UserId { get; set; }
+        public int RaceId { get; set; }
         public string Race { get; set; }
         public int? AbsoluteResult { get; set; }
         public int? CategoryResult { get; set; }

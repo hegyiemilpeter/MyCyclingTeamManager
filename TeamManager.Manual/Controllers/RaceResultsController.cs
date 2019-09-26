@@ -14,38 +14,23 @@ namespace TeamManager.Manual.Controllers
     [Authorize]
     public class RaceResultsController : Controller
     {
-        public IRaceManager RaceManager { get; set; }
-        public CustomUserManager UserManager { get; set; }
+        private readonly IUserRaceManager userRaceManager; 
+        private readonly CustomUserManager userManager; 
+        private readonly IRaceManager raceManager;
 
-        public RaceResultsController(IRaceManager raceManager, CustomUserManager userManager)
+        public RaceResultsController(IUserRaceManager userRaceMgr, IRaceManager raceMgr, CustomUserManager userMgr)
         {
-            RaceManager = raceManager;
-            UserManager = userManager;
+            userRaceManager = userRaceMgr;
+            userManager = userMgr;
+            raceManager = raceMgr;
         }
 
         public async Task<IActionResult> MyResults() 
         {
-            User user = await UserManager.FindByNameAsync(User.Identity.Name);
-            IList<UserRace> results = await RaceManager.GetRaceResultsByUser(user);
+            User user = await userManager.FindByNameAsync(User.Identity.Name);
+            IList<ResultModel> results = userRaceManager.GetRaceResultsByUser(user);
 
-            List<ResultViewModel> model = new List<ResultViewModel>();
-            if(results != null)
-            {
-                foreach (var result in results)
-                {
-                    model.Add(new ResultViewModel()
-                    {
-                        AbsoluteResult = result.AbsoluteResult,
-                        CategoryResult = result.CategoryResult,
-                        IsDriver = result.IsTakePartAsDriver.HasValue && result.IsTakePartAsDriver.Value,
-                        IsStaff = result.IsTakePartAsStaff.HasValue && result.IsTakePartAsStaff.Value,
-                        Points = PointCalculator.CalculatePoints(result.Race.PointWeight, result.Race.OwnOrganizedEvent, result.CategoryResult, result.IsTakePartAsStaff, result.IsTakePartAsDriver),
-                        Race = result.Race.Name
-                    });
-                }
-            }
-
-            return View(model);
+            return View(results);
         }
 
         public IActionResult Add(int? id = null)
@@ -56,7 +41,7 @@ namespace TeamManager.Manual.Controllers
                 model.SelectedRaceId = id;
            }
 
-           model.Races = RaceManager.ListRaces().Where(x => x.Date.HasValue && x.Date.Value < DateTime.Now).ToList();
+           model.Races = raceManager.ListPastRaces();
            if (id.HasValue)
            {
                model.SelectedRaceId = id;
@@ -71,12 +56,12 @@ namespace TeamManager.Manual.Controllers
             model.Validate(ModelState);
             if (!ModelState.IsValid)
             {
-                model.Races = RaceManager.ListRaces();
+                model.Races = raceManager.ListPastRaces();
                 return View(model);
             }
 
-            User user = await UserManager.FindByNameAsync(User.Identity.Name);
-            await RaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsDriver, model.IsTakePartAsStaff);
+            User user = await userManager.FindByNameAsync(User.Identity.Name);
+            await userRaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsDriver, model.IsTakePartAsStaff);
 
             return RedirectToAction("MyResults");
         }

@@ -11,36 +11,38 @@ namespace TeamManager.Manual.Controllers
     [Authorize]
     public class RaceEntriesController : Controller
     {
-        private IRaceManager RaceManager { get; }
-        private CustomUserManager UserManager { get; }
+        private readonly IUserRaceManager userRaceManager;
+        private readonly CustomUserManager userManager;
+        private readonly IRaceManager raceManager;
 
-        public RaceEntriesController(IRaceManager raceMgr, CustomUserManager userMgr)
+        public RaceEntriesController(IUserRaceManager userRaceMgr, IRaceManager raceMgr, CustomUserManager userMgr)
         {
-            RaceManager = raceMgr;
-            UserManager = userMgr;
+            userRaceManager = userRaceMgr;
+            userManager = userMgr;
+            raceManager = raceMgr;
         }
 
         [HttpPost]
         public async Task<IActionResult> AddEntry(int id)
         {
-            return await EditEntry(id, RaceManager.AddEntryAsync);
+            return await EditEntry(id, userRaceManager.AddEntryAsync);
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveEntry(int id)
         {
-            return await EditEntry(id, RaceManager.RemoveEntryAsync);
+            return await EditEntry(id, userRaceManager.RemoveEntryAsync);
         }
 
-        private async Task<IActionResult> EditEntry(int id, Func<User, Race, Task> functionToPerform)
+        private async Task<IActionResult> EditEntry(int id, Func<User, RaceModel, Task> functionToPerform)
         {
-            RaceModel race = RaceManager.GetRaceById(id);
+            RaceModel race = raceManager.GetRaceById(id);
             if (race == null)
             {
                 return NotFound();
             }
 
-            User user = await UserManager.FindByNameAsync(User.Identity.Name);
+            User user = await userManager.FindByNameAsync(User.Identity.Name);
             await functionToPerform.Invoke(user, race);
 
             return RedirectToAction("Details", "Races", new { id = race.Id });

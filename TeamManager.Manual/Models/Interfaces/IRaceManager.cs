@@ -9,26 +9,18 @@ namespace TeamManager.Manual.Models.Interfaces
 {
     public interface IRaceManager
     {
-        Task AddRaceAsync(RaceModel raceModel);
+        Task AddRaceAsync(RaceModel race);
 
-        Task UpdateRaceAsync(RaceModel model);
+        Task UpdateRaceAsync(RaceModel race);
 
-        Task DeleteRaceAsync(int id);
+        Task DeleteRaceAsync(int raceId);
 
         IList<RaceModel> ListRaces();
 
-        RaceModel GetRaceById(int id);
+        IList<RaceModel> ListUpcomingRaces();
 
-        Task AddEntryAsync(User user, Race race);
+        IList<RaceModel> ListPastRaces();
 
-        Task RemoveEntryAsync(User user, Race race);
-
-        Task<IList<User>> ListEntriedUsersAsync(int id);
-
-        Task AddResultAsync(User user, Race race, int? absoluteResult, int? categoryResult, bool? driver, bool? staff);
-
-        Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff);
-
-        Task<IList<UserRace>> GetRaceResultsByUser(User user);
+        RaceModel GetRaceById(int raceId);
     }
 }

@@ -12,11 +12,11 @@ namespace TeamManager.Manual.Controllers
 {
     public class RegistrationController : Controller
     {
-        private CustomUserManager UserManager { get; }
-
-        public RegistrationController(CustomUserManager userManager)
+        private readonly CustomUserManager userManager;
+         
+        public RegistrationController(CustomUserManager userMgr)
         {
-            UserManager = userManager;
+            userManager = userMgr;
         }
 
         [HttpGet]
@@ -51,7 +51,7 @@ namespace TeamManager.Manual.Controllers
                 TShirtSize = model.TShirtSize.Value
             };
 
-            IdentityResult createResult = await UserManager.CreateAsync(user, model.Password, address);
+            IdentityResult createResult = await userManager.CreateAsync(user, model.Password, address);
             if (!createResult.Succeeded)
             {
                 AddModelError(createResult);
