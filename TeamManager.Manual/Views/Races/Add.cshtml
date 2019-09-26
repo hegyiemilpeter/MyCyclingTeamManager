@@ -6,8 +6,6 @@
 
 <h1>Add race</h1>
 <hr />
-<input type="button" id="addRaceDistanceButton" onclick="addRaceDistanceButtonClick()" value="New distance" class="btn btn-light" />
-<input type="button" id="removeRaceDistanceButton" onclick="removeRaceDistanceButtonClick()" value="Remove distance" class="btn btn-light" />
 <form method="post" asp-action="Add">
     <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
     <div class="row">
@@ -66,29 +64,7 @@
             <span asp-validation-for="Website" class="text-danger"></span>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg">
-            <label asp-for="DistanceLengths">Distances (km)</label>
-            <div class="form-row" id="distances-container">
-                @if (Model != null && Model.DistanceLengths != null && Model.DistanceLengths.Count > 0)
-                {
-                    foreach (var distance in Model.DistanceLengths)
-                    {
-                        <div class="col col-sm-1">
-                            <input type="number" id="DistanceLengths" name="DistanceLengths" value="@distance" class="m-2 form-control" />
-                        </div>
-                    }
-                }
-                else
-                {
-                    <div class="col col-sm-1">
-                        <input type="number" id="DistanceLengths" name="DistanceLengths" class="m-2 form-control" />
-                    </div>
-                }
-            </div>
-            <span asp-validation-for="DistanceLengths" class="text-danger"></span>
-        </div>
-    </div>
+    @await Html.PartialAsync("_AddDistancePartial", Model)
     <hr />
     <div class="row">
         <div class="col-md">
@@ -99,5 +75,5 @@
 </form>
 
 @section Scripts {
-    <script type="text/javascript" src="~/js/Distances.js"></script></script>
+    <script type="text/javascript" src="~/js/Distances.js"></script>
 }
