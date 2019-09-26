@@ -60,6 +60,11 @@ namespace TeamManager.Manual.Controllers
 
         public async Task<IActionResult> Details(string userName)
         {
+            if (string.IsNullOrEmpty(userName))
+            {
+                userName = User.Identity.Name;
+            }
+
             UserModel  user = await userManager.GetUserByNameAsync(userName);
             if (user == null)
             {
