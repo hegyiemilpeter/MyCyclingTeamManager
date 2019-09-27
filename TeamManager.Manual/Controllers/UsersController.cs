@@ -13,11 +13,13 @@ namespace TeamManager.Manual.Controllers
     {
         private readonly CustomUserManager userManager;
         private readonly IUserRaceManager userRaceManager;
+        private readonly IPointManager pointManager;
 
-        public UsersController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr)
+        public UsersController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IPointManager pointMgr)
         {
             userManager = customUserManager;
             userRaceManager = userRaceMgr;
+            pointManager = pointMgr;
         }
 
         public async Task<IActionResult> Index()
@@ -71,9 +73,18 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddConsumedPoints(string userId, int points)
+        public async Task<IActionResult> AddConsumedPoints(string userId, int points, string remark)
         {
-            return View();
+            User user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            string creatorUserId = userManager.GetUserId(User);
+            await pointManager.AddConsumedPointAsync(userId, points, creatorUserId, remark);
+
+            return RedirectToAction(nameof(Details), new { id = userId });
         }
     }
 }

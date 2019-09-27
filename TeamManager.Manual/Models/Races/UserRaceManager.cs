@@ -13,10 +13,12 @@ namespace TeamManager.Manual.Models
     {
         private readonly TeamManagerDbContext dbContext;
         private readonly CustomUserManager userManager;
-        public UserRaceManager(TeamManagerDbContext context, CustomUserManager customUserManager)
+        private readonly IPointManager pointManager;
+        public UserRaceManager(TeamManagerDbContext context, CustomUserManager customUserManager, IPointManager pointMgr)
         {
             dbContext = context;
             userManager = customUserManager;
+            pointManager = pointMgr;
         }
 
         #region Entries
@@ -137,7 +139,7 @@ namespace TeamManager.Manual.Models
                 CategoryResult = x.CategoryResult,
                 IsDriver = x.IsTakePartAsDriver.HasValue && x.IsTakePartAsDriver.Value,
                 IsStaff = x.IsTakePartAsStaff.HasValue && x.IsTakePartAsStaff.Value,
-                Points = PointCalculator.CalculatePoints(x.Race.PointWeight, x.Race.OwnOrganizedEvent, x.CategoryResult, x.IsTakePartAsStaff, x.IsTakePartAsDriver),
+                Points = pointManager.CalculatePoints(x.Race.PointWeight, x.Race.OwnOrganizedEvent, x.CategoryResult, x.IsTakePartAsStaff, x.IsTakePartAsDriver),
                 Race = x.Race.Name,
                 RaceId = x.RaceId,
                 UserId = x.UserId,
