@@ -10,5 +10,6 @@
         public bool IsStaff { get; set; }
         public bool IsDriver { get; set; }
         public int Points { get; set; }
+        public int RacePointWeight { get; set; }
     }
 }

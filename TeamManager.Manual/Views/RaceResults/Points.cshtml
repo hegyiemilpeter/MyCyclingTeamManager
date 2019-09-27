@@ -1,0 +1,44 @@
+﻿@using TeamManager.Manual.Data
+@model IList<ResultModel>
+
+@{
+    ViewData["Title"] = "Points";
+}
+
+<h1>Points</h1>
+<div class="row">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Race</th>
+                <th>Point weight</th>
+                <th>Absolute result</th>
+                <th>Category result</th>
+                <th>Driver</th>
+                <th>Staff</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        @foreach (var result in Model)
+        {
+            <tr>
+                <td>@result.Race</td>
+                <td>@result.RacePointWeight</td>
+                <td>@result.AbsoluteResult</td>
+                <td>@result.CategoryResult</td>
+                <td>
+                    @if (result.IsDriver)
+                    {<span class="badge badge-pill badge-success">Yes</span>}
+                </td>
+                <td>
+                    @if (result.IsStaff)
+                    {<span class="badge badge-pill badge-success">Yes</span>}
+                </td>
+                <td>@result.Points</td>
+            </tr>
+        }
+    </table>
+</div>
+<div>
+    All gained points: @Model.Sum(x => x.Points)
+</div>

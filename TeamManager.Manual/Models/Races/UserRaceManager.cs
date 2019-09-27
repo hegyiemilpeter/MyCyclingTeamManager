@@ -133,7 +133,8 @@ namespace TeamManager.Manual.Models
                 Points = PointCalculator.CalculatePoints(x.Race.PointWeight, x.Race.OwnOrganizedEvent, x.CategoryResult, x.IsTakePartAsStaff, x.IsTakePartAsDriver),
                 Race = x.Race.Name,
                 RaceId = x.RaceId,
-                UserId = x.UserId
+                UserId = x.UserId,
+                RacePointWeight = x.Race.PointWeight
             };
         }
 
