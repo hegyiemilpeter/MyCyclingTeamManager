@@ -12,7 +12,7 @@ namespace TeamManager.Manual.Models.Interfaces
 
         Task RemoveEntryAsync(User user, RaceModel race);
 
-        Task<IList<User>> ListEntriedUsersAsync(int id);
+        Task<IList<UserModel>> ListEntriedUsersAsync(int id);
 
         Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff);
 

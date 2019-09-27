@@ -12,6 +12,6 @@ namespace TeamManager.Manual.Models
 
         public bool UserApplied { get; set; }
 
-        public IList<User> EntriedRiders { get; set; }
+        public IList<UserModel> EntriedRiders { get; set; }
     }
 }

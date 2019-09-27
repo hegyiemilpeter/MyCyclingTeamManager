@@ -12,10 +12,11 @@ namespace TeamManager.Manual.Models
     public class UserRaceManager : IUserRaceManager
     {
         private readonly TeamManagerDbContext dbContext;
-
-        public UserRaceManager(TeamManagerDbContext context)
+        private readonly CustomUserManager userManager;
+        public UserRaceManager(TeamManagerDbContext context, CustomUserManager customUserManager)
         {
             dbContext = context;
+            userManager = customUserManager;
         }
 
         #region Entries
@@ -69,15 +70,15 @@ namespace TeamManager.Manual.Models
             }
         }
 
-        public async Task<IList<User>> ListEntriedUsersAsync(int id)
+        public async Task<IList<UserModel>> ListEntriedUsersAsync(int id)
         {
             IEnumerable<int> userIds = dbContext.UserRaces.Where(x => x.RaceId == id && x.IsEntryRequired.HasValue && x.IsEntryRequired.Value).Select(x => x.UserId).ToList();
             if (userIds == null)
             {
-                return new List<User>();
+                return new List<UserModel>();
             }
 
-            return await dbContext.Users.Where(x => userIds.Contains(x.Id)).ToListAsync();
+            return await dbContext.Users.Where(x => userIds.Contains(x.Id)).Select(x => userManager.CreateUserModel(x)).ToListAsync();
         }
 
         #endregion

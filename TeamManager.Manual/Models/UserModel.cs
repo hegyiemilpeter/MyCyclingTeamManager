@@ -37,6 +37,10 @@ namespace TeamManager.Manual.Models
         [Required]
         public Size? TShirtSize { get; set; }
 
+        public string FullName => FirstName + " " + LastName;
+
+        public string UserName => $"{FirstName.ToLower()}.{LastName.ToLower()}.{BirthDate.ToString("yyyyMMdd")}";
+
         #endregion
 
         #region Address

@@ -75,7 +75,18 @@ namespace TeamManager.Manual.Models
             return response;
         }
 
-        private UserModel CreateUserModel(User user)
+        public async Task<IEnumerable<UserModel>> ListUsersAsync()
+        {
+            List<UserModel> response = new List<UserModel>();
+            foreach (var user in _dbContext.Users.ToList())
+            {
+                response.Add(CreateUserModel(user));
+            }
+
+            return response;
+        }
+
+        internal UserModel CreateUserModel(User user)
         {
             UserModel response = new UserModel()
             {

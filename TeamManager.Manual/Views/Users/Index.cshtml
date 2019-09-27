@@ -1,0 +1,36 @@
+﻿@model IEnumerable<UserModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>Users</h1>
+@if(Model == null || Model.Count() == 0)
+{
+    <div>No users in the database.</div>
+}
+else
+{
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Name</th>
+                <th>E-mail</th>
+                <th>Phone number</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
+                    <td><a asp-action="Details" asp-controller="Account" asp-route-userName="@user.UserName" class="btn btn-outline-primary btn-sm">Details</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

@@ -18,8 +18,5 @@ namespace TeamManager.Manual.Data
         public Gender Gender { get; set; }
         public Size TShirtSize { get; set; }
         public int ConsumedPoints { get; set; }
-
-        [NotMapped]
-        public string FullName => FirstName + " " + LastName;
     }
 }

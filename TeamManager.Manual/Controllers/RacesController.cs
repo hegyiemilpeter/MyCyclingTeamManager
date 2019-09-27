@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +55,7 @@ namespace TeamManager.Manual.Controllers
             model.EntriedRiders = await userRaceManager.ListEntriedUsersAsync(id);
 
             User user = await userManager.FindByNameAsync(User.Identity.Name);
-            model.UserApplied = model.EntriedRiders.Contains(user);
+            model.UserApplied = model.EntriedRiders.Any(x => x.Id == user.Id);
 
             return View(model);
         }
