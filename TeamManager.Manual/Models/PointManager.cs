@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
@@ -21,6 +23,17 @@ namespace TeamManager.Manual.Models
         {
             dbContext = context;
             userManager = customUserMgr;
+        }
+
+        public async Task<IList<PointConsuption>> ListConsumedPointsAsync(string userId)
+        {
+            User user = await userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            return dbContext.PointConsuptions.Where(x => x.UserId == user.Id).ToList();
         }
 
         public async Task AddConsumedPointAsync(string userId, int amount, string creatorUserId, string remark)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
+using TeamManager.Manual.Models.ViewModels;
 
 namespace TeamManager.Manual.Controllers
 {
@@ -27,8 +28,16 @@ namespace TeamManager.Manual.Controllers
             string userId = id.HasValue ? id.Value.ToString() : userManager.GetUserId(User);
             User user = await userManager.FindByIdAsync(userId);
             IList<ResultModel> results = userRaceManager.GetRaceResultsByUser(user);
+            IList<PointConsuption> pointConsuptions = await pointManager.ListConsumedPointsAsync(userId);
 
-            return View(results);
+            PointsViewModel model = new PointsViewModel()
+            {
+                UserId = user.Id,
+                CollectedPoints = results,
+                ConsumedPoints = pointConsuptions
+            };
+
+            return View(model);
         }
 
         [HttpPost]
