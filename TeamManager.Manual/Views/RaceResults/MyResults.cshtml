@@ -8,14 +8,16 @@
 <h1>My results</h1>
 <div class="row">
     <table class="table">
-        <tr>
-            <th>Race</th>
-            <th>Absolute result</th>
-            <th>Category result</th>
-            <th>Driver</th>
-            <th>Staff</th>
-            <th>Points</th>
-        </tr>
+        <thead class="thead-light">
+            <tr>
+                <th>Race</th>
+                <th>Absolute result</th>
+                <th>Category result</th>
+                <th>Driver</th>
+                <th>Staff</th>
+                <th>Points</th>
+            </tr>
+        </thead>
         @foreach (var result in Model)
         {
         <tr>

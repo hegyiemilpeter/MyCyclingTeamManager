@@ -15,16 +15,18 @@ else
 {
     <div class="m-3">
         <table class="table">
-            <tr>
-                <th></th>
-                <th>Date</th>
-                <th>Race name</th>
-                <th>Type</th>
-                <th>City</th>
-                <th>Distances</th>
-                <th>Entry deadline</th>
-                <th></th>
-            </tr>
+            <thead class="thead-light">
+                <tr>
+                    <th></th>
+                    <th>Date</th>
+                    <th>Race name</th>
+                    <th>Type</th>
+                    <th>City</th>
+                    <th>Distances</th>
+                    <th>Entry deadline</th>
+                    <th></th>
+                </tr>
+            </thead> 
             @foreach (var race in Model)
             {
                 <tr>
