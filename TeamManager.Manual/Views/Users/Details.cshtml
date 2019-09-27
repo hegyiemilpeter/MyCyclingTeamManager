@@ -7,76 +7,77 @@
 <h1>@Model.UserData.FirstName @Model.UserData.LastName</h1>
 <div class="row">
     <div class="col-md m-1">
-    <h2>Personal data</h2>
+        <h2>Personal data</h2>
 
-    <table class="table">
-        <tr>
-            <th>Birth date</th>
-            <td>@Model.UserData.BirthDate.ToString("yyyy.MM.dd")</td>
-        </tr>
-        <tr>
-            <th>Address</th>
-            <td>@string.Format($"{Model.UserData.ZipCode} {Model.UserData.City} {Model.UserData.Street} {Model.UserData.HouseNumber}")</td>
-        </tr>
-        <tr>
-            <th>Phone number</th>
-            <td>@Model.UserData.PhoneNumber</td>
-        </tr>
-        <tr>
-            <th>Shirt size</th>
-            <td>@Model.UserData.TShirtSize</td>
-        </tr>
-        <tr>
-            <th>AKESZ</th>
-            <td>@Model.UserData.AKESZ</td>
-        </tr>
-        <tr>
-            <th>UCI Number</th>
-            <td>@Model.UserData.UCI</td>
-        </tr>
-        <tr>
-            <th>Ötpróba number</th>
-            <td>@Model.UserData.Otproba</td>
-        </tr>
-        <tr>
-            <th>Triathlete number</th>
-            <td>@Model.UserData.Triathlon</td>
-        </tr>
-    </table>
+        <table class="table">
+            <tr>
+                <th>Birth date</th>
+                <td>@Model.UserData.BirthDate.ToString("yyyy.MM.dd")</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>@string.Format($"{Model.UserData.ZipCode} {Model.UserData.City} {Model.UserData.Street} {Model.UserData.HouseNumber}")</td>
+            </tr>
+            <tr>
+                <th>Phone number</th>
+                <td>@Model.UserData.PhoneNumber</td>
+            </tr>
+            <tr>
+                <th>Shirt size</th>
+                <td>@Model.UserData.TShirtSize</td>
+            </tr>
+            <tr>
+                <th>AKESZ</th>
+                <td>@Model.UserData.AKESZ</td>
+            </tr>
+            <tr>
+                <th>UCI Number</th>
+                <td>@Model.UserData.UCI</td>
+            </tr>
+            <tr>
+                <th>Ötpróba number</th>
+                <td>@Model.UserData.Otproba</td>
+            </tr>
+            <tr>
+                <th>Triathlete number</th>
+                <td>@Model.UserData.Triathlon</td>
+            </tr>
+        </table>
+        <a asp-action="Edit" asp-route-id="@Model.UserData.Id" class="btn btn-primary">Edit</a>
     </div>
     <div class="col-md m-1">
         <h2>Results</h2>
-    <table class="table col-md m-1">
-        @if(Model.Results == null || Model.Results.Count() == 0)
-        {
-            <tr>
-                <td>No results yet.</td>
-            </tr>
-        }
-        else
-        {
-            foreach (var result in Model.Results)
+        <table class="table col-md m-1">
+            @if (Model.Results == null || Model.Results.Count() == 0)
             {
                 <tr>
-                    <th>@result.Race</th>
-                <td>
-                    <span>Cat. @result.CategoryResult</span>
-                    @if (result.AbsoluteResult.HasValue)
-                    {
-                        <span>Abs. @result.AbsoluteResult.Value</span>
-                    }
-                    @if (result.IsStaff)
-                    {
-                        <span class="badge badge-pill badge-primary">Staff</span>
-                    }
-                    @if (result.IsDriver)
-                    {
-                        <span class="badge badge-pill badge-info">Driver</span>
-                    }
-                </td>
+                    <td>No results yet.</td>
                 </tr>
             }
-        }
-    </table>
+            else
+            {
+                foreach (var result in Model.Results)
+                {
+                    <tr>
+                        <th>@result.Race</th>
+                        <td>
+                            <span>Cat. @result.CategoryResult</span>
+                            @if (result.AbsoluteResult.HasValue)
+                            {
+                                <span>Abs. @result.AbsoluteResult.Value</span>
+                            }
+                            @if (result.IsStaff)
+                            {
+                                <span class="badge badge-pill badge-primary">Staff</span>
+                            }
+                            @if (result.IsDriver)
+                            {
+                                <span class="badge badge-pill badge-info">Driver</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
     </div>
 </div>

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TeamManager.Manual.Data;
+using TeamManager.Manual.Models.Exceptions;
 
 namespace TeamManager.Manual.Models
 {
@@ -75,6 +76,18 @@ namespace TeamManager.Manual.Models
             return response;
         }
 
+        public async Task<UserModel> GetUserByIdAsync(string userId)
+        {
+            User user = await base.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            UserModel response = CreateUserModel(user);
+            return response;
+        }
+
         public async Task<IEnumerable<UserModel>> ListUsersAsync()
         {
             List<UserModel> response = new List<UserModel>();
@@ -84,6 +97,83 @@ namespace TeamManager.Manual.Models
             }
 
             return response;
+        }
+
+        public async Task UpdateAsync(UserModel model)
+        {
+            User user = await base.FindByIdAsync(model.Id.ToString());
+            user.BirthDate = model.BirthDate;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+            user.TShirtSize = model.TShirtSize.HasValue ? model.TShirtSize.Value : Size.S;
+
+            IdentityResult result = await base.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new IdentityException() { Errors = result.Errors };
+            }
+
+            foreach (var item in _dbContext.IdentificationNumbers.Where(x => x.UserId == user.Id).ToList())
+            {
+                _dbContext.IdentificationNumbers.Remove(item);
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            if (!string.IsNullOrEmpty(model.AKESZ))
+            {
+                _dbContext.IdentificationNumbers.Add(
+                    new IdentificationNumber()
+                    {
+                        Type = IdentificationNumberType.AKESZ,
+                        UserId = user.Id,
+                        Value = model.AKESZ
+                    });
+            }
+
+            if (!string.IsNullOrEmpty(model.UCI))
+            {
+                _dbContext.IdentificationNumbers.Add(
+                    new IdentificationNumber()
+                    {
+                        Type = IdentificationNumberType.UCILicence,
+                        UserId = user.Id,
+                        Value = model.UCI
+                    });
+            }
+
+            if (!string.IsNullOrEmpty(model.Triathlon))
+            {
+                _dbContext.IdentificationNumbers.Add(
+                    new IdentificationNumber()
+                    {
+                        Type = IdentificationNumberType.TriathleteLicence,
+                        UserId = user.Id,
+                        Value = model.Triathlon
+                    });
+            }
+
+            if (!string.IsNullOrEmpty(model.Otproba))
+            {
+                _dbContext.IdentificationNumbers.Add(
+                    new IdentificationNumber()
+                    {
+                        Type = IdentificationNumberType.OtProba,
+                        UserId = user.Id,
+                        Value = model.Otproba
+                    });
+            }
+
+            Address address = _dbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);
+            address.HouseNumber = model.HouseNumber;
+            address.Street = model.Street;
+            address.ZipCode = model.ZipCode;
+            address.City = model.City;
+            address.Country = model.Country;
+            _dbContext.Addresses.Update(address);
+
+            await _dbContext.SaveChangesAsync();
         }
 
         internal UserModel CreateUserModel(User user)

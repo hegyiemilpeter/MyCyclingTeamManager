@@ -25,14 +25,10 @@ namespace TeamManager.Manual.Controllers
             return View(await userManager.ListUsersAsync());
         }
 
-        public async Task<IActionResult> Details(string userName)
+        public async Task<IActionResult> Details(int? id = null)
         {
-            if (string.IsNullOrEmpty(userName))
-            {
-                userName = User.Identity.Name;
-            }
-
-            UserModel userModel = await userManager.GetUserByNameAsync(userName);
+            string userId = id.HasValue ? id.Value.ToString() : userManager.GetUserId(User);
+            UserModel userModel = await userManager.GetUserByIdAsync(userId);
             if (userModel == null)
             {
                 return NotFound();
@@ -47,6 +43,31 @@ namespace TeamManager.Manual.Controllers
             model.Results = userRaceManager.GetRaceResultsByUser(user);
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            User user = await userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            UserModel model = await userManager.GetUserByNameAsync(user.UserName);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserModel model)
+        {
+            model.Validate(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await userManager.UpdateAsync(model);
+            return RedirectToAction(nameof(Details), new { id = model.Id });
         }
     }
 }
