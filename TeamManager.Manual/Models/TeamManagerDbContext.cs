@@ -12,6 +12,7 @@ namespace TeamManager.Manual.Models
         public DbSet<RaceDistance> Distances { get; set; }
         public DbSet<UserRace> UserRaces { get; set; }
         public DbSet<IdentificationNumber> IdentificationNumbers { get; set; }
+        public DbSet<PointConsuption> PointConsuptions { get; set; }
 
         public TeamManagerDbContext(DbContextOptions<TeamManagerDbContext> options) : base(options)
         {
@@ -40,6 +41,12 @@ namespace TeamManager.Manual.Models
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<IdentificationNumber>()
+                .HasOne(p => p.User)
+                .WithMany()
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PointConsuption>()
                 .HasOne(p => p.User)
                 .WithMany()
                 .HasForeignKey(p => p.UserId)

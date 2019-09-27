@@ -69,5 +69,11 @@ namespace TeamManager.Manual.Controllers
             await userManager.UpdateAsync(model);
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddConsumedPoints(string userId, int points)
+        {
+            return View();
+        }
     }
 }

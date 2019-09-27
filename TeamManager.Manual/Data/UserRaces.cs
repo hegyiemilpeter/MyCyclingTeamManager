@@ -10,8 +10,6 @@ namespace TeamManager.Manual.Data
         public int UserId { get; set; }
         public int RaceId { get; set; }
         public bool? IsEntryRequired { get; set; }
-        public bool? IsEntryPaid { get; set; }
-        public bool? IsPointsDisabled { get; set; }
         public bool? IsTakePartAsStaff { get; set; }
         public bool? IsTakePartAsDriver { get; set; }
 
