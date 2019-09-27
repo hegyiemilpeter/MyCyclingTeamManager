@@ -71,20 +71,5 @@ namespace TeamManager.Manual.Controllers
             await userManager.UpdateAsync(model);
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
-
-        [HttpPost]
-        public async Task<IActionResult> AddConsumedPoints(string userId, int points, string remark)
-        {
-            User user = await userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            string creatorUserId = userManager.GetUserId(User);
-            await pointManager.AddConsumedPointAsync(userId, points, creatorUserId, remark);
-
-            return RedirectToAction(nameof(Details), new { id = userId });
-        }
     }
 }

@@ -25,15 +25,6 @@ namespace TeamManager.Manual.Controllers
             raceManager = raceMgr;
         }
 
-        public async Task<IActionResult> Points(int? id = null) 
-        {
-            string userId = id.HasValue ? id.Value.ToString() : userManager.GetUserId(User);
-            User user = await userManager.FindByIdAsync(userId);
-            IList<ResultModel> results = userRaceManager.GetRaceResultsByUser(user);
-
-            return View(results);
-        }
-
         public IActionResult Add(int? id = null)
         {
            AddResultViewModel model = new AddResultViewModel();
@@ -64,7 +55,7 @@ namespace TeamManager.Manual.Controllers
             User user = await userManager.FindByNameAsync(User.Identity.Name);
             await userRaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsDriver, model.IsTakePartAsStaff);
 
-            return RedirectToAction(nameof(Points));
+            return RedirectToAction("Index", "Points");
         }
     }
 }

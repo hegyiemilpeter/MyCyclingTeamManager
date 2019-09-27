@@ -80,14 +80,3 @@
         </table>
     </div>
 </div>
-<div class="row">
-    <h4>Add consumend points</h4>
-    <input type="hidden" value="@Model.UserData.Id" name="userId" />
-    <form asp-action="AddConsumedPoints" method="post">
-        <div class="form-group">
-            <label>Point amount</label>
-            <input type="number" name="points" class="form-control" />
-        </div>
-        <input type="submit" value="Add" />
-    </form>
-</div>
