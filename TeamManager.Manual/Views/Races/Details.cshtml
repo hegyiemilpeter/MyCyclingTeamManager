@@ -68,7 +68,7 @@ else
                         @foreach (var item in Model.EntriedRiders)
                         {
                             <li>
-                                @item.FullName
+                                <a asp-action="Details" asp-controller="Users" asp-route-id="@item.Id">@item.FullName</a>
                             </li>
                         }
                     </ul>

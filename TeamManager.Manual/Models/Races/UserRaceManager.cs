@@ -78,7 +78,14 @@ namespace TeamManager.Manual.Models
                 return new List<UserModel>();
             }
 
-            return await dbContext.Users.Where(x => userIds.Contains(x.Id)).Select(x => userManager.CreateUserModel(x)).ToListAsync();
+            var entriedUsers = dbContext.Users.Where(x => userIds.Contains(x.Id)).ToList();
+            List<UserModel> response = new List<UserModel>();
+            foreach (var user in entriedUsers)
+            {
+                response.Add(userManager.CreateUserModel(user));
+            }
+
+            return response;
         }
 
         #endregion
