@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TeamManager.Manual.Data;
@@ -42,7 +43,7 @@ namespace TeamManager.Manual.Controllers
             };
 
             User user = await userManager.FindByIdAsync(userModel.Id.ToString());
-            model.Results = userRaceManager.GetRaceResultsByUser(user);
+            model.Results = userRaceManager.GetRaceResultsByUser(user).OrderBy(x => x.CategoryResult);
 
             return View(model);
         }

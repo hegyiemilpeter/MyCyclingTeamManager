@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TeamManager.Manual.Data;
@@ -11,6 +12,7 @@ using TeamManager.Manual.Models.ViewModels;
 
 namespace TeamManager.Manual.Controllers
 {
+    [Authorize]
     public class PointsController : Controller
     {
         private readonly CustomUserManager userManager;
