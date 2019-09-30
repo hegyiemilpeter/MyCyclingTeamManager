@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
@@ -40,19 +41,43 @@ namespace TeamManager.Manual.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddConsumedPoints(string userId, int points, string remark)
+        public async Task<IActionResult> AddConsumedPoints(int? userId = null)
         {
-            User user = await userManager.FindByIdAsync(userId);
+            AddPointConsumptionViewModel model = new AddPointConsumptionViewModel();
+            model.Users = await GetUsersSelectList();
+            if (userId.HasValue)
+            {
+                model.SelectedUserId = userId.Value.ToString();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddConsumedPoints(AddPointConsumptionViewModel model)
+        {
+            User user = await userManager.FindByIdAsync(model.SelectedUserId);
             if (user == null)
             {
                 return NotFound();
             }
 
-            string creatorUserId = userManager.GetUserId(User);
-            await pointManager.AddConsumedPointAsync(userId, points, creatorUserId, remark);
+            model.Validate(ModelState, await pointManager.GetAvailablePointAmountByUser(model.SelectedUserId));
+            if(!ModelState.IsValid)
+            {
+                model.Users = await GetUsersSelectList();
+                return View(model);
+            }
 
-            return RedirectToAction(nameof(Index), new { id = userId });
+            string creatorUserId = userManager.GetUserId(User);
+            await pointManager.AddConsumedPointAsync(model.SelectedUserId, model.Amount, creatorUserId, model.Remark);
+
+            return RedirectToAction(nameof(Index), new { id = model.SelectedUserId });
+        }
+
+        private async Task<IEnumerable<SelectListItem>> GetUsersSelectList()
+        {
+            return (await userManager.ListUsersAsync()).Select(u => new SelectListItem(u.FullName, u.Id.ToString()));
         }
     }
 }

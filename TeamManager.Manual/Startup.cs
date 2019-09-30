@@ -49,6 +49,7 @@ namespace TeamManager.Manual
             services.AddScoped<IRaceManager, RaceManager>();
             services.AddScoped<IUserRaceManager, UserRaceManager>();
             services.AddScoped<IPointManager, PointManager>();
+            services.AddScoped<IPointCalculator, PointCalculator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

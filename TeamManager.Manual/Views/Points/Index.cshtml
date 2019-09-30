@@ -52,6 +52,7 @@ else
         All gained points: @Model.CollectedPoints.Sum(x => x.Points)
     </div>
 }
+<hr />
 <h1>Consumed points</h1>
 @if (Model.ConsumedPoints == null || Model.ConsumedPoints.Count == 0)
 {
@@ -85,5 +86,8 @@ else
     <div>
         All consumed points: @Model.ConsumedPoints.Sum(x => x.Amount)
     </div>
-
 }
+
+<div>
+    <a asp-action="AddConsumedPoints" class="btn btn-primary m-2" asp-route-id="@Model.UserId">Add</a>
+</div>

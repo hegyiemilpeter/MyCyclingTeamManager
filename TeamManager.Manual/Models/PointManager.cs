@@ -10,19 +10,28 @@ namespace TeamManager.Manual.Models
 {
     public class PointManager : IPointManager
     {
-        private static int STAFF_POINTS = 1;
-        private static int ORGANIZER_POINTS = 5;
-        private static int DRIVER_POINTS = 1;
-        private static int TOP_10_BONUS = 1;
-        private static int TOP_3_BONUS = 2;
-
         private readonly TeamManagerDbContext dbContext;
         private readonly CustomUserManager userManager;
+        private readonly IUserRaceManager userRaceManager;
 
-        public PointManager(TeamManagerDbContext context, CustomUserManager customUserMgr)
+        public PointManager(TeamManagerDbContext context, CustomUserManager customUserMgr, IUserRaceManager userRaceMgr)
         {
             dbContext = context;
             userManager = customUserMgr;
+            userRaceManager = userRaceMgr;
+        }
+
+        public async Task<int> GetAvailablePointAmountByUser(string userId)
+        {
+            User user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            int gainedPoints = userRaceManager.GetRaceResultsByUser(user).Sum(x => x.Points);
+            int consumedPoints = (await ListConsumedPointsAsync(userId)).Sum(x => x.Amount);
+            return gainedPoints - consumedPoints;
         }
 
         public async Task<IList<PointConsuption>> ListConsumedPointsAsync(string userId)
@@ -50,6 +59,12 @@ namespace TeamManager.Manual.Models
                 throw new UserNotFoundException();
             }
 
+            int currentAmount = await GetAvailablePointAmountByUser(user.Id.ToString());
+            if(currentAmount < amount)
+            {
+                throw new PointLimitException();
+            }
+
             PointConsuption consuption = new PointConsuption()
             {
                 Amount = amount,
@@ -61,43 +76,6 @@ namespace TeamManager.Manual.Models
 
             dbContext.PointConsuptions.Add(consuption);
             await dbContext.SaveChangesAsync();
-        }
-
-        public int CalculatePoints(int raceWeight, bool ownEvent, int? categoryResult, bool? staff, bool? driver)
-        {
-            int result = 0;
-            if(categoryResult.HasValue && categoryResult.Value > 0)
-            {
-                if(categoryResult.Value <= 3)
-                {
-                    result += TOP_3_BONUS;
-                }
-                else if(categoryResult.Value <= 10)
-                {
-                    result += TOP_10_BONUS;
-                }
-
-                result += raceWeight;
-            }
-
-            if(staff.HasValue && staff.Value)
-            {
-                if (ownEvent)
-                {
-                    result += ORGANIZER_POINTS;
-                }
-                else
-                {
-                    result += STAFF_POINTS;
-                }
-            }
-
-            if(driver.HasValue && driver.Value)
-            {
-                result += DRIVER_POINTS;
-            }
-
-            return result;
         }
     }
 }
