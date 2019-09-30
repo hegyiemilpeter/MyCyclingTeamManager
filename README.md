@@ -1,14 +1,11 @@
 # MyCyclingTeamManager
-A team manager application for my cycling team, build with ASP.NET Core 2.2 from scratch.
+A team manager application for my cycling team, build with ASP.NET Core 2.2 from scratch. After a week it is upgraded to ASP.NET Core 3.0.
 
 #### Remaining features
-* Add custom identifier to rider in registration
-* List riders with their data
-* Edit rider data
 * Pagination to races according to months (as default navigated to current month)
 * Authorization: different roles with different accesses
-* Admin feature: modify rider race participations (disable points, add / remove points)
-* Admin feature: edit remaining points of rider
+* Admin feature: modify rider race participations (disable points, remove points)
+* Forget password
 * Localization to English and Hungarian
 
 #### Future plans
