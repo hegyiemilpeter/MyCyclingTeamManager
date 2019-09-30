@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -22,8 +24,28 @@ namespace TeamManager.Manual.Controllers
             userRaceManager = userRaceMgr;
             userManager = userMgr;
         }
-            
-        public IActionResult Index() => View(raceManager.ListRaces());
+
+        public IActionResult Index(int? year, int? month)
+        {
+            if (!year.HasValue)
+            {
+                year = DateTime.Now.Year;
+            }
+
+            if (!month.HasValue || month.Value < 1 || month.Value > 12)
+            {
+                month = DateTime.Now.Month;
+            }
+
+            IList<RaceModel> model = raceManager.ListRaces()
+                .Where(x => x.Date.HasValue && x.Date.Value.Year == year && x.Date.Value.Month == month)
+                .OrderBy(r => r.Date).ToList();
+
+            ViewBag.Year = year;
+            ViewBag.Month = month;
+
+            return View(model);
+        }
 
         [HttpGet]
         public IActionResult Add() =>  View(new RaceModel());

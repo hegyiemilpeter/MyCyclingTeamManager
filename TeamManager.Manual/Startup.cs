@@ -66,7 +66,11 @@ namespace TeamManager.Manual
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc(options =>
+            {
+                options.MapRoute("races", "{controller=Races}/{action=Index}/{year}/{month}");
+                options.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }

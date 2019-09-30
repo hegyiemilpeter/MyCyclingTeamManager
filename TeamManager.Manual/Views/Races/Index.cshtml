@@ -1,15 +1,19 @@
-﻿@using TeamManager.Manual.Data
-@using System.Linq
+﻿@addTagHelper TeamManager.Manual.Infrastructure.TagHelpers.RaceDateTagHelper, TeamManager.Manual
+
+@using TeamManager.Manual.Data
 @model IList<RaceModel>
 @{
     ViewBag.Title = "Races";
 }
 
 <h1>Races</h1>
+<div class="text-center">
+    <raceDate number-of-months="4" start-month="@ViewBag.Month" start-year="@ViewBag.Year"></raceDate>
+</div>
 @if (Model == null || Model.Count == 0)
 {
     <hr />
-    <h5>No races in the database.</h5>
+    <h5>No races in the database for this month.</h5>
 }
 else
 {
