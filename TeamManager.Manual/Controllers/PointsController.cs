@@ -56,6 +56,7 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddConsumedPoints(AddPointConsumptionViewModel model)
         {
             User user = await userManager.FindByIdAsync(model.SelectedUserId);

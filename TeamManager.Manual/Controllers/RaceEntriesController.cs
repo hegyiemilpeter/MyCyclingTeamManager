@@ -23,12 +23,14 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEntry(int id)
         {
             return await EditEntry(id, userRaceManager.AddEntryAsync);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveEntry(int id)
         {
             return await EditEntry(id, userRaceManager.RemoveEntryAsync);

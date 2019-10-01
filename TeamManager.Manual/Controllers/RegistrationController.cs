@@ -23,6 +23,7 @@ namespace TeamManager.Manual.Controllers
         public IActionResult Index() => View();
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(RegistrationViewModel model)
         {
             model.Validate(ModelState);

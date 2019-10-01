@@ -51,6 +51,7 @@ namespace TeamManager.Manual.Controllers
         public IActionResult Add() =>  View(new RaceModel());
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(RaceModel race)
         {
             race.Validate(ModelState);
@@ -95,6 +96,7 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(RaceModel race)
         {
             race.Validate(ModelState);

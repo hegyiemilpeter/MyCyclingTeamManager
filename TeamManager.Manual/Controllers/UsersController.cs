@@ -61,6 +61,7 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UserModel model)
         {
             model.Validate(ModelState);

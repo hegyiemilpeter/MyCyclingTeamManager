@@ -43,6 +43,7 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(AddResultViewModel model)
         {
             model.Validate(ModelState);
