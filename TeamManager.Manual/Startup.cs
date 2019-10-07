@@ -35,6 +35,16 @@ namespace TeamManager.Manual
                     })
                 .AddEntityFrameworkStores<TeamManagerDbContext>();
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Developers", builder =>
+                {
+                    // TODO: Get Developer names from environment variables / appsettings
+                    builder.RequireAuthenticatedUser();
+                    builder.RequireUserName("emil.hegyi.19890802");
+                });
+            });
+
             services.AddMvc()
                 .AddMvcOptions(options =>
                 {

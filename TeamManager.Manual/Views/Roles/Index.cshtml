@@ -1,0 +1,63 @@
+﻿@model IList<UserRolesViewModel>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<h1>Roles</h1>
+<a asp-action="Create" class="btn btn-primary m-2">New</a>
+@if (Model == null || Model.Count == 0)
+{
+    <hr />
+    <div>No users in the database.</div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                @if (Model.First().Roles != null && Model.First().Roles.Count > 0)
+                {
+                    @foreach (var role in Model.First().Roles)
+                    {
+                        <th>@role.Key</th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userRolesViewModel in Model)
+            {
+                <tr>
+                    <td>@userRolesViewModel.Name</td>
+                    @if (userRolesViewModel.Roles != null && userRolesViewModel.Roles.Count > 0)
+                    {
+                        @foreach (var role in userRolesViewModel.Roles)
+                        {
+                            <td>
+                                @if (role.Value)
+                                {
+                                    <form asp-action="RemoveUserFromRole" method="post">
+                                        <input type="hidden" name="userId" value="@userRolesViewModel.UserId" />
+                                        <input type="hidden" name="roleName" value="@role.Key" />
+                                        <input type="submit" value="Remove" class="btn btn-sm btn-danger" />
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-action="AddUserToRole" method="post">
+                                        <input type="hidden" name="userId" value="@userRolesViewModel.UserId" />
+                                        <input type="hidden" name="roleName" value="@role.Key" />
+                                        <input type="submit" value="Add" class="btn btn-sm btn-primary" />
+                                    </form>
+                                }
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
