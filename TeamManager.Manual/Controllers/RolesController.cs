@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,6 +27,9 @@ namespace TeamManager.Manual.Controllers
         public async Task<IActionResult> Index()
         {
             List<UserRolesViewModel> model = new List<UserRolesViewModel>();
+
+            await CreateDefaultRolesAndAddCurrentDeveloper();
+
             List<User> users = userManager.Users.ToList();
             List<IdentityRole<int>> roles = roleManager.Roles.ToList();
             foreach (var user in users)
@@ -45,7 +49,7 @@ namespace TeamManager.Manual.Controllers
 
             return View(model);
         }
-
+        
         public IActionResult Create() => View();
 
         [HttpPost]
@@ -112,5 +116,24 @@ namespace TeamManager.Manual.Controllers
             await userManager.RemoveFromRoleAsync(user, roleName);
             return RedirectToAction(nameof(Index));
         }
+
+        private async Task CreateDefaultRolesAndAddCurrentDeveloper()
+        {
+            foreach (var role in Roles.GetAllRoles())
+            {
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    IdentityRole<int> identityRole = new IdentityRole<int>(role);
+                    await roleManager.CreateAsync(identityRole);
+                }
+
+                if (!User.IsInRole(role))
+                {
+                    User user = await userManager.GetUserAsync(User);
+                    await userManager.AddToRoleAsync(user, role);
+                }
+            }
+        }
+
     }
 }

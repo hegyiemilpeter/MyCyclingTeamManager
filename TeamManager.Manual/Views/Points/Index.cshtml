@@ -87,7 +87,9 @@ else
         All consumed points: @Model.ConsumedPoints.Sum(x => x.Amount)
     </div>
 }
-
-<div>
-    <a asp-action="AddConsumedPoints" class="btn btn-primary m-2" asp-route-id="@Model.UserId">Add</a>
-</div>
+@if (User.IsInRole(Roles.POINT_CONSUPTION_MANAGER))
+{
+    <div>
+        <a asp-action="AddConsumedPoints" class="btn btn-primary m-2" asp-route-id="@Model.UserId">Add</a>
+    </div>
+}

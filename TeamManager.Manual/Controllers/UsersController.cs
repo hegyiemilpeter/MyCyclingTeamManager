@@ -14,13 +14,11 @@ namespace TeamManager.Manual.Controllers
     {
         private readonly CustomUserManager userManager;
         private readonly IUserRaceManager userRaceManager;
-        private readonly IPointManager pointManager;
 
-        public UsersController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IPointManager pointMgr)
+        public UsersController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr)
         {
             userManager = customUserManager;
             userRaceManager = userRaceMgr;
-            pointManager = pointMgr;
         }
 
         public async Task<IActionResult> Index()
@@ -35,6 +33,12 @@ namespace TeamManager.Manual.Controllers
             if (userModel == null)
             {
                 return NotFound();
+            }
+
+            string visitorUserId = userManager.GetUserId(User);
+            if(userId != visitorUserId && !User.IsInRole(Roles.USER_MANAGER))
+            {
+                return Challenge();
             }
 
             UserDetailsViewModel model = new UserDetailsViewModel()
@@ -56,6 +60,12 @@ namespace TeamManager.Manual.Controllers
                 return NotFound();
             }
 
+            string visitorUserId = userManager.GetUserId(User);
+            if (id.ToString() != visitorUserId && !User.IsInRole(Roles.USER_MANAGER))
+            {
+                return Challenge();
+            }
+
             UserModel model = await userManager.GetUserByNameAsync(user.UserName);
             return View(model);
         }
@@ -68,6 +78,12 @@ namespace TeamManager.Manual.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
+            }
+
+            string visitorUserId = userManager.GetUserId(User);
+            if (model.Id != int.Parse(visitorUserId) && !User.IsInRole(Roles.USER_MANAGER))
+            {
+                return Challenge();
             }
 
             await userManager.UpdateAsync(model);

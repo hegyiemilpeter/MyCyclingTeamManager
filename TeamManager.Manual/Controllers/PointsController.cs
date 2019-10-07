@@ -30,6 +30,17 @@ namespace TeamManager.Manual.Controllers
         {
             string userId = id.HasValue ? id.Value.ToString() : userManager.GetUserId(User);
             User user = await userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                return NotFound(id);
+            }
+
+            string visitorUserId = userManager.GetUserId(User);
+            if(user.Id != int.Parse(visitorUserId) && !User.IsInRole(Roles.POINT_CONSUPTION_MANAGER))
+            {
+                return Challenge();
+            }
+
             IList<ResultModel> results = userRaceManager.GetRaceResultsByUser(user);
             IList<PointConsuption> pointConsuptions = await pointManager.ListConsumedPointsAsync(userId);
 
@@ -43,6 +54,7 @@ namespace TeamManager.Manual.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = Roles.POINT_CONSUPTION_MANAGER)]
         public async Task<IActionResult> AddConsumedPoints(int? userId = null)
         {
             AddPointConsumptionViewModel model = new AddPointConsumptionViewModel();
@@ -56,6 +68,7 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.POINT_CONSUPTION_MANAGER)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddConsumedPoints(AddPointConsumptionViewModel model)
         {

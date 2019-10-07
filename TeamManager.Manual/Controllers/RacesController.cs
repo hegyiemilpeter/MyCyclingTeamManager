@@ -48,9 +48,11 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Roles.RACE_MANAGER)]
         public IActionResult Add() =>  View(new RaceModel());
 
         [HttpPost]
+        [Authorize(Roles = Roles.RACE_MANAGER)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(RaceModel race)
         {
@@ -84,6 +86,7 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Roles.RACE_MANAGER)]
         public IActionResult Edit(int id)
         {
             RaceModel race = raceManager.GetRaceById(id);
@@ -96,6 +99,7 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.RACE_MANAGER)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(RaceModel race)
         {
@@ -109,6 +113,7 @@ namespace TeamManager.Manual.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = Roles.RACE_MANAGER)]
         public async Task<IActionResult> Delete(int id)
         {
             await raceManager.DeleteRaceAsync(id);

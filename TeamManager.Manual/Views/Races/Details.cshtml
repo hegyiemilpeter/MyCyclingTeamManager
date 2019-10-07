@@ -6,15 +6,18 @@
 }
 
 <h1>@Model.BaseModel.Name</h1>
-@if(Model.EntriedRiders == null || Model.EntriedRiders.Count == 0 && Model.BaseModel.EntryDeadline > DateTime.Now)
+@if (User.IsInRole(Roles.RACE_MANAGER))
 {
-    <div class="alert alert-danger">
-        <a asp-action="Delete" class="btn btn-sm btn-danger m-1" asp-route-id="@Model.BaseModel.Id">Delete race</a>
-    </div>
-}
-else
-{
-    <div class="alert alert-danger">Race cannot be deleted, because there are entried riders or the entry deadline is over.</div>
+    @if (Model.EntriedRiders == null || Model.EntriedRiders.Count == 0 && Model.BaseModel.EntryDeadline > DateTime.Now)
+    {
+        <div class="alert alert-danger">
+            <a asp-action="Delete" class="btn btn-sm btn-danger m-1" asp-route-id="@Model.BaseModel.Id">Delete race</a>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">Race cannot be deleted, because there are entried riders or the entry deadline is over.</div>
+    }
 }
 <div class="row">
     <table class="col-md-6 table">
@@ -96,7 +99,7 @@ else
             </form>
         }
     }
-    @if(Model.BaseModel.Date < DateTime.Now)
+    @if (Model.BaseModel.Date < DateTime.Now)
     {
         <a asp-action="Add" asp-controller="RaceResults" asp-route-id="@Model.BaseModel.Id" class="btn btn-success m-1">Add result</a>
     }

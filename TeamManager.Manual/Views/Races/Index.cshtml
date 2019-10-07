@@ -30,7 +30,7 @@ else
                     <th>Entry deadline</th>
                     <th></th>
                 </tr>
-            </thead> 
+            </thead>
             @foreach (var race in Model)
             {
                 <tr>
@@ -58,12 +58,19 @@ else
                     <td>@race.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
                     <td>
                         <a asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@race.Id">View</a>
-                        <a asp-action="Edit" class="btn btn-sm btn-outline-dark" asp-route-id="@race.Id">Edit</a>
+                        @if(User.IsInRole(Roles.RACE_MANAGER))
+                        {
+                            <a asp-action="Edit" class="btn btn-sm btn-outline-dark" asp-route-id="@race.Id">Edit</a>
+                        }
                     </td>
                 </tr>
             }
         </table>
     </div>
 }
-<a asp-action="Add" class="btn btn-primary btn-sm">+ New</a>
-<a asp-action="Add" asp-controller="RaceResults" class="btn btn-primary btn-sm">+ Result</a>
+@if (User.IsInRole(Roles.RACE_MANAGER))
+{
+    <a asp-action="Add" class="btn btn-primary btn-sm">New</a>
+}
+
+<a asp-action="Add" asp-controller="RaceResults" class="btn btn-primary btn-sm">Add Result</a>

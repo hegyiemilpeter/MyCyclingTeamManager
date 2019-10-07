@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TeamManager.Manual.Data;
@@ -10,6 +11,7 @@ using TeamManager.Manual.Models.ViewModels;
 
 namespace TeamManager.Manual.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly CustomUserManager userManager;
@@ -21,6 +23,7 @@ namespace TeamManager.Manual.Controllers
             signInManager = signInMgr;
         }
 
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -28,6 +31,7 @@ namespace TeamManager.Manual.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
