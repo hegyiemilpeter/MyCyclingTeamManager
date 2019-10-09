@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -60,6 +61,73 @@ namespace TeamManager.Manual.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        [AllowAnonymous]
+        public IActionResult ForgotPassword() => View();
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword([Required]string email)
+        {
+            User currentUser = await userManager.FindByEmailAsync(email);
+            if(currentUser != null)
+            {
+                string passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(currentUser);
+                // TODO: Send password reset e-mail
+            }
+
+            return RedirectToAction(nameof(SuccessfulTokenGeneration));
+        }
+        
+        public IActionResult SuccessfulTokenGeneration() => View();
+
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string token, string userId)
+        {
+            ResetPasswordViewModel model = new ResetPasswordViewModel()
+            {
+                Token = token,
+                UserId = userId
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            User currentUser = await userManager.FindByIdAsync(model.UserId);
+            if(currentUser == null)
+            {
+                ModelState.AddModelError(nameof(model.UserId), "No user can be found with the given id.");
+                model.Password = string.Empty;
+                model.ConfirmPassword = string.Empty;
+                return View(model);
+            }
+
+            IdentityResult changePasswordResult = await userManager.ResetPasswordAsync(currentUser, model.Token, model.Password);
+            if (!changePasswordResult.Succeeded)
+            {
+                model.Password = string.Empty;
+                model.ConfirmPassword = string.Empty;
+
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Login));
         }
     }
 }
