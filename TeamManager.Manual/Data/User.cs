@@ -17,5 +17,6 @@ namespace TeamManager.Manual.Data
         public DateTime BirthDate { get; set; }
         public Gender Gender { get; set; }
         public Size TShirtSize { get; set; }
+        public bool VerifiedByAdmin { get; set; }
     }
 }

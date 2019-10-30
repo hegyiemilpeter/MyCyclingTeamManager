@@ -16,9 +16,9 @@ namespace TeamManager.Manual.Controllers
     public class AccountController : Controller
     {
         private readonly CustomUserManager userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly CustomSignInManager signInManager;
 
-        public AccountController(CustomUserManager customUserManager, SignInManager<User> signInMgr)
+        public AccountController(CustomUserManager customUserManager, CustomSignInManager signInMgr)
         {
             userManager = customUserManager;
             signInManager = signInMgr;

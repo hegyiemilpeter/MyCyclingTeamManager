@@ -56,6 +56,7 @@ namespace TeamManager.Manual
                 });
 
             services.AddScoped<CustomUserManager>();
+            services.AddScoped<CustomSignInManager>();
             services.AddScoped<IRaceManager, RaceManager>();
             services.AddScoped<IUserRaceManager, UserRaceManager>();
             services.AddScoped<IPointManager, PointManager>();
