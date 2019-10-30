@@ -89,5 +89,19 @@ namespace TeamManager.Manual.Controllers
             await userManager.UpdateAsync(model);
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
+
+        [Authorize(Roles = Roles.USER_MANAGER)]
+        public async Task<IActionResult> Verify(int id)
+        {
+            UserModel userModel = await userManager.GetUserByIdAsync(id.ToString());
+            if (userModel == null)
+            {
+                return NotFound();
+            }
+
+            userModel.VerifiedByAdmin = true;
+            await userManager.UpdateAsync(userModel);
+            return RedirectToAction(nameof(Details), new { id });
+        }
     }
 }

@@ -16,6 +16,8 @@ namespace TeamManager.Manual.Models
 
         public int Id { get; set; }
 
+        public bool VerifiedByAdmin { get; set; }
+
         #region Personal data
 
         [Required]

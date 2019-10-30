@@ -107,6 +107,7 @@ namespace TeamManager.Manual.Models
             user.LastName = model.LastName;
             user.PhoneNumber = model.PhoneNumber;
             user.TShirtSize = model.TShirtSize.HasValue ? model.TShirtSize.Value : Size.S;
+            user.VerifiedByAdmin = model.VerifiedByAdmin;
 
             IdentityResult result = await base.UpdateAsync(user);
             if (!result.Succeeded)
@@ -187,7 +188,8 @@ namespace TeamManager.Manual.Models
                 Id = user.Id,
                 LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber,
-                TShirtSize = user.TShirtSize
+                TShirtSize = user.TShirtSize,
+                VerifiedByAdmin = user.VerifiedByAdmin
             };
 
             Address usersAddress = _dbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);

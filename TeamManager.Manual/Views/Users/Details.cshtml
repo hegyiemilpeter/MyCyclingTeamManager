@@ -43,6 +43,10 @@
             </tr>
         </table>
         <a asp-action="Edit" asp-route-id="@Model.UserData.Id" class="btn btn-primary">Edit</a>
+        @if(User.IsInRole(Roles.USER_MANAGER) && !Model.UserData.VerifiedByAdmin)
+        {
+            <a asp-action="Verify" asp-route-id="@Model.UserData.Id" class="btn btn-success">Verify</a>
+        }
     </div>
     <div class="col-md m-1">
         <h2>Results</h2>
