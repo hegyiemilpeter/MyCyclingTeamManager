@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +47,12 @@ namespace TeamManager.Manual
                 });
             });
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.AddMvc()
                 .AddMvcOptions(options =>
                 {
@@ -72,6 +79,7 @@ namespace TeamManager.Manual
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCookiePolicy();
             app.UseStaticFiles();
             app.UseStatusCodePages();
             
