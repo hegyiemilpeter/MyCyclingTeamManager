@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StackExchange.Redis;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
@@ -47,6 +49,11 @@ namespace TeamManager.Manual
                 });
             });
 
+            ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(Configuration.GetValue<string>("Redis"));
+            services.AddDataProtection().PersistKeysToStackExchangeRedis(connectionMultiplexer, "Data-Protection");
+
+            services.AddSession();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
@@ -86,6 +93,7 @@ namespace TeamManager.Manual
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseSession();
             app.UseMvc(options =>
             {
                 options.MapRoute("races", "{controller=Races}/{action=Index}/{year}/{month}");
