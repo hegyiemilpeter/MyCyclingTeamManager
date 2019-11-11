@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Diacritics.Extensions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -41,7 +42,7 @@ namespace TeamManager.Manual.Models
 
         public string FullName => FirstName + " " + LastName;
 
-        public string UserName => $"{FirstName.ToLower()}.{LastName.ToLower()}.{BirthDate.ToString("yyyyMMdd")}";
+        public string UserName => $"{FirstName.Replace(" ", "").RemoveDiacritics().ToLower()}.{LastName.Replace(" ", "").RemoveDiacritics().ToLower()}.{BirthDate.ToString("yyyyMMdd")}";
 
         #endregion
 

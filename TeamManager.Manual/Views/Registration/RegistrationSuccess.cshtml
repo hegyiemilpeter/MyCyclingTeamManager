@@ -1,7 +1,16 @@
-﻿
+﻿@using Microsoft.Extensions.Configuration
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
 @{
     ViewData["Title"] = "Registration success";
 }
 
 <h1>Successful registration</h1>
-<h3>Thank you for your registration, now you can <a asp-action="Login" asp-controller="Account">log in</a>.</h3>
+@if (Configuration.GetValue<bool>("UseAdminRestrictionForNewUsers"))
+{
+    <h3>Thank you for your registration, after an administrator verified you, you <a asp-action="Login" asp-controller="Account">log in</a>.</h3>
+}
+else
+{
+    <h3>Thank you for your registration, now you can <a asp-action="Login" asp-controller="Account">log in</a>.</h3>
+}
