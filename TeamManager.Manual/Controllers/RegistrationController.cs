@@ -60,7 +60,12 @@ namespace TeamManager.Manual.Controllers
                 return View();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(RegistrationSuccess));
+        }
+
+        public IActionResult RegistrationSuccess()
+        {
+            return View();
         }
 
         private Dictionary<IdentificationNumberType, string> CreateIdentifiersDictionaty(RegistrationViewModel model)
