@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace TeamManager.Manual.Models.Interfaces
 
         Task<IList<UserModel>> ListEntriedUsersAsync(int id);
 
-        Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff);
+        Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff, IFormFile image);
 
         IList<ResultModel> GetRaceResultsByUser(User user);
     }

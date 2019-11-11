@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,11 @@ using System.Threading.Tasks;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
+using Azure.Storage;
+using Microsoft.Extensions.Configuration;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Diacritics.Extensions;
 
 namespace TeamManager.Manual.Models
 {
@@ -14,11 +20,13 @@ namespace TeamManager.Manual.Models
         private readonly TeamManagerDbContext dbContext;
         private readonly CustomUserManager userManager;
         private readonly IPointCalculator pointCalculator;
-        public UserRaceManager(TeamManagerDbContext context, CustomUserManager customUserManager, IPointCalculator pointMgr)
+        private readonly IConfiguration configuration;
+        public UserRaceManager(TeamManagerDbContext context, CustomUserManager customUserManager, IPointCalculator pointMgr, IConfiguration config)
         {
             dbContext = context;
             userManager = customUserManager;
             pointCalculator = pointMgr;
+            configuration = config;
         }
 
         #region Entries
@@ -94,9 +102,9 @@ namespace TeamManager.Manual.Models
 
         #region Results
 
-        public async Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff)
+        public async Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff, IFormFile image)
         {
-            UserRace userRace = dbContext.UserRaces.SingleOrDefault(x => x.RaceId == raceId && x.UserId == user.Id);
+            UserRace userRace = dbContext.UserRaces.Include(x => x.Race).SingleOrDefault(x => x.RaceId == raceId && x.UserId == user.Id);
             bool update = userRace != null;
             if (!update)
             {
@@ -117,6 +125,22 @@ namespace TeamManager.Manual.Models
             else
             {
                 dbContext.UserRaces.Add(userRace);
+            }
+
+            try
+            {
+                string azureConnectionString = configuration.GetValue<string>("AzureBlobConnection");
+                if (!string.IsNullOrEmpty(azureConnectionString))
+                {
+                    string blobName = userRace.Race.Date.Value.Year + "-" + userRace.Race.Name.ToLower().Replace(" ", "-").RemoveDiacritics();
+                    BlobContainerClient container = new BlobContainerClient(azureConnectionString, blobName);
+                    await container.CreateIfNotExistsAsync(Azure.Storage.Blobs.Models.PublicAccessType.BlobContainer);
+                    container.UploadBlob(image.FileName, image.OpenReadStream());
+                }
+            }
+            catch (Exception)
+            {
+                // TODO: write an error log
             }
 
             await dbContext.SaveChangesAsync();
