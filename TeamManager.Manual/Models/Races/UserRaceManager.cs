@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Diacritics.Extensions;
+using System.IO;
 
 namespace TeamManager.Manual.Models
 {
@@ -135,12 +136,15 @@ namespace TeamManager.Manual.Models
                     string blobName = userRace.Race.Date.Value.Year + "-" + userRace.Race.Name.ToLower().Replace(" ", "-").RemoveDiacritics();
                     BlobContainerClient container = new BlobContainerClient(azureConnectionString, blobName);
                     await container.CreateIfNotExistsAsync(Azure.Storage.Blobs.Models.PublicAccessType.BlobContainer);
-                    container.UploadBlob(image.FileName, image.OpenReadStream());
+                    Stream memoryStream = new MemoryStream();
+                    image.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+                    await container.UploadBlobAsync(image.FileName, memoryStream);
                 }
             }
             catch (Exception)
             {
-                // TODO: write an error log
+                // TODO: log errors here
             }
 
             await dbContext.SaveChangesAsync();
