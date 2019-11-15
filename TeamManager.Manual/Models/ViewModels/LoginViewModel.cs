@@ -8,11 +8,11 @@ namespace TeamManager.Manual.Models.ViewModels
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "The Email address is required.")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Password field is required.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

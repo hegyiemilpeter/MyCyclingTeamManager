@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
+using System.Globalization;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
@@ -61,6 +64,8 @@ namespace TeamManager.Manual
                 o.Name = "TeamManager";
             });
 
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             services.AddMvc()
                 .AddMvcOptions(options =>
                 {
@@ -69,7 +74,24 @@ namespace TeamManager.Manual
                     // Later can be refactored to use endpoint routing
                     // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-3.0
                     options.EnableEndpointRouting = false;
-                });
+                })
+                .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.SubFolder)
+                .AddDataAnnotationsLocalization(options => {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(SharedResources));
+                        });
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var cultures = new[]
+                {
+                new CultureInfo("en"),
+                new CultureInfo("hu")
+            };
+                options.DefaultRequestCulture = new RequestCulture("hu");
+                options.SupportedCultures = cultures;
+                options.SupportedUICultures = cultures;
+            });
 
             services.AddScoped<CustomUserManager>();
             services.AddScoped<CustomSignInManager>();
@@ -91,6 +113,8 @@ namespace TeamManager.Manual
             app.UseCookiePolicy();
             app.UseStaticFiles();
             app.UseStatusCodePages();
+
+            app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -7,6 +7,7 @@ using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
@@ -20,12 +21,14 @@ namespace TeamManager.Manual.Controllers
         private readonly CustomUserManager userManager;
         private readonly CustomSignInManager signInManager;
         private readonly IEmailSender emailSender;
+        private readonly IStringLocalizer<SharedResources> localizer;
 
-        public AccountController(CustomUserManager customUserManager, CustomSignInManager signInMgr, IEmailSender sender)
+        public AccountController(CustomUserManager customUserManager, CustomSignInManager signInMgr, IEmailSender sender, IStringLocalizer<SharedResources> stringLocalizer)
         {
             userManager = customUserManager;
             signInManager = signInMgr;
             emailSender = sender;
+            localizer = stringLocalizer;
         }
 
         [AllowAnonymous]
@@ -56,7 +59,7 @@ namespace TeamManager.Manual.Controllers
                 }
             }
 
-            ModelState.AddModelError("", "Invalid e-mail or password.");
+            ModelState.AddModelError("", localizer["Invalid e-mail or password."]);
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -72,8 +75,13 @@ namespace TeamManager.Manual.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword([Required]string email)
+        public async Task<IActionResult> ForgotPassword([Required(ErrorMessage = "The Email address is required.")]string email)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             User currentUser = await userManager.FindByEmailAsync(email);
             if(currentUser != null)
             {
