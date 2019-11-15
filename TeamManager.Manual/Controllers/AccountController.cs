@@ -121,7 +121,7 @@ namespace TeamManager.Manual.Controllers
             User currentUser = await userManager.FindByIdAsync(model.UserId);
             if(currentUser == null)
             {
-                ModelState.AddModelError(nameof(model.UserId), "No user can be found with the given id.");
+                ModelState.AddModelError(nameof(model.UserId), localizer["No user can be found with the given id."]);
                 model.Password = string.Empty;
                 model.ConfirmPassword = string.Empty;
                 return View(model);

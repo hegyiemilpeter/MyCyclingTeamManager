@@ -1,7 +1,7 @@
-﻿
+﻿@inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "SuccessfulTokenGeneration";
+    ViewData["Title"] = Localizer["Successful reset request"];
 }
 
-<h1>Successful Reset Request</h1>
-<span class="alert-success">We have sent you an e-mail where you can reset your password.</span>
+<h1>@Localizer["Successful reset request"]</h1>
+<div class="alert-success">@Localizer["We have sent you an e-mail where you can reset your password."]</div>

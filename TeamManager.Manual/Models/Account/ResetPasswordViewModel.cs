@@ -8,19 +8,19 @@ namespace TeamManager.Manual.Models
 {
     public class ResetPasswordViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "No token found.")]
         public string Token { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "No userId found.")]
         public string UserId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Password field is required.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "The Confirm password field is required.")]
         [DataType(DataType.Password)]
-        [Compare(nameof(Password))]
+        [Compare(nameof(Password), ErrorMessage = "The Password and Confirm password should match.")]
         public string ConfirmPassword { get; set; }
     }
 }
