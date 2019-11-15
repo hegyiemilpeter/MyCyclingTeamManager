@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
+using TeamManager.Manual.Models.Interfaces;
 using TeamManager.Manual.Models.ViewModels;
 
 namespace TeamManager.Manual.Controllers
@@ -17,11 +19,13 @@ namespace TeamManager.Manual.Controllers
     {
         private readonly CustomUserManager userManager;
         private readonly CustomSignInManager signInManager;
+        private readonly IEmailSender emailSender;
 
-        public AccountController(CustomUserManager customUserManager, CustomSignInManager signInMgr)
+        public AccountController(CustomUserManager customUserManager, CustomSignInManager signInMgr, IEmailSender sender)
         {
             userManager = customUserManager;
             signInManager = signInMgr;
+            emailSender = sender;
         }
 
         [AllowAnonymous]
@@ -74,12 +78,14 @@ namespace TeamManager.Manual.Controllers
             if(currentUser != null)
             {
                 string passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(currentUser);
-                // TODO: Send password reset e-mail
+                string encodedToken = HttpUtility.UrlEncode(passwordResetToken);
+                await emailSender.SendForgotPasswordEmailAsync(currentUser.Email, currentUser.FirstName, encodedToken, currentUser.Id.ToString(), HttpContext.Request.Scheme + "://" + HttpContext.Request.Host);
             }
 
             return RedirectToAction(nameof(SuccessfulTokenGeneration));
         }
         
+        [AllowAnonymous]
         public IActionResult SuccessfulTokenGeneration() => View();
 
         [AllowAnonymous]

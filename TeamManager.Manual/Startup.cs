@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
@@ -35,7 +36,8 @@ namespace TeamManager.Manual
                 {
                     options.User.RequireUniqueEmail = true;
                 })
-                .AddEntityFrameworkStores<TeamManagerDbContext>();
+                .AddEntityFrameworkStores<TeamManagerDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAuthorization(options =>
             {
@@ -51,6 +53,12 @@ namespace TeamManager.Manual
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.Configure<DataProtectionTokenProviderOptions>(o =>
+            {
+                o.TokenLifespan = TimeSpan.FromHours(24);
+                o.Name = "TeamManager";
             });
 
             services.AddMvc()
@@ -69,6 +77,7 @@ namespace TeamManager.Manual
             services.AddScoped<IUserRaceManager, UserRaceManager>();
             services.AddScoped<IPointManager, PointManager>();
             services.AddScoped<IPointCalculator, PointCalculator>();
+            services.AddScoped<IEmailSender, EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
