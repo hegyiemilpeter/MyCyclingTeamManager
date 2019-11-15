@@ -2,11 +2,7 @@
 A team manager application for my cycling team, build with ASP.NET Core 2.2 from scratch. After a week it is upgraded to ASP.NET Core 3.0.
 
 #### Remaining features
-* Forgot password
-* Registration check by admins
 * Localization to English and Hungarian
-* Upload images to race result
-* Deploy to a Cloud Provider for testing purposes
 
 #### Future plans
 * Upload and view images for races
