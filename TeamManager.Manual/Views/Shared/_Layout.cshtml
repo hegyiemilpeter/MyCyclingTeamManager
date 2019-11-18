@@ -1,6 +1,7 @@
 ﻿@using TeamManager.Manual.Data
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
+@inject IViewLocalizer Localizer
 
 <!DOCTYPE html>
 
@@ -12,7 +13,6 @@
 </head>
 <body>
     <header>
-        <partial name="_CookieConsentPartial" />
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-action="Index" asp-controller="Home">
@@ -25,32 +25,33 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Races" class="nav-link">Races</a>
+                            <a asp-action="Index" asp-controller="Races" class="nav-link">@Localizer["Races"]</a>
                         </li>
                         <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Users" class="nav-link">Riders</a>
+                            <a asp-action="Index" asp-controller="Users" class="nav-link">@Localizer["Riders"]</a>
                         </li>
                         <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Points" class="nav-link">Points</a>
+                            <a asp-action="Index" asp-controller="Points" class="nav-link">@Localizer["Pontok"]</a>
                         </li>
                     </ul>
                 </div>
                 <nav class="navbar-nav">
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <a asp-action="Details" asp-controller="Users" class="nav-item m-1">My profile</a>
-                        <a asp-action="Logout" asp-controller="Account" class="nav-item m-1">Logout</a>
+                        <a asp-action="Details" asp-controller="Users" class="nav-item m-1">@Localizer["My profile"]</a>
+                        <a asp-action="Logout" asp-controller="Account" class="nav-item m-1">@Localizer["Logout"]</a>
                     }
                     else
                     {
-                        <a asp-action="Login" asp-controller="Account" class="nav-item m-1">Login</a>
-                        <a asp-action="Index" asp-controller="Registration" class="nav-item m-1">Register</a>
+                        <a asp-action="Login" asp-controller="Account" class="nav-item m-1">@Localizer["Login"]</a>
+                        <a asp-action="Index" asp-controller="Registration" class="nav-item m-1">@Localizer["Register"]</a>
                     }
                 </nav>
             </div>
         </nav>
     </header>
     <div class="container">
+        <partial name="_CookieConsentPartial" />
         @RenderBody()
     </div>
     <script src="~/lib/bootstrap-4.3.1-dist/js/bootstrap.js"></script>
