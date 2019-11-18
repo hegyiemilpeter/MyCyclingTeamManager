@@ -1,42 +1,43 @@
 ﻿@model AddResultViewModel
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Add race result";
+    ViewData["Title"] = Localizer["Add race result"];
 }
 
-<h1>Race result</h1>
+<h1>Localizer["Add race result"]</h1>
 <hr />
 <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 <div class="row">
     <form asp-action="Add" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label asp-for="Races">Race</label>
+            <label asp-for="Races">@Localizer["Race"]</label>
             <select asp-for="SelectedRaceId" asp-items="@Model.GetRaceSelectList" class="form-control"></select>
             <span asp-validation-for="SelectedRaceId" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="AbsoluteResult">Absolute result</label>
+            <label asp-for="AbsoluteResult">@Localizer["Absolute result"]</label>
             <input asp-for="AbsoluteResult" class="form-control" />
         </div>
         <div class="form-group">
-            <label asp-for="CategoryResult">Category result</label>
+            <label asp-for="CategoryResult">@Localizer["Category result"]</label>
             <input asp-for="CategoryResult" class="form-control" />
             <span asp-validation-for="CategoryResult" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Image">Upload image (in case of result)</label>
+            <label asp-for="Image">@Localizer["Upload image (in case of result)"]</label>
             <input asp-for="Image" class="form-control-file" />
             <span asp-validation-for="Image" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="IsTakePartAsDriver">I was driver</label>
+            <label asp-for="IsTakePartAsDriver">@Localizer["I was driver"]</label>
             <input type="checkbox" asp-for="IsTakePartAsDriver" class="form-control" />
         </div>
         <div class="form-group">
-            <label asp-for="IsTakePartAsStaff">I was staff</label>
+            <label asp-for="IsTakePartAsStaff">@Localizer["I was staff"]</label>
             <input type="checkbox" asp-for="IsTakePartAsStaff" class="form-control" />
         </div>
-        <input type="submit" value="Save" class="btn btn-primary m-1" />
-        <a asp-action="Index" asp-controller="Races" class="btn btn-outline-primary m-1">Back to races</a>
+        <input type="submit" value="@Localizer["Save"]" class="btn btn-primary m-1" />
+        <a asp-action="Index" asp-controller="Races" class="btn btn-outline-primary m-1">@Localizer["Back to races"]</a>
     </form>
 </div>

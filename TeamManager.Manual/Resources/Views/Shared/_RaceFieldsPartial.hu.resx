@@ -117,94 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="All distances should be greater than 0." xml:space="preserve">
-    <value>Minden táv nagyobb kell legyen 0-nál!</value>
+  <data name="City" xml:space="preserve">
+    <value>Város</value>
   </data>
-  <data name="Amount cannot be 0." xml:space="preserve">
-    <value>A mennyiség nagyobb kell legyen 0-nál.</value>
+  <data name="Country" xml:space="preserve">
+    <value>Ország</value>
   </data>
-  <data name="At least one distance is required." xml:space="preserve">
-    <value>Legalább egy táv megadása kötelező.</value>
+  <data name="Date" xml:space="preserve">
+    <value>Dátum</value>
   </data>
-  <data name="Duathlon" xml:space="preserve">
-    <value>Duatlon</value>
+  <data name="Entry deadline" xml:space="preserve">
+    <value>Nevezési határidő (belső)</value>
   </data>
-  <data name="Full distance triathlon" xml:space="preserve">
-    <value>Triatlon - hosszútáv</value>
+  <data name="Name" xml:space="preserve">
+    <value>Verseny neve</value>
   </data>
-  <data name="Half distance triathlon" xml:space="preserve">
-    <value>Triatlon - féltáv</value>
+  <data name="Own" xml:space="preserve">
+    <value>Saját szervezés</value>
   </data>
-  <data name="Individual time trial" xml:space="preserve">
-    <value>Országúti időfutam</value>
+  <data name="Point weight" xml:space="preserve">
+    <value>Pont</value>
   </data>
-  <data name="Invalid e-mail or password." xml:space="preserve">
-    <value>Hibás e-mail cím vagy jelszó.</value>
+  <data name="Remark" xml:space="preserve">
+    <value>Megjegyzés</value>
   </data>
-  <data name="MTB Marathon" xml:space="preserve">
-    <value>MTB Maraton</value>
+  <data name="Type of race" xml:space="preserve">
+    <value>Típus</value>
   </data>
-  <data name="MTB XCO" xml:space="preserve">
-    <value>MTB XCO</value>
-  </data>
-  <data name="Must be between 1 and 1000." xml:space="preserve">
-    <value>1 és 1000 közötti érték adható meg.</value>
-  </data>
-  <data name="No token found." xml:space="preserve">
-    <value>Hiányzó token, kezdd előlről a folyamatot!</value>
-  </data>
-  <data name="No user can be found with the given id." xml:space="preserve">
-    <value>Nem található felhasználó a megadott id-val.</value>
-  </data>
-  <data name="No userId found." xml:space="preserve">
-    <value>Hiányzó felhasználó azonosító, kezdd elölről a folyamatot!</value>
-  </data>
-  <data name="Olimpic distance triathlon" xml:space="preserve">
-    <value>Triatlon - olimpiai táv</value>
-  </data>
-  <data name="Other" xml:space="preserve">
-    <value>Egyéb</value>
-  </data>
-  <data name="Road race" xml:space="preserve">
-    <value>Országúti mezőnyverseny</value>
-  </data>
-  <data name="Running" xml:space="preserve">
-    <value>Futás</value>
-  </data>
-  <data name="Sprint distance triathlon" xml:space="preserve">
-    <value>Triatlon - sprint táv</value>
-  </data>
-  <data name="The city is required." xml:space="preserve">
-    <value>A város kötelező.</value>
-  </data>
-  <data name="The Confirm password field is required." xml:space="preserve">
-    <value>A jelszó megerősítő megadása kötelező.</value>
-  </data>
-  <data name="The date is required." xml:space="preserve">
-    <value>A dátum kötelező.</value>
-  </data>
-  <data name="The Email address is required." xml:space="preserve">
-    <value>Az e-mail cím megadása kötelező.</value>
-  </data>
-  <data name="The entry deadline is required." xml:space="preserve">
-    <value>A nevezési határidő kötelező.</value>
-  </data>
-  <data name="The entry deadline must be sooner than the race date." xml:space="preserve">
-    <value>A nevezési határidő korábban kell legyen mint a verseny napja.</value>
-  </data>
-  <data name="The name is required." xml:space="preserve">
-    <value>A név kötelező.</value>
-  </data>
-  <data name="The Password and Confirm password should match." xml:space="preserve">
-    <value>A két jelszónak egyeznie kell.</value>
-  </data>
-  <data name="The Password field is required." xml:space="preserve">
-    <value>A jelszó megadása kötelező.</value>
-  </data>
-  <data name="The selected user does not have so many points. Maximum {0} is allowed." xml:space="preserve">
-    <value>A kiválasztott versenyzőnek nincs ennyi pontja. Maxium {0} pontot adhatsz meg.</value>
-  </data>
-  <data name="The user is required." xml:space="preserve">
-    <value>A versenyző kötelező.</value>
+  <data name="Website" xml:space="preserve">
+    <value>Honlap</value>
   </data>
 </root>

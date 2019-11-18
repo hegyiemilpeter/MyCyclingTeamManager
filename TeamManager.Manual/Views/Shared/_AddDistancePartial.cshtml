@@ -1,12 +1,13 @@
 ﻿@model RaceModel
+@inject IViewLocalizer Localizer
 
 <div class="row">
     <div class="col-sm-2">
-        <input type="button" id="addRaceDistanceButton" onclick="addRaceDistanceButtonClick()" value="New distance" class="btn btn-light m-1" /><br />
-        <input type="button" id="removeRaceDistanceButton" onclick="removeRaceDistanceButtonClick()" value="Remove distance" class="btn btn-light m-1" />
+        <input type="button" id="addRaceDistanceButton" onclick="addRaceDistanceButtonClick()" value="@Localizer["New distance"]" class="btn btn-light m-1" /><br />
+        <input type="button" id="removeRaceDistanceButton" onclick="removeRaceDistanceButtonClick()" value="@Localizer["Remove distance"]" class="btn btn-light m-1" />
     </div>
     <div class="col-lg-10">
-        <label asp-for="DistanceLengths">Distances (km)</label>
+        <label asp-for="DistanceLengths">@Localizer["Distances (km)"]</label>
         <div class="form-row" id="distances-container">
             @if (Model != null && Model.DistanceLengths != null && Model.DistanceLengths.Count > 0)
             {

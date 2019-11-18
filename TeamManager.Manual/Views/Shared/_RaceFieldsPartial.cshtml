@@ -1,59 +1,66 @@
 ﻿@using TeamManager.Manual.Data
+@using TeamManager.Manual
+@using Microsoft.Extensions.Localization
+
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<SharedResources> StringLocalizer
+
 @model RaceModel
+
 
 <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
 <div class="row">
     <div class="col-sm form-group">
-        <label asp-for="OwnOrganizedEvent">Own</label>
+        <label asp-for="OwnOrganizedEvent">@Localizer["Own"]</label>
         <input type="checkbox" asp-for="OwnOrganizedEvent" class="form-control" />
         <span asp-validation-for="OwnOrganizedEvent" class="text-danger"></span>
     </div>
     <div class="col-md form-group">
-        <label asp-for="Name"></label>
+        <label asp-for="Name">@Localizer["Name"]</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="col-md form-group">
-        <label asp-for="Date"></label>
+        <label asp-for="Date">@Localizer["Date"]</label>
         <input asp-for="Date" class="form-control" />
         <span asp-validation-for="Date" class="text-danger"></span>
     </div>
     <div class="col-md form-group">
-        <label asp-for="EntryDeadline">Entry deadline</label>
+        <label asp-for="EntryDeadline">@Localizer["Entry deadline"]</label>
         <input asp-for="EntryDeadline" class="form-control" />
         <span asp-validation-for="EntryDeadline" class="text-danger"></span>
     </div>
 </div>
 <div class="row">
     <div class="col-md form-group">
-        <label asp-for="TypeOfRace">Type of race</label>
-        <select asp-for="TypeOfRace" asp-items="@EnumHelper<RaceType>.GetSelectListItems()" class="form-control"></select>
+        <label asp-for="TypeOfRace">@Localizer["Type of race"]</label>
+        <select asp-for="TypeOfRace" asp-items="@EnumHelper<RaceType>.GetSelectListItems(StringLocalizer)" class="form-control"></select>
         <span asp-validation-for="TypeOfRace" class="text-danger"></span>
     </div>
     <div class="col-md form-group">
-        <label asp-for="Country"></label>
+        <label asp-for="Country">@Localizer["Country"]</label>
         <input asp-for="Country" class="form-control" />
         <span asp-validation-for="Country" class="text-danger"></span>
     </div>
     <div class="col-md form-group">
-        <label asp-for="City"></label>
+        <label asp-for="City">@Localizer["City"]</label>
         <input asp-for="City" class="form-control" />
         <span asp-validation-for="City" class="text-danger"></span>
     </div>
 </div>
 <div class="row">
     <div class="col-md form-group">
-        <label asp-for="PointWeight">Point weight</label>
+        <label asp-for="PointWeight">@Localizer["Point weight"]</label>
         <input asp-for="PointWeight" class="form-control" />
         <span asp-validation-for="PointWeight" class="text-danger"></span>
     </div>
     <div class="col-md form-group">
-        <label asp-for="Remark"></label>
+        <label asp-for="Remark">@Localizer["Remark"]</label>
         <input asp-for="Remark" class="form-control" />
         <span asp-validation-for="Remark" class="text-danger"></span>
     </div>
     <div class="col-md form-group">
-        <label asp-for="Website"></label>
+        <label asp-for="Website">@Localizer["Website"]</label>
         <input asp-for="Website" class="form-control" />
         <span asp-validation-for="Website" class="text-danger"></span>
     </div>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,22 +39,22 @@ namespace TeamManager.Manual.Models
             }
         }
 
-        public void Validate(ModelStateDictionary modelState)
+        public void Validate(ModelStateDictionary modelState, IStringLocalizer localizer)
         {
             if (DistanceLengths == null || DistanceLengths.Count == 0)
             {
-                modelState.AddModelError(nameof(DistanceLengths), "At least one distance is required.");
+                modelState.AddModelError(nameof(DistanceLengths), localizer["At least one distance is required."]);
             }
             else if(DistanceLengths.Any(d => d <= 0))
             {
-                modelState.AddModelError(nameof(DistanceLengths), "All distances should be greater than 0.");
+                modelState.AddModelError(nameof(DistanceLengths), localizer["All distances should be greater than 0."]);
             }
 
             if (modelState.GetFieldValidationState(nameof(Date)) == ModelValidationState.Valid &&
                 modelState.GetFieldValidationState(nameof(EntryDeadline)) == ModelValidationState.Valid
                 && Date.Value < EntryDeadline.Value)
             {
-                modelState.AddModelError(string.Empty, "The entry deadline must be later than the race date.");
+                modelState.AddModelError(string.Empty, localizer["The entry deadline must be sooner than the race date."]);
             }
         }
     }

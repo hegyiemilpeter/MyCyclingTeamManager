@@ -1,19 +1,21 @@
 ﻿@addTagHelper TeamManager.Manual.Infrastructure.TagHelpers.RaceDateTagHelper, TeamManager.Manual
 
 @using TeamManager.Manual.Data
+@inject IViewLocalizer Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<TeamManager.Manual.SharedResources> StringLocalizer
 @model IList<RaceModel>
 @{
-    ViewBag.Title = "Races";
+    ViewBag.Title = Localizer["Races"];
 }
 
-<h1>Races</h1>
+<h1>@Localizer["Races"]</h1>
 <div class="text-center">
     <raceDate number-of-months="4" start-month="@ViewBag.Month" start-year="@ViewBag.Year"></raceDate>
 </div>
 @if (Model == null || Model.Count == 0)
 {
     <hr />
-    <h5>No races in the database for this month.</h5>
+    <h5>@Localizer["No races in the database for this month."]</h5>
 }
 else
 {
@@ -22,12 +24,12 @@ else
             <thead class="thead-light">
                 <tr>
                     <th></th>
-                    <th>Date</th>
-                    <th>Race name</th>
-                    <th>Type</th>
-                    <th>City</th>
-                    <th>Distances</th>
-                    <th>Entry deadline</th>
+                    <th>@Localizer["Date"]</th>
+                    <th>@Localizer["Race name"]</th>
+                    <th>@Localizer["Type"]</th>
+                    <th>@Localizer["City"]</th>
+                    <th>@Localizer["Distances"]</th>
+                    <th>@Localizer["Entry deadline"]</th>
                     <th></th>
                 </tr>
             </thead>
@@ -47,7 +49,7 @@ else
                     <td>@race.Date?.ToString("yyyy.MM.dd")</td>
                     <td>@race.Name</td>
                     <td>
-                        @(race.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(race.TypeOfRace.Value) : "")
+                        @(race.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(race.TypeOfRace.Value, StringLocalizer) : "")
                     </td>
                     <td>
                         @race.CityString
@@ -57,10 +59,10 @@ else
                     </td>
                     <td>@race.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
                     <td>
-                        <a asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@race.Id">View</a>
+                        <a asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@race.Id">@Localizer["View"]</a>
                         @if(User.IsInRole(Roles.RACE_MANAGER))
                         {
-                            <a asp-action="Edit" class="btn btn-sm btn-outline-dark" asp-route-id="@race.Id">Edit</a>
+                            <a asp-action="Edit" class="btn btn-sm btn-outline-dark" asp-route-id="@race.Id">@Localizer["Edit"]</a>
                         }
                     </td>
                 </tr>
@@ -70,7 +72,7 @@ else
 }
 @if (User.IsInRole(Roles.RACE_MANAGER))
 {
-    <a asp-action="Add" class="btn btn-primary btn-sm">New</a>
+    <a asp-action="Add" class="btn btn-primary btn-sm">@Localizer["New"]</a>
 }
 
-<a asp-action="Add" asp-controller="RaceResults" class="btn btn-primary btn-sm">Add Result</a>
+<a asp-action="Add" asp-controller="RaceResults" class="btn btn-primary btn-sm">@Localizer["Add Result"]</a>

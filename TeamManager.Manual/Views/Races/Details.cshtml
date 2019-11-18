@@ -1,5 +1,9 @@
 ﻿@model RaceDetailsModel
 @using TeamManager.Manual.Data
+@using Microsoft.Extensions.Localization
+@using TeamManager.Manual
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<SharedResources> StringLocalizer
 
 @{
     ViewData["Title"] = Model.BaseModel.Name;
@@ -11,38 +15,38 @@
     @if (Model.EntriedRiders == null || Model.EntriedRiders.Count == 0 && Model.BaseModel.EntryDeadline > DateTime.Now)
     {
         <div class="alert alert-danger">
-            <a asp-action="Delete" class="btn btn-sm btn-danger m-1" asp-route-id="@Model.BaseModel.Id">Delete race</a>
+            <a asp-action="Delete" class="btn btn-sm btn-danger m-1" asp-route-id="@Model.BaseModel.Id">@Localizer["Delete race"]</a>
         </div>
     }
     else
     {
-        <div class="alert alert-danger">Race cannot be deleted, because there are entried riders or the entry deadline is over.</div>
+        <div class="alert alert-danger">@Localizer["Race cannot be deleted, because there are entried riders or the entry deadline is over."]</div>
     }
 }
 <div class="row">
     <table class="col-md-6 table">
         <tr>
-            <th>Date</th>
+            <th>@Localizer["Date"]</th>
             <td>@Model.BaseModel.Date?.ToString("yyyy.MM.dd")</td>
         </tr>
         <tr>
-            <th>Locality</th>
+            <th>@Localizer["City"]</th>
             <td>@Model.BaseModel.CityString</td>
         </tr>
         <tr>
-            <th>Distances</th>
+            <th>@Localizer["Distances"]</th>
             <td>@Model.BaseModel.DistancesString</td>
         </tr>
         <tr>
-            <th>Entry deadline</th>
+            <th>@Localizer["Entry deadline"]</th>
             <td>@Model.BaseModel.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
         </tr>
         <tr>
-            <th>Race type</th>
-            <td>@(Model.BaseModel.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(Model.BaseModel.TypeOfRace.Value) : "")</td>
+            <th>@Localizer["Race type"]</th>
+            <td>@(Model.BaseModel.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(Model.BaseModel.TypeOfRace.Value, StringLocalizer) : "")</td>
         </tr>
         <tr>
-            <th>Website</th>
+            <th>@Localizer["Website"]</th>
             <td>
                 @if (!string.IsNullOrEmpty(Model.BaseModel.Website))
                 {
@@ -51,15 +55,15 @@
             </td>
         </tr>
         <tr>
-            <th>Remark</th>
+            <th>@Localizer["Remark"]</th>
             <td>@Model.BaseModel.Remark</td>
         </tr>
         <tr>
-            <th>Points</th>
+            <th>@Localizer["Points"]</th>
             <td>@Model.BaseModel.PointWeight</td>
         </tr>
         <tr>
-            <th>Applied riders</th>
+            <th>@Localizer["Applied riders"]</th>
             <td>
                 @if (Model.EntriedRiders == null || Model.EntriedRiders.Count == 0)
                 {
@@ -88,21 +92,21 @@
         {
             <form asp-action="AddEntry" asp-controller="RaceEntries" method="post" class="form-inline">
                 <input name="id" id="id" type="hidden" value="@Model.BaseModel.Id" />
-                <input type="submit" class="btn btn-success m-1" value="Apply" />
+                <input type="submit" class="btn btn-success m-1" value="@Localizer["Apply"]" />
             </form>
         }
         else
         {
             <form asp-action="RemoveEntry" asp-controller="RaceEntries" method="post" class="form-inline">
                 <input name="id" id="id" type="hidden" value="@Model.BaseModel.Id" />
-                <input type="submit" class="btn btn-danger m-1" value="Remove entry" />
+                <input type="submit" class="btn btn-danger m-1" value="@Localizer["Remove entry"]" />
             </form>
         }
     }
     @if (Model.BaseModel.Date < DateTime.Now)
     {
-        <a asp-action="Add" asp-controller="RaceResults" asp-route-id="@Model.BaseModel.Id" class="btn btn-success m-1">Add result</a>
+        <a asp-action="Add" asp-controller="RaceResults" asp-route-id="@Model.BaseModel.Id" class="btn btn-success m-1">@Localizer["Add result"]</a>
     }
-    <a asp-action="Index" class="btn btn-primary m-1">Back</a>
+    <a asp-action="Index" class="btn btn-primary m-1">@Localizer["Back"]</a>
 </div>
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
@@ -17,12 +18,14 @@ namespace TeamManager.Manual.Controllers
         private readonly IRaceManager raceManager;
         private readonly CustomUserManager userManager;
         private readonly IUserRaceManager userRaceManager;
+        private readonly IStringLocalizer<SharedResources> localizer;
 
-        public RacesController(IRaceManager raceMgr, IUserRaceManager userRaceMgr, CustomUserManager userMgr)
+        public RacesController(IRaceManager raceMgr, IUserRaceManager userRaceMgr, CustomUserManager userMgr, IStringLocalizer<SharedResources> localizer)
         {
             raceManager = raceMgr;
             userRaceManager = userRaceMgr;
             userManager = userMgr;
+            this.localizer = localizer;
         }
 
         public IActionResult Index(int? year, int? month)
@@ -56,7 +59,7 @@ namespace TeamManager.Manual.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(RaceModel race)
         {
-            race.Validate(ModelState);
+            race.Validate(ModelState, localizer);
             if (!ModelState.IsValid)
             {
                 return View(race);
@@ -103,7 +106,7 @@ namespace TeamManager.Manual.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(RaceModel race)
         {
-            race.Validate(ModelState);
+            race.Validate(ModelState, localizer);
             if (!ModelState.IsValid)
             {
                 return View(race);

@@ -10,17 +10,17 @@ namespace TeamManager.Manual.Data
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The name is required.")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The date is required.")]
         [DataType(DataType.Date)]
         public DateTime? Date { get; set; }
         public string Country { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The city is required.")]
         public string City { get; set; }
         [Required]
         public RaceType? TypeOfRace { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The entry deadline is required.")]
         public DateTime? EntryDeadline { get; set; }
         [DataType(DataType.Url)]
         public string Website { get; set; }

@@ -1,18 +1,20 @@
 ﻿@using TeamManager.Manual.Data
+@inject IViewLocalizer Localizer
+
 @model RaceModel
 @{
-    ViewBag.Title = "Add race";
+    ViewBag.Title = Localizer["Add race"];
 }
 
-<h1>Add race</h1>
+<h1>@Localizer["Add race"]</h1>
 <hr />
 <form method="post" asp-action="Add">
     @await Html.PartialAsync("_RaceFieldsPartial", Model)
     <hr />
     <div class="row">
         <div class="col-md">
-            <input type="submit" value="Add" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-link">Back to races</a>
+            <input type="submit" value="@Localizer["Add"]" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-link">@Localizer["Back to races"]</a>
         </div>
     </div>
 </form>

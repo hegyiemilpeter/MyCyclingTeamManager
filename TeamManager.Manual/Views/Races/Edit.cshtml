@@ -1,11 +1,11 @@
 ﻿@model RaceModel
-@using TeamManager.Manual.Data
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = $"Edit - {Model.Name}";
+    ViewData["Title"] = Localizer["Edit race"];
 }
 
-<h1>Edit race</h1>
+<h1>@Localizer["Edit race"]</h1>
 <hr />
 <form method="post" asp-action="Edit">
     <input type="hidden" asp-for="Id" value="@Model.Id" />
@@ -13,8 +13,8 @@
     <hr />
     <div class="row">
         <div class="col-md">
-            <input type="submit" value="Save" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-link">Back to races</a>
+            <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-link">@Localizer["Back to races"]</a>
         </div>
     </div>
 </form>
