@@ -1,22 +1,23 @@
 ﻿@model IEnumerable<UserModel>
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Users";
+    ViewData["Title"] = Localizer["Users"];
 }
 
-<h1>Users</h1>
+<h1>@Localizer["Users"]</h1>
 @if(Model == null || Model.Count() == 0)
 {
-    <div>No users in the database.</div>
+    <div>@Localizer["No users in the database."]</div>
 }
 else
 {
     <table class="table">
         <thead class="thead-light">
             <tr>
-                <th>Name</th>
-                <th>E-mail</th>
-                <th>Phone number</th>
+                <th>@Localizer["Name"]</th>
+                <th>@Localizer["E-mail"]</th>
+                <th>@Localizer["Phone number"]</th>
                 <th></th>
             </tr>
         </thead>
@@ -27,7 +28,7 @@ else
                     <td>@user.FullName</td>
                     <td>@user.Email</td>
                     <td>@user.PhoneNumber</td>
-                    <td><a asp-action="Details" asp-controller="Users" asp-route-Id="@user.Id" class="btn btn-outline-primary btn-sm">Details</a></td>
+                    <td><a asp-action="Details" asp-controller="Users" asp-route-Id="@user.Id" class="btn btn-outline-primary btn-sm">@Localizer["Details"]</a></td>
                 </tr>
             }
         </tbody>

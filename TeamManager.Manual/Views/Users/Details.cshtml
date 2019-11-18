@@ -1,4 +1,5 @@
 ﻿@model UserDetailsViewModel
+@inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = Model.UserData.FirstName + " " + Model.UserData.LastName;
@@ -7,54 +8,54 @@
 <h1>@Model.UserData.FirstName @Model.UserData.LastName</h1>
 <div class="row">
     <div class="col-md m-1">
-        <h2>Personal data</h2>
+        <h2>@Localizer["Personal data"]</h2>
         <table class="table">
             <tr>
-                <th>Birth date</th>
+                <th>@Localizer["Birth date"]</th>
                 <td>@Model.UserData.BirthDate.ToString("yyyy.MM.dd")</td>
             </tr>
             <tr>
-                <th>Address</th>
+                <th>@Localizer["Address"]</th>
                 <td>@string.Format($"{Model.UserData.ZipCode} {Model.UserData.City} {Model.UserData.Street} {Model.UserData.HouseNumber}")</td>
             </tr>
             <tr>
-                <th>Phone number</th>
+                <th>@Localizer["Phone number"]</th>
                 <td>@Model.UserData.PhoneNumber</td>
             </tr>
             <tr>
-                <th>Shirt size</th>
+                <th>@Localizer["T-Shirt size"]</th>
                 <td>@Model.UserData.TShirtSize</td>
             </tr>
             <tr>
-                <th>AKESZ</th>
+                <th>@Localizer["AKESZ number"]</th>
                 <td>@Model.UserData.AKESZ</td>
             </tr>
             <tr>
-                <th>UCI Number</th>
+                <th>@Localizer["UCI Number"]</th>
                 <td>@Model.UserData.UCI</td>
             </tr>
             <tr>
-                <th>Ötpróba number</th>
+                <th>@Localizer["Ötpróba number"]</th>
                 <td>@Model.UserData.Otproba</td>
             </tr>
             <tr>
-                <th>Triathlete number</th>
+                <th>@Localizer["Triathlete number"]</th>
                 <td>@Model.UserData.Triathlon</td>
             </tr>
         </table>
-        <a asp-action="Edit" asp-route-id="@Model.UserData.Id" class="btn btn-primary">Edit</a>
-        @if(User.IsInRole(Roles.USER_MANAGER) && !Model.UserData.VerifiedByAdmin)
+        <a asp-action="Edit" asp-route-id="@Model.UserData.Id" class="btn btn-primary">@Localizer["Edit"]</a>
+        @if (User.IsInRole(Roles.USER_MANAGER) && !Model.UserData.VerifiedByAdmin)
         {
-            <a asp-action="Verify" asp-route-id="@Model.UserData.Id" class="btn btn-success">Verify</a>
+            <a asp-action="Verify" asp-route-id="@Model.UserData.Id" class="btn btn-success">@Localizer["Verify"]</a>
         }
     </div>
     <div class="col-md m-1">
-        <h2>Results</h2>
+        <h2>@Localizer["Results"]</h2>
         <table class="table col-md m-1">
             @if (Model.Results == null || Model.Results.Count() == 0)
             {
                 <tr>
-                    <td>No results yet.</td>
+                    <td>@Localizer["No results yet."]</td>
                 </tr>
             }
             else
@@ -64,18 +65,18 @@
                     <tr>
                         <th>@result.Race</th>
                         <td>
-                            <span>Cat. @result.CategoryResult</span>
+                            <span>@Localizer["Cat."] @result.CategoryResult</span>
                             @if (result.AbsoluteResult.HasValue)
                             {
-                                <span>Abs. @result.AbsoluteResult.Value</span>
+                                <span>@Localizer["Abs."] @result.AbsoluteResult.Value</span>
                             }
                             @if (result.IsStaff)
                             {
-                                <span class="badge badge-pill badge-primary">Staff</span>
+                                <span class="badge badge-pill badge-primary">@Localizer["Staff"]</span>
                             }
                             @if (result.IsDriver)
                             {
-                                <span class="badge badge-pill badge-info">Driver</span>
+                                <span class="badge badge-pill badge-info">@Localizer["Driver"]</span>
                             }
                         </td>
                     </tr>
