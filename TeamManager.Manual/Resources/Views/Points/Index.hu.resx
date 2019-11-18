@@ -117,40 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Amount cannot be 0." xml:space="preserve">
-    <value>A mennyiség nagyobb kell legyen 0-nál.</value>
+  <data name="Absolute result" xml:space="preserve">
+    <value>Abszolút eredmény</value>
   </data>
-  <data name="Invalid e-mail or password." xml:space="preserve">
-    <value>Hibás e-mail cím vagy jelszó.</value>
+  <data name="Add" xml:space="preserve">
+    <value>Elhasznált pont hozzáadása</value>
   </data>
-  <data name="Must be between 1 and 1000." xml:space="preserve">
-    <value>1 és 1000 közötti érték adható meg.</value>
+  <data name="All consumed points:" xml:space="preserve">
+    <value>Összesen felhasznált pont:</value>
   </data>
-  <data name="No token found." xml:space="preserve">
-    <value>Hiányzó token, kezdd előlről a folyamatot!</value>
+  <data name="All gained points:" xml:space="preserve">
+    <value>Összes pont:</value>
   </data>
-  <data name="No user can be found with the given id." xml:space="preserve">
-    <value>Nem található felhasználó a megadott id-val.</value>
+  <data name="Amount" xml:space="preserve">
+    <value>Mennyiség</value>
   </data>
-  <data name="No userId found." xml:space="preserve">
-    <value>Hiányzó felhasználó azonosító, kezdd elölről a folyamatot!</value>
+  <data name="Category result" xml:space="preserve">
+    <value>Korcsoportos eredmény</value>
   </data>
-  <data name="The Confirm password field is required." xml:space="preserve">
-    <value>A jelszó megerősítő megadása kötelező.</value>
+  <data name="Collected points" xml:space="preserve">
+    <value>Összegyűjtött pontok</value>
   </data>
-  <data name="The Email address is required." xml:space="preserve">
-    <value>Az e-mail cím megadása kötelező.</value>
+  <data name="Consumed at" xml:space="preserve">
+    <value>Elhasználva</value>
   </data>
-  <data name="The Password and Confirm password should match." xml:space="preserve">
-    <value>A két jelszónak egyeznie kell.</value>
+  <data name="Consumed points" xml:space="preserve">
+    <value>Elhasznált pontok</value>
   </data>
-  <data name="The Password field is required." xml:space="preserve">
-    <value>A jelszó megadása kötelező.</value>
+  <data name="Driver" xml:space="preserve">
+    <value>Sofőr</value>
   </data>
-  <data name="The selected user does not have so many points. Maximum {0} is allowed." xml:space="preserve">
-    <value>A kiválasztott versenyzőnek nincs ennyi pontja. Maxium {0} pontot adhatsz meg.</value>
+  <data name="No points consumed yet." xml:space="preserve">
+    <value>Nem használt még el pontokat.</value>
   </data>
-  <data name="The user is required." xml:space="preserve">
-    <value>A versenyző kötelező.</value>
+  <data name="No points gained yet." xml:space="preserve">
+    <value>Még nem gyűjtött pontokat.</value>
+  </data>
+  <data name="Point weight" xml:space="preserve">
+    <value>Súly</value>
+  </data>
+  <data name="Points" xml:space="preserve">
+    <value>Pontok</value>
+  </data>
+  <data name="Race" xml:space="preserve">
+    <value>Verseny</value>
+  </data>
+  <data name="Recorded by" xml:space="preserve">
+    <value>Rögzítette</value>
+  </data>
+  <data name="Staff" xml:space="preserve">
+    <value>Segítő</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Igen</value>
   </data>
 </root>

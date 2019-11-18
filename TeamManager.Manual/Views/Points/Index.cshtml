@@ -1,14 +1,15 @@
 ﻿@model PointsViewModel
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Points";
+    ViewData["Title"] = Localizer["Points"];
 }
 
-<h1>Collected points</h1>
+<h1>@Localizer["Collected points"]</h1>
 @if (Model.CollectedPoints == null || Model.CollectedPoints.Count == 0)
 {
     <div class="row">
-        No points gained yet.
+        @Localizer["No points gained yet."]
     </div>
 }
 else
@@ -17,13 +18,13 @@ else
         <table class="table">
             <thead class="thead-light">
                 <tr>
-                    <th>Race</th>
-                    <th>Point weight</th>
-                    <th>Absolute result</th>
-                    <th>Category result</th>
-                    <th>Driver</th>
-                    <th>Staff</th>
-                    <th>Points</th>
+                    <th>@Localizer["Race"]</th>
+                    <th>@Localizer["Point weight"]</th>
+                    <th>@Localizer["Absolute result"]</th>
+                    <th>@Localizer["Category result"]</th>
+                    <th>@Localizer["Driver"]</th>
+                    <th>@Localizer["Staff"]</th>
+                    <th>@Localizer["Points"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,11 +37,11 @@ else
                         <td>@result.CategoryResult</td>
                         <td>
                             @if (result.IsDriver)
-                            {<span class="badge badge-pill badge-success">Yes</span>}
+                            {<span class="badge badge-pill badge-success">@Localizer["Yes"]</span>}
                         </td>
                         <td>
                             @if (result.IsStaff)
-                            {<span class="badge badge-pill badge-success">Yes</span>}
+                            {<span class="badge badge-pill badge-success">@Localizer["Yes"]</span>}
                         </td>
                         <td>@result.Points</td>
                     </tr>
@@ -49,15 +50,15 @@ else
         </table>
     </div>
     <div>
-        All gained points: @Model.CollectedPoints.Sum(x => x.Points)
+        @Localizer["All gained points:"] @Model.CollectedPoints.Sum(x => x.Points)
     </div>
 }
 <hr />
-<h1>Consumed points</h1>
+<h1>@Localizer["Consumed points"]</h1>
 @if (Model.ConsumedPoints == null || Model.ConsumedPoints.Count == 0)
 {
     <div class="row">
-        No points consumed yet.
+        @Localizer["No points consumed yet."]
     </div>
 }
 else
@@ -66,9 +67,9 @@ else
         <table class="table">
             <thead class="thead-light">
                 <tr>
-                    <th>Consumed at</th>
-                    <th>Amount</th>
-                    <th>Recorded by</th>
+                    <th>@Localizer["Consumed at"]</th>
+                    <th>@Localizer["Amount"]</th>
+                    <th>@Localizer["Recorded by"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -84,12 +85,12 @@ else
         </table>
     </div>
     <div>
-        All consumed points: @Model.ConsumedPoints.Sum(x => x.Amount)
+        @Localizer["All consumed points:"] @Model.ConsumedPoints.Sum(x => x.Amount)
     </div>
 }
 @if (User.IsInRole(Roles.POINT_CONSUPTION_MANAGER))
 {
     <div>
-        <a asp-action="AddConsumedPoints" class="btn btn-primary m-2" asp-route-id="@Model.UserId">Add</a>
+        <a asp-action="AddConsumedPoints" class="btn btn-primary m-2" asp-route-id="@Model.UserId">@Localizer["Add"]</a>
     </div>
 }

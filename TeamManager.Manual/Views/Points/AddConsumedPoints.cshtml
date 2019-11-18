@@ -1,27 +1,28 @@
 ﻿@model AddPointConsumptionViewModel
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Add consumed points";
+    ViewData["Title"] = Localizer["Add consumed points"];
 }
 
-<h1>Add consumed points</h1>
+<h1>@Localizer["Add consumed points"]</h1>
 <form asp-action="AddConsumedPoints" method="post">
     <div class="col-4">
         <div class="form-group">
-            <label asp-for="SelectedUserId">User</label>
+            <label asp-for="SelectedUserId">@Localizer["User"]</label>
             <select asp-for="SelectedUserId" asp-items="@Model.Users" class="form-control"></select>
             <span class="text-danger" asp-validation-for="SelectedUserId"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Amount"></label>
+            <label asp-for="Amount">@Localizer["Amount"]</label>
             <input asp-for="Amount" class="form-control" />
             <span class="text-danger" asp-validation-for="Amount"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Remark"></label>
+            <label asp-for="Remark">@Localizer["Remark"]</label>
             <input asp-for="Remark" class="form-control" />
             <span asp-validation-for="Remark" class="text-danger"></span>
         </div>
-        <input type="submit" class="btn btn-primary" value="Save" />
+        <input type="submit" class="btn btn-primary" value="@Localizer["Save"]" />
     </div>
 </form>
