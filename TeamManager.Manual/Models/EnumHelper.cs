@@ -30,11 +30,11 @@ public static class EnumHelper<T>
     {
         var fieldInfo = value.GetType().GetField(value.ToString());
 
-        var descriptionAttributes = fieldInfo.GetCustomAttributes(
-            typeof(DisplayAttribute), false) as DisplayAttribute[];
+        DisplayAttribute[] descriptionAttributes = fieldInfo.GetCustomAttributes(typeof(DisplayAttribute), false) as DisplayAttribute[];
 
         string response = string.Empty;
-        if (descriptionAttributes[0].ResourceType != null)
+        if (descriptionAttributes != null &&  descriptionAttributes.Length > 0)
+            if (descriptionAttributes[0] != null && descriptionAttributes[0].ResourceType != null)
             response = lookupResource(descriptionAttributes[0].ResourceType, descriptionAttributes[0].Name);
 
         if (descriptionAttributes == null) response = string.Empty;

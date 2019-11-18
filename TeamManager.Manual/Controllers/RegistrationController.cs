@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.ViewModels;
@@ -13,10 +14,12 @@ namespace TeamManager.Manual.Controllers
     public class RegistrationController : Controller
     {
         private readonly CustomUserManager userManager;
+        private readonly IStringLocalizer<SharedResources> localizer;
          
-        public RegistrationController(CustomUserManager userMgr)
+        public RegistrationController(CustomUserManager userMgr, IStringLocalizer<SharedResources> localizer)
         {
             userManager = userMgr;
+            this.localizer = localizer;
         }
 
         [HttpGet]
@@ -26,7 +29,7 @@ namespace TeamManager.Manual.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(RegistrationViewModel model)
         {
-            model.Validate(ModelState);
+            model.Validate(ModelState, localizer);
             if (!ModelState.IsValid)
             {
                 return View();

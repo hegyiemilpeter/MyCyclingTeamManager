@@ -6,12 +6,11 @@ namespace TeamManager.Manual.Models.ViewModels
     {
         #region Login data
 
-        [Required]
+        [Required(ErrorMessage = "The Password field is required.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
-        [Compare("Password")]
+        [Compare("Password", ErrorMessage = "The Password and Confirm password should match.")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
 

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
@@ -14,11 +15,13 @@ namespace TeamManager.Manual.Controllers
     {
         private readonly CustomUserManager userManager;
         private readonly IUserRaceManager userRaceManager;
+        private readonly IStringLocalizer<SharedResources> localizer;
 
-        public UsersController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr)
+        public UsersController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IStringLocalizer<SharedResources> localizer)
         {
             userManager = customUserManager;
             userRaceManager = userRaceMgr;
+            this.localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -74,7 +77,7 @@ namespace TeamManager.Manual.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UserModel model)
         {
-            model.Validate(ModelState);
+            model.Validate(ModelState, localizer);
             if (!ModelState.IsValid)
             {
                 return View(model);
