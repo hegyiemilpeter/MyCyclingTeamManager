@@ -16,6 +16,11 @@ namespace TeamManager.Manual.Models
             configuration = config;
         }
 
+        public async Task SendAdminVerifiedEmailAsync(string to, string firstName, string loginAddress)
+        {
+            await SendEmailAsync(to, "Green Riders Team Manager - Admin jóváhagyás", $"<h3>Kedves {firstName}! Az adminisztrátorok jóváhagyták regisztrációdat a Green Riders rendszerébe, most már be tudsz lépni. <a href=\"{loginAddress}\">Belépek</a>");
+        }
+
         public async Task SendContactEmailAsync(string to, string message, string replyTo)
         {
             await SendEmailAsync(to, $"Team Manager - Contact", $"<p>Feladó: <a href=mailto:{replyTo}>{replyTo}</a></p><p>Üzenet: {message}</p>");

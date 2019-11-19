@@ -123,8 +123,8 @@
   <data name="Successful registration" xml:space="preserve">
     <value>Sikeres regisztráció</value>
   </data>
-  <data name="Thank you for your registration, after an administrator verified you, you can log in." xml:space="preserve">
-    <value>Köszönjük a regisztrációdat, adminisztrátori jóváhagyás után fogsz tudni belépni.</value>
+  <data name="Thank you for your registration, after an administrator verified you, you can log in.  You will be notified via e-mail." xml:space="preserve">
+    <value>Köszönjük a regisztrációdat, adminisztrátori jóváhagyás után fogsz tudni belépni. Amint ez megtörtént e-mail értesítést küldünk számodra.</value>
   </data>
   <data name="Thank you for your registration, now you can" xml:space="preserve">
     <value>Köszönjük a regisztrációdat, most már</value>

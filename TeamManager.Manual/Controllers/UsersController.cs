@@ -96,14 +96,15 @@ namespace TeamManager.Manual.Controllers
         [Authorize(Roles = Roles.USER_MANAGER)]
         public async Task<IActionResult> Verify(int id)
         {
-            UserModel userModel = await userManager.GetUserByIdAsync(id.ToString());
+            User userModel = await userManager.FindByIdAsync(id.ToString());
             if (userModel == null)
             {
                 return NotFound();
             }
 
             userModel.VerifiedByAdmin = true;
-            await userManager.UpdateAsync(userModel);
+            await userManager.VerifyUserAsync(userModel, Url.Link("Default", new { controller = "Account", action = "Login" }));
+
             return RedirectToAction(nameof(Details), new { id });
         }
     }

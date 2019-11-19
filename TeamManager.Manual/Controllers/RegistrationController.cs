@@ -56,7 +56,7 @@ namespace TeamManager.Manual.Controllers
             };
 
             Dictionary<IdentificationNumberType, string> identifiers = CreateIdentifiersDictionaty(model);
-            IdentityResult createResult = await userManager.CreateAsync(user, model.Password, address, identifiers);
+            IdentityResult createResult = await userManager.CreateAsync(user, model.Password, address, identifiers, Url.Link("Default", new { controller = "Account", action = "Login" }));
             if (!createResult.Succeeded)
             {
                 AddModelError(createResult);

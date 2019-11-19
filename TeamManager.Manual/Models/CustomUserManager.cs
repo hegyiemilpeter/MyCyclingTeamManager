@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -10,19 +11,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
+using TeamManager.Manual.Models.Interfaces;
 
 namespace TeamManager.Manual.Models
 {
     public class CustomUserManager : UserManager<User>
     {
         private TeamManagerDbContext _dbContext { get; }
+        private IConfiguration _configuration { get; }
+        private IEmailSender _emailSender { get; }
 
-        public CustomUserManager(TeamManagerDbContext dbContext, IUserStore<User> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<User> passwordHasher, IEnumerable<IUserValidator<User>> userValidators, IEnumerable<IPasswordValidator<User>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<User>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
+        public CustomUserManager(TeamManagerDbContext dbContext, IConfiguration configuration, IEmailSender emailSender, IUserStore<User> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<User> passwordHasher, IEnumerable<IUserValidator<User>> userValidators, IEnumerable<IPasswordValidator<User>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<User>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
             _dbContext = dbContext;
+            _configuration = configuration;
+            _emailSender = emailSender;
         }
 
-        public async Task<IdentityResult> CreateAsync(User user, string password, Address address, Dictionary<IdentificationNumberType, string> identifiers)
+        public async Task<IdentityResult> CreateAsync(User user, string password, Address address, Dictionary<IdentificationNumberType, string> identifiers, string loginUrl)
         {
             user.UserName = user.FirstName.Replace(" ", "").RemoveDiacritics().ToLower() + "." + user.LastName.Replace(" ", "").RemoveDiacritics().ToLower() + "." + user.BirthDate.ToString("yyyyMMdd");
 
@@ -30,6 +36,11 @@ namespace TeamManager.Manual.Models
             if (!identityResult.Succeeded)
             {
                 return identityResult;
+            }
+            
+            if (IsEmailOnWildCardList(user.Email))
+            {
+                await VerifyUserAsync(user, loginUrl);
             }
 
             try
@@ -63,6 +74,26 @@ namespace TeamManager.Manual.Models
                 identityResult.Errors.Append(new IdentityError() { Description = $"Update with address and/or identification number failed for {user.FirstName} {user.LastName}." });
                 return identityResult;
             }
+        }
+        public async Task VerifyUserAsync(User user, string loginUrl)
+        {
+            if (!user.VerifiedByAdmin)
+            {
+                user.VerifiedByAdmin = true;
+                await UpdateAsync(user);
+                await _emailSender.SendAdminVerifiedEmailAsync(user.Email, user.FirstName, loginUrl);
+            }
+        }
+
+        private bool IsEmailOnWildCardList(string email)
+        {
+            string[] wildCardEmails = _configuration.GetValue<string[]>("WildcardEmails");
+            if(wildCardEmails == null || wildCardEmails.Length == 0)
+            {
+                return false;
+            }
+
+            return wildCardEmails.Contains(email);
         }
 
         public async Task<UserModel> GetUserByNameAsync(string name)
