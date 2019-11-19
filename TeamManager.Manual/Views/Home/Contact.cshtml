@@ -1,0 +1,36 @@
+﻿@model TeamManager.Manual.Models.ViewModels.ContactViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Contact"];
+}
+
+<h1>@Localizer["Contact"]</h1>
+<div class="container">
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+
+    <form asp-action="Contact" method="post">
+        <div class="col-md-5 form-group">
+            <label asp-for="Email">@Localizer["E-mail"]</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="col-md-5 form-group">
+            <label asp-for="Message">@Localizer["Message"]</label>
+            <input asp-for="Message" class="form-control" />
+            <span asp-validation-for="Message" class="text-danger"></span>
+        </div>
+        <div class="col-md-5 form-group">
+            <label asp-for="ValidationNumber">@Localizer["Please enter the following number to the box:"] @ViewBag.SessionVariable</label>
+            <input asp-for="ValidationNumber" class="form-control" />
+            <span asp-validation-for="ValidationNumber" class="text-danger"></span>
+        </div>
+        <input type="submit" value="@Localizer["Send"]" class="btn btn-outline-primary" />
+    </form>
+</div>
+

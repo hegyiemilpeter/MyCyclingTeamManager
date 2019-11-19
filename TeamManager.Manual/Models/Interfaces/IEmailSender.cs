@@ -8,5 +8,7 @@ namespace TeamManager.Manual.Models.Interfaces
     public interface IEmailSender
     {
         Task SendForgotPasswordEmailAsync(string to, string lastName, string token, string userId, string baseUrl);
+
+        Task SendContactEmailAsync(string to, string message, string replyTo);
     }
 }

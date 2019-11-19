@@ -65,6 +65,7 @@ namespace TeamManager.Manual
             });
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddSession();
 
             services.AddMvc()
                 .AddMvcOptions(options =>
@@ -118,6 +119,7 @@ namespace TeamManager.Manual
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseMvc(options =>
             {

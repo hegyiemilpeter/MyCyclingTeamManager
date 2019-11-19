@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
@@ -17,6 +14,11 @@ namespace TeamManager.Manual.Models
         public EmailSender(IConfiguration config)
         {
             configuration = config;
+        }
+
+        public async Task SendContactEmailAsync(string to, string message, string replyTo)
+        {
+            await SendEmailAsync(to, $"Team Manager - Contact", $"<p>Feladó: <a href=mailto:{replyTo}>{replyTo}</a></p><p>Üzenet: {message}</p>");
         }
 
         public async Task SendForgotPasswordEmailAsync(string to, string name, string token, string userId, string baseUrl)
