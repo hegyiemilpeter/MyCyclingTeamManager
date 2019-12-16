@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
@@ -9,11 +12,13 @@ namespace TeamManager.Manual.Models
 {
     public class EmailSender : IEmailSender
     {
-        private IConfiguration configuration;
+        internal IConfiguration Configuration { get; set; }
+        internal ILogger<EmailSender> Logger { get; set; }
 
-        public EmailSender(IConfiguration config)
+        public EmailSender(IConfiguration config, ILogger<EmailSender> emailSenderLogger)
         {
-            configuration = config;
+            Configuration = config;
+            Logger = emailSenderLogger;
         }
 
         public async Task SendAdminVerifiedEmailAsync(string to, string firstName, string loginAddress)
@@ -35,9 +40,16 @@ namespace TeamManager.Manual.Models
 
         private async Task SendEmailAsync(string to, string subject, string htmlContent)
         {
-            string apiKey = configuration.GetValue<string>("SendGridAPIKey");
+            if (!IsValidEmailTo(to))
+            {
+                Logger.LogWarning($"{subject} e-mail cannot be sent to {to}");
+                throw new FormatException($"{to}");
+            }
+
+            string apiKey = Configuration.GetValue<string>("SendGridAPIKey");
             if (string.IsNullOrEmpty(apiKey))
             {
+                Logger.LogError("SendGridAPIKey can not be found in configuration.");
                 return;
             }
 
@@ -51,7 +63,26 @@ namespace TeamManager.Manual.Models
             Response sendGridResponse = await client.SendEmailAsync(message);
             if (sendGridResponse.StatusCode != System.Net.HttpStatusCode.Accepted)
             {
+                Logger.LogError($"Email sending failed: {sendGridResponse.StatusCode} {sendGridResponse.Body}");
                 throw new EmailSendingException();
+            }
+
+            Logger.LogInformation($"E-mail sent to {to} about {subject}");
+        }
+
+        private bool IsValidEmailTo(string to)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(to))
+                    return false;
+
+                MailAddress mailAddress = new MailAddress(to);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
             }
         }
     }

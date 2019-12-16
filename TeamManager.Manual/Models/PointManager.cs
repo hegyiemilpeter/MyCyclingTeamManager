@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace TeamManager.Manual.Models
 {
@@ -13,12 +14,14 @@ namespace TeamManager.Manual.Models
         private readonly TeamManagerDbContext dbContext;
         private readonly CustomUserManager userManager;
         private readonly IUserRaceManager userRaceManager;
+        private readonly ILogger<PointManager> logger;
 
-        public PointManager(TeamManagerDbContext context, CustomUserManager customUserMgr, IUserRaceManager userRaceMgr)
+        public PointManager(TeamManagerDbContext context, CustomUserManager customUserMgr, IUserRaceManager userRaceMgr, ILogger<PointManager> pmLogger)
         {
             dbContext = context;
             userManager = customUserMgr;
             userRaceManager = userRaceMgr;
+            logger = pmLogger;
         }
 
         public async Task<int> GetAvailablePointAmountByUser(string userId)
@@ -26,6 +29,7 @@ namespace TeamManager.Manual.Models
             User user = await userManager.FindByIdAsync(userId);
             if (user == null)
             {
+                logger.LogWarning($"User with id {userId} is not found");
                 throw new UserNotFoundException();
             }
 
@@ -39,6 +43,7 @@ namespace TeamManager.Manual.Models
             User user = await userManager.FindByIdAsync(userId);
             if(user == null)
             {
+                logger.LogWarning($"User with id {userId} is not found");
                 throw new UserNotFoundException();
             }
 
@@ -50,18 +55,21 @@ namespace TeamManager.Manual.Models
             User user = await userManager.FindByIdAsync(userId);
             if(user == null)
             {
+                logger.LogWarning($"User with id {userId} is not found");
                 throw new UserNotFoundException();
             }
 
             User creator = await userManager.FindByIdAsync(creatorUserId);
             if(creator == null)
             {
+                logger.LogWarning($"User with id {creatorUserId} is not found");
                 throw new UserNotFoundException();
             }
 
             int currentAmount = await GetAvailablePointAmountByUser(user.Id.ToString());
             if(currentAmount < amount)
             {
+                logger.LogError($"User {creatorUserId} try to overdue to point limit of user {userId}");
                 throw new PointLimitException();
             }
 
@@ -76,6 +84,7 @@ namespace TeamManager.Manual.Models
 
             dbContext.PointConsuptions.Add(consuption);
             await dbContext.SaveChangesAsync();
+            logger.LogInformation($"{amount} points are consumed by user {userId}. Created by {creatorUserId} - {remark}");
         }
     }
 }

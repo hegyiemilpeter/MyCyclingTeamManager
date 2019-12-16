@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
-using Azure.Storage;
-using Microsoft.Extensions.Configuration;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using Diacritics.Extensions;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace TeamManager.Manual.Models
 {
@@ -21,13 +17,15 @@ namespace TeamManager.Manual.Models
         private readonly TeamManagerDbContext dbContext;
         private readonly CustomUserManager userManager;
         private readonly IPointCalculator pointCalculator;
-        private readonly IConfiguration configuration;
-        public UserRaceManager(TeamManagerDbContext context, CustomUserManager customUserManager, IPointCalculator pointMgr, IConfiguration config)
+        private readonly ILogger<UserRaceManager> logger;
+        private readonly IImageStore imageStore;
+        public UserRaceManager(TeamManagerDbContext context, CustomUserManager customUserManager, IPointCalculator pointMgr, IImageStore imageStore, ILogger<UserRaceManager> userRaceManagerlogger)
         {
             dbContext = context;
             userManager = customUserManager;
             pointCalculator = pointMgr;
-            configuration = config;
+            this.imageStore = imageStore;
+            logger = userRaceManagerlogger;
         }
 
         #region Entries
@@ -38,6 +36,7 @@ namespace TeamManager.Manual.Models
             {
                 if (race.EntryDeadline.HasValue && race.EntryDeadline.Value <= DateTime.Now)
                 {
+                    logger.LogWarning($"Entry deadline is over for {race.Name}. User: {user.Email}");
                     throw new DeadlineException();
                 }
 
@@ -69,6 +68,7 @@ namespace TeamManager.Manual.Models
             {
                 if (race.EntryDeadline.HasValue && race.EntryDeadline.Value <= DateTime.Now)
                 {
+                    logger.LogWarning($"Entry deadline is over for {race.Name}. User: {user.Email}");
                     throw new DeadlineException();
                 }
 
@@ -89,7 +89,7 @@ namespace TeamManager.Manual.Models
                 return new List<UserModel>();
             }
 
-            var entriedUsers = dbContext.Users.Where(x => userIds.Contains(x.Id)).ToList();
+            var entriedUsers = await dbContext.Users.Where(x => userIds.Contains(x.Id)).ToListAsync();
             List<UserModel> response = new List<UserModel>();
             foreach (var user in entriedUsers)
             {
@@ -120,43 +120,25 @@ namespace TeamManager.Manual.Models
             userRace.AbsoluteResult = absoluteResult;
 
             if (update)
-            {
                 dbContext.Entry<UserRace>(userRace).State = EntityState.Modified;
-            }
             else
-            {
                 dbContext.UserRaces.Add(userRace);
-            }
 
-            try
-            {
-                string azureConnectionString = configuration.GetValue<string>("AzureBlobConnection");
-                if (!string.IsNullOrEmpty(azureConnectionString))
-                {
-                    string blobName = userRace.Race.Date.Value.Year + "-" + userRace.Race.Name.ToLower().Replace(" ", "-").RemoveDiacritics();
-                    BlobContainerClient container = new BlobContainerClient(azureConnectionString, blobName);
-                    await container.CreateIfNotExistsAsync(Azure.Storage.Blobs.Models.PublicAccessType.BlobContainer);
-                    Stream memoryStream = new MemoryStream();
-                    image.CopyTo(memoryStream);
-                    memoryStream.Position = 0;
-                    await container.UploadBlobAsync(image.FileName, memoryStream);
-                }
-            }
-            catch (Exception)
-            {
-                // TODO: log errors here
-            }
+            Stream memoryStream = new MemoryStream();
+            image.CopyTo(memoryStream);
+            memoryStream.Position = 0;
 
+            await imageStore.SaveRaceImageAsync(user, memoryStream, image.FileName, userRace.Race);
             await dbContext.SaveChangesAsync();
         }
 
         public IList<ResultModel> GetRaceResultsByUser(User user)
         {
-            IList<UserRace> releavantRaces = dbContext.UserRaces
+            IList<UserRace> racesOfTheGivenUser = dbContext.UserRaces
                 .Include(x => x.Race)
                 .Where(x => x.UserId == user.Id && (x.AbsoluteResult.HasValue || x.CategoryResult.HasValue || (x.IsTakePartAsDriver.HasValue && x.IsTakePartAsDriver.Value) || (x.IsTakePartAsStaff.HasValue && x.IsTakePartAsStaff.Value)))
                 .ToList();
-            return releavantRaces.Select(x => ToResultModel(x)).ToList();
+            return racesOfTheGivenUser.Select(x => ToResultModel(x)).ToList();
         }
 
         private ResultModel ToResultModel(UserRace x)

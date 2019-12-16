@@ -26,6 +26,7 @@ namespace TeamManager.Manual.Models
         {
             if (configuration.GetValue<bool>("UseAdminRestrictionForNewUsers") && !user.VerifiedByAdmin)
             {
+                Logger.LogWarning($"{user.Email} cannot log in without admin verification.");
                 return Task.FromResult(false);
             }
 

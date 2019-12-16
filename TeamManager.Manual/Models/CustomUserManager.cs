@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
@@ -96,6 +97,21 @@ namespace TeamManager.Manual.Models
             return wildCardEmails.Contains(email);
         }
 
+        public async Task<IdentityResult> SendForgotPasswordEmailAsync(User user, string host)
+        {
+            try
+            {
+                string passwordResetToken = await base.GeneratePasswordResetTokenAsync(user);
+                string encodedToken = HttpUtility.UrlEncode(passwordResetToken);
+                await _emailSender.SendForgotPasswordEmailAsync(user.Email, user.FirstName, encodedToken, user.Id.ToString(), host);
+                return IdentityResult.Success;
+            }
+            catch (Exception e)
+            {
+                return IdentityResult.Failed(new IdentityError() { Description = e.Message });
+            }
+        }
+
         public async Task<UserModel> GetUserByNameAsync(string name)
         {
             User user = await base.FindByNameAsync(name);
@@ -123,7 +139,7 @@ namespace TeamManager.Manual.Models
         public async Task<IEnumerable<UserModel>> ListUsersAsync()
         {
             List<UserModel> response = new List<UserModel>();
-            foreach (var user in _dbContext.Users.ToList())
+            foreach (var user in await _dbContext.Users.ToListAsync())
             {
                 response.Add(CreateUserModel(user));
             }

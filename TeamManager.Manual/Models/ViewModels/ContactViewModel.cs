@@ -24,5 +24,10 @@ namespace TeamManager.Manual.Models.ViewModels
                 modelErrors.AddModelError(nameof(ValidationNumber), localizer["Validation number does not match."]);
             }
         }
+
+        public override string ToString()
+        {
+            return $"Email: {Email}, Message: {Message}";
+        }
     }
 }

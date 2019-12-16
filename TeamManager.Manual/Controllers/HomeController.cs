@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Models.Interfaces;
 using TeamManager.Manual.Models.ViewModels;
 
@@ -10,14 +11,16 @@ namespace TeamManager.Manual.Controllers
 {
     public class HomeController : Controller
     {
-        private IEmailSender emailSender;
-        private IStringLocalizer<SharedResources> localizer;
-        private IConfiguration configuration;
-        public HomeController(IEmailSender sender, IStringLocalizer<SharedResources> loc, IConfiguration config)
+        private readonly IEmailSender emailSender;
+        private readonly IStringLocalizer<SharedResources> localizer;
+        private readonly IConfiguration configuration;
+        private readonly ILogger<HomeController> logger;
+        public HomeController(IEmailSender sender, IStringLocalizer<SharedResources> loc, IConfiguration config, ILogger<HomeController> homeLogger)
         {
             emailSender = sender;
             localizer = loc;
             configuration = config;
+            logger = homeLogger;
         }
 
         public IActionResult Index()
@@ -47,12 +50,14 @@ namespace TeamManager.Manual.Controllers
             model.Validate(validationBytes, ModelState, localizer);
             if (!ModelState.IsValid)
             {
+                logger.LogDebug($"Invalid model for contact. {model.ToString()}");
                 return View(model);
             }
 
             string emailTo = configuration.GetValue<string>("ContactEmail");
             if (string.IsNullOrEmpty(emailTo))
             {
+                logger.LogError($"Contact email is not configured.");
                 throw new ApplicationException("Contact email is not configured.");
             }
 
@@ -68,6 +73,7 @@ namespace TeamManager.Manual.Controllers
             byte sessionVarialbe = (byte)random.Next(0, byte.MaxValue);
             HttpContext.Session.Set("ContactValidation", new byte[] { sessionVarialbe });
             ViewBag.SessionVariable = sessionVarialbe;
+            logger.LogDebug("Validation number generated for contacting.");
         }
     }
 }

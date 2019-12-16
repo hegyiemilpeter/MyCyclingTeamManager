@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
@@ -22,13 +23,14 @@ namespace TeamManager.Manual.Controllers
         private readonly CustomSignInManager signInManager;
         private readonly IEmailSender emailSender;
         private readonly IStringLocalizer<SharedResources> localizer;
-
-        public AccountController(CustomUserManager customUserManager, CustomSignInManager signInMgr, IEmailSender sender, IStringLocalizer<SharedResources> stringLocalizer)
+        private readonly ILogger<AccountController> logger;
+        public AccountController(CustomUserManager customUserManager, CustomSignInManager signInMgr, IEmailSender sender, IStringLocalizer<SharedResources> stringLocalizer, ILogger<AccountController> aclogger)
         {
             userManager = customUserManager;
             signInManager = signInMgr;
             emailSender = sender;
             localizer = stringLocalizer;
+            logger = aclogger;
         }
 
         [AllowAnonymous]
@@ -45,6 +47,7 @@ namespace TeamManager.Manual.Controllers
         {
             if (!ModelState.IsValid)
             {
+                logger.LogDebug($"Invalid model in case of login. {model.Email}");
                 return View(model);
             }
 
@@ -79,15 +82,14 @@ namespace TeamManager.Manual.Controllers
         {
             if (!ModelState.IsValid)
             {
+                logger.LogDebug($"Invalid model in case of forgot password. {email}");
                 return View();
             }
 
             User currentUser = await userManager.FindByEmailAsync(email);
             if(currentUser != null)
             {
-                string passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(currentUser);
-                string encodedToken = HttpUtility.UrlEncode(passwordResetToken);
-                await emailSender.SendForgotPasswordEmailAsync(currentUser.Email, currentUser.FirstName, encodedToken, currentUser.Id.ToString(), HttpContext.Request.Scheme + "://" + HttpContext.Request.Host);
+                await userManager.SendForgotPasswordEmailAsync(currentUser, HttpContext.Request.Scheme + "://" + HttpContext.Request.Host);    
             }
 
             return RedirectToAction(nameof(SuccessfulTokenGeneration));
@@ -115,6 +117,7 @@ namespace TeamManager.Manual.Controllers
         {
             if (!ModelState.IsValid)
             {
+                logger.LogDebug($"Invalid model in case of reset password. {model.ToString()}");
                 return View(model);
             }
 

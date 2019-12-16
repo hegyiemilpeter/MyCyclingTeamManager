@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
+using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
 using TeamManager.Manual.Models.ViewModels;
 
@@ -18,12 +20,14 @@ namespace TeamManager.Manual.Controllers
         private readonly CustomUserManager userManager;
         private readonly IUserRaceManager userRaceManager;
         private readonly IPointManager pointManager;
+        private readonly ILogger<PointsController> logger;
 
-        public PointsController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IPointManager pointMgr)
+        public PointsController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IPointManager pointMgr, ILogger<PointsController> pointsControllerLogger)
         {
             userManager = customUserManager;
             userRaceManager = userRaceMgr;
             pointManager = pointMgr;
+            logger = pointsControllerLogger;
         }
 
         public async Task<IActionResult> Index(int? id = null)
@@ -36,8 +40,9 @@ namespace TeamManager.Manual.Controllers
             }
 
             string visitorUserId = userManager.GetUserId(User);
-            if(user.Id != int.Parse(visitorUserId) && !User.IsInRole(Roles.POINT_CONSUPTION_MANAGER))
+            if(!User.IsInRole(Roles.POINT_CONSUPTION_MANAGER) && user.Id != int.Parse(visitorUserId))
             {
+                logger.LogWarning($"Unauthorized access to points of {user.FirstName} {user.LastName} by User.Id = {visitorUserId}");
                 return Challenge();
             }
 
@@ -81,6 +86,7 @@ namespace TeamManager.Manual.Controllers
             model.Validate(ModelState, await pointManager.GetAvailablePointAmountByUser(model.SelectedUserId));
             if(!ModelState.IsValid)
             {
+                logger.LogDebug($"Invalid model for AddConsumedPoints.");
                 model.Users = await GetUsersSelectList();
                 return View(model);
             }

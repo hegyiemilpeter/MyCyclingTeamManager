@@ -22,5 +22,10 @@ namespace TeamManager.Manual.Models
         [DataType(DataType.Password)]
         [Compare(nameof(Password), ErrorMessage = "The Password and Confirm password should match.")]
         public string ConfirmPassword { get; set; }
+
+        public override string ToString()
+        {
+            return $"Token: {Token}, UserId: {UserId}";
+        }
     }
 }
