@@ -56,11 +56,14 @@ namespace TeamManager.Manual.Controllers
                 LastName = model.LastName,
                 Gender = model.Gender.Value,
                 PhoneNumber = model.PhoneNumber,
-                TShirtSize = model.TShirtSize.Value
+                TShirtSize = model.TShirtSize.Value,
+                AkeszNumber = model.AKESZ,
+                OtprobaNumber = model.Otproba,
+                TriathleteLicence = model.Triathlon,
+                UCILicence = model.UCI
             };
 
-            Dictionary<IdentificationNumberType, string> identifiers = CreateIdentifiersDictionaty(model);
-            IdentityResult createResult = await userManager.CreateAsync(user, model.Password, address, identifiers, Url.Link("Default", new { controller = "Account", action = "Login" }));
+            IdentityResult createResult = await userManager.CreateAsync(user, model.Password, address, Url.Link("Default", new { controller = "Account", action = "Login" }));
             if (!createResult.Succeeded)
             {
                 AddModelError(createResult);
@@ -73,16 +76,6 @@ namespace TeamManager.Manual.Controllers
         public IActionResult RegistrationSuccess()
         {
             return View();
-        }
-
-        private Dictionary<IdentificationNumberType, string> CreateIdentifiersDictionaty(RegistrationViewModel model)
-        {
-            Dictionary<IdentificationNumberType, string> response = new Dictionary<IdentificationNumberType, string>();
-            if (!string.IsNullOrEmpty(model.AKESZ)) { response.Add(IdentificationNumberType.AKESZ, model.AKESZ); }
-            if (!string.IsNullOrEmpty(model.Otproba)) { response.Add(IdentificationNumberType.OtProba, model.Otproba); }
-            if (!string.IsNullOrEmpty(model.UCI)) { response.Add(IdentificationNumberType.UCILicence, model.UCI); }
-            if (!string.IsNullOrEmpty(model.Triathlon)) { response.Add(IdentificationNumberType.TriathleteLicence, model.Triathlon); }
-            return response;
         }
 
         private void AddModelError(IdentityResult createResult)

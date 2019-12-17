@@ -17,18 +17,18 @@ namespace TeamManager.Manual.Models
 {
     public class CustomUserManager : UserManager<User>
     {
-        private TeamManagerDbContext _dbContext { get; }
-        private IConfiguration _configuration { get; }
-        private IEmailSender _emailSender { get; }
+        private TeamManagerDbContext DbContext { get; }
+        private IConfiguration Configuration { get; }
+        private IEmailSender EmailSender { get; }
 
         public CustomUserManager(TeamManagerDbContext dbContext, IConfiguration configuration, IEmailSender emailSender, IUserStore<User> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<User> passwordHasher, IEnumerable<IUserValidator<User>> userValidators, IEnumerable<IPasswordValidator<User>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<User>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
-            _dbContext = dbContext;
-            _configuration = configuration;
-            _emailSender = emailSender;
+            DbContext = dbContext;
+            Configuration = configuration;
+            EmailSender = emailSender;
         }
 
-        public async Task<IdentityResult> CreateAsync(User user, string password, Address address, Dictionary<IdentificationNumberType, string> identifiers, string loginUrl)
+        public async Task<IdentityResult> CreateAsync(User user, string password, Address address, string loginUrl)
         {
             user.UserName = user.FirstName.Replace(" ", "").RemoveDiacritics().ToLower() + "." + user.LastName.Replace(" ", "").RemoveDiacritics().ToLower() + "." + user.BirthDate.ToString("yyyyMMdd");
 
@@ -45,28 +45,13 @@ namespace TeamManager.Manual.Models
 
             try
             {
-                _dbContext.Addresses.Add(address);
-                await _dbContext.SaveChangesAsync();
+                DbContext.Addresses.Add(address);
+                await DbContext.SaveChangesAsync();
 
                 user.AddressId = address.Id;
-                _dbContext.Entry(user).State = EntityState.Modified;
+                DbContext.Entry(user).State = EntityState.Modified;
 
-                if(identifiers != null && identifiers.Count > 0)
-                {
-                    foreach (var identifier in identifiers)
-                    {
-                        IdentificationNumber identificationNumber = new IdentificationNumber()
-                        {
-                            Type = identifier.Key,
-                            Value = identifier.Value,
-                            UserId = user.Id
-                        };
-
-                        _dbContext.IdentificationNumbers.Add(identificationNumber);
-                    }
-                }
-
-                await _dbContext.SaveChangesAsync();
+                await DbContext.SaveChangesAsync();
                 return identityResult;
             }
             catch
@@ -83,13 +68,13 @@ namespace TeamManager.Manual.Models
                 await UpdateAsync(user);
                 Logger.LogDebug($"{user.Email} verified.");
 
-                await _emailSender.SendAdminVerifiedEmailAsync(user.Email, user.FirstName, loginUrl);
+                await EmailSender.SendAdminVerifiedEmailAsync(user.Email, user.FirstName, loginUrl);
             }
         }
 
         private bool IsEmailOnWildCardList(string email)
         {
-            string[] wildCardEmails = _configuration.GetValue<string[]>("WildcardEmails");
+            string[] wildCardEmails = Configuration.GetValue<string[]>("WildcardEmails");
             if(wildCardEmails == null || wildCardEmails.Length == 0)
             {
                 Logger.LogDebug("No wildcard e-mails are in the configuration.");
@@ -105,7 +90,7 @@ namespace TeamManager.Manual.Models
             {
                 string passwordResetToken = await base.GeneratePasswordResetTokenAsync(user);
                 string encodedToken = HttpUtility.UrlEncode(passwordResetToken);
-                await _emailSender.SendForgotPasswordEmailAsync(user.Email, user.FirstName, encodedToken, user.Id.ToString(), host);
+                await EmailSender.SendForgotPasswordEmailAsync(user.Email, user.FirstName, encodedToken, user.Id.ToString(), host);
                 return IdentityResult.Success;
             }
             catch (Exception e)
@@ -141,7 +126,7 @@ namespace TeamManager.Manual.Models
         public async Task<IEnumerable<UserModel>> ListUsersAsync()
         {
             List<UserModel> response = new List<UserModel>();
-            foreach (var user in await _dbContext.Users.ToListAsync())
+            foreach (var user in await DbContext.Users.ToListAsync())
             {
                 response.Add(CreateUserModel(user));
             }
@@ -158,6 +143,10 @@ namespace TeamManager.Manual.Models
             user.PhoneNumber = model.PhoneNumber;
             user.TShirtSize = model.TShirtSize.HasValue ? model.TShirtSize.Value : Size.S;
             user.VerifiedByAdmin = model.VerifiedByAdmin;
+            user.AkeszNumber = model.AKESZ;
+            user.OtprobaNumber = model.Otproba;
+            user.UCILicence = model.UCI;
+            user.TriathleteLicence = model.Triathlon;
 
             IdentityResult result = await base.UpdateAsync(user);
             if (!result.Succeeded)
@@ -165,66 +154,17 @@ namespace TeamManager.Manual.Models
                 throw new IdentityException() { Errors = result.Errors };
             }
 
-            foreach (var item in _dbContext.IdentificationNumbers.Where(x => x.UserId == user.Id).ToList())
-            {
-                _dbContext.IdentificationNumbers.Remove(item);
-            }
+            await DbContext.SaveChangesAsync();
 
-            await _dbContext.SaveChangesAsync();
-
-            if (!string.IsNullOrEmpty(model.AKESZ))
-            {
-                _dbContext.IdentificationNumbers.Add(
-                    new IdentificationNumber()
-                    {
-                        Type = IdentificationNumberType.AKESZ,
-                        UserId = user.Id,
-                        Value = model.AKESZ
-                    });
-            }
-
-            if (!string.IsNullOrEmpty(model.UCI))
-            {
-                _dbContext.IdentificationNumbers.Add(
-                    new IdentificationNumber()
-                    {
-                        Type = IdentificationNumberType.UCILicence,
-                        UserId = user.Id,
-                        Value = model.UCI
-                    });
-            }
-
-            if (!string.IsNullOrEmpty(model.Triathlon))
-            {
-                _dbContext.IdentificationNumbers.Add(
-                    new IdentificationNumber()
-                    {
-                        Type = IdentificationNumberType.TriathleteLicence,
-                        UserId = user.Id,
-                        Value = model.Triathlon
-                    });
-            }
-
-            if (!string.IsNullOrEmpty(model.Otproba))
-            {
-                _dbContext.IdentificationNumbers.Add(
-                    new IdentificationNumber()
-                    {
-                        Type = IdentificationNumberType.OtProba,
-                        UserId = user.Id,
-                        Value = model.Otproba
-                    });
-            }
-
-            Address address = _dbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);
+            Address address = DbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);
             address.HouseNumber = model.HouseNumber;
             address.Street = model.Street;
             address.ZipCode = model.ZipCode;
             address.City = model.City;
             address.Country = model.Country;
-            _dbContext.Addresses.Update(address);
+            DbContext.Addresses.Update(address);
 
-            await _dbContext.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
             Logger.LogInformation($"User {user.Email} updated successfully.");
         }
 
@@ -242,41 +182,20 @@ namespace TeamManager.Manual.Models
                     LastName = user.LastName,
                     PhoneNumber = user.PhoneNumber,
                     TShirtSize = user.TShirtSize,
-                    VerifiedByAdmin = user.VerifiedByAdmin
+                    VerifiedByAdmin = user.VerifiedByAdmin,
+                    AKESZ = user.AkeszNumber,
+                    Otproba = user.OtprobaNumber,
+                    Triathlon = user.TriathleteLicence,
+                    UCI = user.UCILicence
                 };
 
-                Address usersAddress = _dbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);
+                Address usersAddress = DbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);
                 if (usersAddress != null)
                 {
                     response.ZipCode = usersAddress.ZipCode;
                     response.City = usersAddress.City;
                     response.HouseNumber = usersAddress.HouseNumber;
                     response.Street = usersAddress.Street;
-                }
-
-                IEnumerable<IdentificationNumber> identificationNumbers = _dbContext.IdentificationNumbers.Where(x => x.UserId == user.Id);
-                if (identificationNumbers != null && identificationNumbers.Count() > 0)
-                {
-                    foreach (var number in identificationNumbers)
-                    {
-                        switch (number.Type)
-                        {
-                            case IdentificationNumberType.AKESZ:
-                                response.AKESZ = number.Value;
-                                break;
-                            case IdentificationNumberType.UCILicence:
-                                response.UCI = number.Value;
-                                break;
-                            case IdentificationNumberType.OtProba:
-                                response.Otproba = number.Value;
-                                break;
-                            case IdentificationNumberType.TriathleteLicence:
-                                response.Triathlon = number.Value;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
                 }
 
                 return response;

@@ -18,5 +18,10 @@ namespace TeamManager.Manual.Data
         public Gender Gender { get; set; }
         public Size TShirtSize { get; set; }
         public bool VerifiedByAdmin { get; set; }
+
+        public string AkeszNumber { get; set; }
+        public string UCILicence { get; set; }
+        public string OtprobaNumber { get; set; }
+        public string TriathleteLicence { get; set; }
     }
 }
