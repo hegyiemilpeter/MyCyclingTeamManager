@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
-// Required Cloud Services:
-// - Possibility of e-mail sending (SendGrid)
-// - Running background jobs (?)
+using Microsoft.Extensions.Logging.AzureAppServices;
 
 namespace TeamManager.Manual
 {
@@ -23,6 +21,11 @@ namespace TeamManager.Manual
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(loggingBuilder => loggingBuilder.AddAzureWebAppDiagnostics())
+                .ConfigureServices(services => services.Configure<AzureBlobLoggerOptions>(options => {
+                        options.BlobName = "teammanagerapplogs.txt";
+                    }
+                ))
                 .UseStartup<Startup>();
     }
 }
