@@ -59,6 +59,8 @@ namespace TeamManager.Manual.Models
                     dbContext.UserRaces.Add(userRace);
                     await dbContext.SaveChangesAsync();
                 }
+                
+                logger.LogInformation($"{user.Email} successfully required entry for {race.Name}");
             }
         }
 
@@ -77,6 +79,7 @@ namespace TeamManager.Manual.Models
                 {
                     dbContext.UserRaces.Remove(alreadyExistingEntity);
                     await dbContext.SaveChangesAsync();
+                    logger.LogInformation($"{user.Email} successfully removed entry for {race.Name}");
                 }
             }
         }
@@ -96,6 +99,7 @@ namespace TeamManager.Manual.Models
                 response.Add(userManager.CreateUserModel(user));
             }
 
+            logger.LogDebug($"{response.Count} entried riders returned for Race {id}");
             return response;
         }
 
@@ -124,12 +128,14 @@ namespace TeamManager.Manual.Models
             else
                 dbContext.UserRaces.Add(userRace);
 
+            await dbContext.SaveChangesAsync();
+            logger.LogInformation($"{user.Email} successfully added a new result for Race {raceId}");
+
             Stream memoryStream = new MemoryStream();
             image.CopyTo(memoryStream);
             memoryStream.Position = 0;
-
+            
             await imageStore.SaveRaceImageAsync(user, memoryStream, image.FileName, userRace.Race);
-            await dbContext.SaveChangesAsync();
         }
 
         public IList<ResultModel> GetRaceResultsByUser(User user)

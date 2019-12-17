@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.ViewModels;
@@ -15,11 +16,13 @@ namespace TeamManager.Manual.Controllers
     {
         private readonly CustomUserManager userManager;
         private readonly IStringLocalizer<SharedResources> localizer;
+        private readonly ILogger<RegistrationController> logger;
          
-        public RegistrationController(CustomUserManager userMgr, IStringLocalizer<SharedResources> localizer)
+        public RegistrationController(CustomUserManager userMgr, IStringLocalizer<SharedResources> registrationLocalizer, ILogger<RegistrationController> registrationLogger)
         {
             userManager = userMgr;
-            this.localizer = localizer;
+            localizer = registrationLocalizer;
+            logger = registrationLogger;
         }
 
         [HttpGet]
@@ -32,6 +35,7 @@ namespace TeamManager.Manual.Controllers
             model.Validate(ModelState, localizer);
             if (!ModelState.IsValid)
             {
+                logger.LogDebug("Invalid model state for registration.");
                 return View();
             }
 

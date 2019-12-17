@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
@@ -17,12 +18,14 @@ namespace TeamManager.Manual.Controllers
         private readonly IUserRaceManager userRaceManager; 
         private readonly CustomUserManager userManager; 
         private readonly IRaceManager raceManager;
+        private readonly ILogger<RaceResultsController> logger;
 
-        public RaceResultsController(IUserRaceManager userRaceMgr, IRaceManager raceMgr, CustomUserManager userMgr)
+        public RaceResultsController(IUserRaceManager userRaceMgr, IRaceManager raceMgr, CustomUserManager userMgr, ILogger<RaceResultsController> raceResultsLogger)
         {
             userRaceManager = userRaceMgr;
             userManager = userMgr;
             raceManager = raceMgr;
+            logger = raceResultsLogger;
         }
 
         public IActionResult Add(int? id = null)
@@ -49,6 +52,7 @@ namespace TeamManager.Manual.Controllers
             model.Validate(ModelState);
             if (!ModelState.IsValid)
             {
+                logger.LogDebug("Invalid model state for AddRaceResult.");
                 model.Races = raceManager.ListPastRaces();
                 return View(model);
             }

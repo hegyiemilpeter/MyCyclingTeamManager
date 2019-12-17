@@ -1,7 +1,6 @@
 ﻿using Diacritics.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -82,6 +81,8 @@ namespace TeamManager.Manual.Models
             {
                 user.VerifiedByAdmin = true;
                 await UpdateAsync(user);
+                Logger.LogDebug($"{user.Email} verified.");
+
                 await _emailSender.SendAdminVerifiedEmailAsync(user.Email, user.FirstName, loginUrl);
             }
         }
@@ -91,6 +92,7 @@ namespace TeamManager.Manual.Models
             string[] wildCardEmails = _configuration.GetValue<string[]>("WildcardEmails");
             if(wildCardEmails == null || wildCardEmails.Length == 0)
             {
+                Logger.LogDebug("No wildcard e-mails are in the configuration.");
                 return false;
             }
 
@@ -223,58 +225,67 @@ namespace TeamManager.Manual.Models
             _dbContext.Addresses.Update(address);
 
             await _dbContext.SaveChangesAsync();
+            Logger.LogInformation($"User {user.Email} updated successfully.");
         }
 
         internal UserModel CreateUserModel(User user)
         {
-            UserModel response = new UserModel()
+            try
             {
-                BirthDate = user.BirthDate,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                Gender = user.Gender,
-                Id = user.Id,
-                LastName = user.LastName,
-                PhoneNumber = user.PhoneNumber,
-                TShirtSize = user.TShirtSize,
-                VerifiedByAdmin = user.VerifiedByAdmin
-            };
-
-            Address usersAddress = _dbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);
-            if (usersAddress != null)
-            {
-                response.ZipCode = usersAddress.ZipCode;
-                response.City = usersAddress.City;
-                response.HouseNumber = usersAddress.HouseNumber;
-                response.Street = usersAddress.Street;
-            }
-
-            IEnumerable<IdentificationNumber> identificationNumbers = _dbContext.IdentificationNumbers.Where(x => x.UserId == user.Id);
-            if (identificationNumbers != null && identificationNumbers.Count() > 0)
-            {
-                foreach (var number in identificationNumbers)
+                UserModel response = new UserModel()
                 {
-                    switch (number.Type)
+                    BirthDate = user.BirthDate,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    Gender = user.Gender,
+                    Id = user.Id,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
+                    TShirtSize = user.TShirtSize,
+                    VerifiedByAdmin = user.VerifiedByAdmin
+                };
+
+                Address usersAddress = _dbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);
+                if (usersAddress != null)
+                {
+                    response.ZipCode = usersAddress.ZipCode;
+                    response.City = usersAddress.City;
+                    response.HouseNumber = usersAddress.HouseNumber;
+                    response.Street = usersAddress.Street;
+                }
+
+                IEnumerable<IdentificationNumber> identificationNumbers = _dbContext.IdentificationNumbers.Where(x => x.UserId == user.Id);
+                if (identificationNumbers != null && identificationNumbers.Count() > 0)
+                {
+                    foreach (var number in identificationNumbers)
                     {
-                        case IdentificationNumberType.AKESZ:
-                            response.AKESZ = number.Value;
-                            break;
-                        case IdentificationNumberType.UCILicence:
-                            response.UCI = number.Value;
-                            break;
-                        case IdentificationNumberType.OtProba:
-                            response.Otproba = number.Value;
-                            break;
-                        case IdentificationNumberType.TriathleteLicence:
-                            response.Triathlon = number.Value;
-                            break;
-                        default:
-                            break;
+                        switch (number.Type)
+                        {
+                            case IdentificationNumberType.AKESZ:
+                                response.AKESZ = number.Value;
+                                break;
+                            case IdentificationNumberType.UCILicence:
+                                response.UCI = number.Value;
+                                break;
+                            case IdentificationNumberType.OtProba:
+                                response.Otproba = number.Value;
+                                break;
+                            case IdentificationNumberType.TriathleteLicence:
+                                response.Triathlon = number.Value;
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
-            }
 
-            return response;
+                return response;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, $"Failed to convert user to user model. Id: {user.Id} / {user.Email}");
+                throw;
+            }
         }
     }
 }

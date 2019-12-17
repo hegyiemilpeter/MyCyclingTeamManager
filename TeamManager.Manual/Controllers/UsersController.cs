@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
 using TeamManager.Manual.Models.Interfaces;
@@ -16,12 +17,14 @@ namespace TeamManager.Manual.Controllers
         private readonly CustomUserManager userManager;
         private readonly IUserRaceManager userRaceManager;
         private readonly IStringLocalizer<SharedResources> localizer;
+        private readonly ILogger<UsersController> logger;
 
-        public UsersController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IStringLocalizer<SharedResources> localizer)
+        public UsersController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IStringLocalizer<SharedResources> userLocalizer, ILogger<UsersController> usersLogger)
         {
             userManager = customUserManager;
             userRaceManager = userRaceMgr;
-            this.localizer = localizer;
+            localizer = userLocalizer;
+            logger = usersLogger;
         }
 
         public async Task<IActionResult> Index()
@@ -39,8 +42,9 @@ namespace TeamManager.Manual.Controllers
             }
 
             string visitorUserId = userManager.GetUserId(User);
-            if(userId != visitorUserId && !User.IsInRole(Roles.USER_MANAGER))
+            if(!User.IsInRole(Roles.USER_MANAGER) && userId != visitorUserId)
             {
+                logger.LogWarning($"{visitorUserId} is not authorized to visit User {userModel.Email}'s user details.");
                 return Challenge();
             }
 
@@ -64,8 +68,9 @@ namespace TeamManager.Manual.Controllers
             }
 
             string visitorUserId = userManager.GetUserId(User);
-            if (id.ToString() != visitorUserId && !User.IsInRole(Roles.USER_MANAGER))
+            if (!User.IsInRole(Roles.USER_MANAGER) && id.ToString() != visitorUserId)
             {
+                logger.LogWarning($"{visitorUserId} is not authorized to edit User {user.Email}'s user data.");
                 return Challenge();
             }
 
@@ -80,12 +85,14 @@ namespace TeamManager.Manual.Controllers
             model.Validate(ModelState, localizer);
             if (!ModelState.IsValid)
             {
+                logger.LogDebug("Invalid model for edit user.");
                 return View(model);
             }
 
             string visitorUserId = userManager.GetUserId(User);
             if (model.Id != int.Parse(visitorUserId) && !User.IsInRole(Roles.USER_MANAGER))
             {
+                logger.LogWarning($"{visitorUserId} is not authorized to edit User {model.Email}'s user data.");
                 return Challenge();
             }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace TeamManager.Manual.Models
     public class RaceManager : IRaceManager
     {
         private readonly TeamManagerDbContext dbContext;
+        private readonly ILogger<RaceManager> logger;
 
-        public RaceManager(TeamManagerDbContext context)
+        public RaceManager(TeamManagerDbContext context, ILogger<RaceManager> raceManagerLogger)
         {
             dbContext = context;
+            logger = raceManagerLogger;
         }
 
         public async Task AddRaceAsync(RaceModel raceModel)
@@ -33,6 +36,7 @@ namespace TeamManager.Manual.Models
                 }
 
                 await dbContext.SaveChangesAsync();
+                logger.LogInformation($"A new race created in the database. {raceModel.Name} / {race.Id}");
             }
         }
 
@@ -59,6 +63,7 @@ namespace TeamManager.Manual.Models
                 response.Add(ToRaceModel(race));
             }
 
+            logger.LogDebug($"Races are listed successfully.");
             return response;
         }
 
@@ -70,6 +75,7 @@ namespace TeamManager.Manual.Models
                 return null;
             }
 
+            logger.LogDebug($"Races {id} returned.");
             return ToRaceModel(raceWithTheGivenId);
         }
 
@@ -118,6 +124,7 @@ namespace TeamManager.Manual.Models
             }
 
             await dbContext.SaveChangesAsync();
+            logger.LogInformation($"Race {model.Id} updated in the database.");
         }
 
         public async Task DeleteRaceAsync(int id)
@@ -130,45 +137,62 @@ namespace TeamManager.Manual.Models
 
             dbContext.Races.Remove(raceToUpdate);
             await dbContext.SaveChangesAsync();
+            logger.LogInformation($"Race {id} removed from database.");
         }
 
         private RaceModel ToRaceModel(Race r)
         {
-            RaceModel raceModel = new RaceModel()
+            try
             {
-                City = r.City,
-                Country = r.Country,
-                Date = r.Date,
-                EntryDeadline = r.EntryDeadline,
-                Id = r.Id,
-                Name = r.Name,
-                PointWeight = r.PointWeight,
-                Remark = r.Remark,
-                TypeOfRace = r.TypeOfRace,
-                Website = r.Website,
-                OwnOrganizedEvent = r.OwnOrganizedEvent
-            };
+                RaceModel raceModel = new RaceModel()
+                {
+                    City = r.City,
+                    Country = r.Country,
+                    Date = r.Date,
+                    EntryDeadline = r.EntryDeadline,
+                    Id = r.Id,
+                    Name = r.Name,
+                    PointWeight = r.PointWeight,
+                    Remark = r.Remark,
+                    TypeOfRace = r.TypeOfRace,
+                    Website = r.Website,
+                    OwnOrganizedEvent = r.OwnOrganizedEvent
+                };
 
-            raceModel.DistanceLengths = dbContext.Distances.Where(x => x.RaceId == r.Id).Select(d => d.Distance).ToList();
-            return raceModel;
+                raceModel.DistanceLengths = dbContext.Distances.Where(x => x.RaceId == r.Id).Select(d => d.Distance).ToList();
+                return raceModel;
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Failed to convert Race entity to race model. Id: {r.Id}");
+                throw;
+            }
         }
 
-        private static Race ToRace(RaceModel raceModel)
+        private Race ToRace(RaceModel raceModel)
         {
-            return new Race()
+            try
             {
-                City = raceModel.City,
-                Country = raceModel.Country,
-                Date = raceModel.Date,
-                EntryDeadline = raceModel.EntryDeadline,
-                Id = raceModel.Id,
-                Name = raceModel.Name,
-                PointWeight = raceModel.PointWeight,
-                Remark = raceModel.Remark,
-                TypeOfRace = raceModel.TypeOfRace,
-                Website = raceModel.Website,
-                OwnOrganizedEvent = raceModel.OwnOrganizedEvent
-            };
+                return new Race()
+                {
+                    City = raceModel.City,
+                    Country = raceModel.Country,
+                    Date = raceModel.Date,
+                    EntryDeadline = raceModel.EntryDeadline,
+                    Id = raceModel.Id,
+                    Name = raceModel.Name,
+                    PointWeight = raceModel.PointWeight,
+                    Remark = raceModel.Remark,
+                    TypeOfRace = raceModel.TypeOfRace,
+                    Website = raceModel.Website,
+                    OwnOrganizedEvent = raceModel.OwnOrganizedEvent
+                };
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Failed to convert raceModel to Race entity. Id: {raceModel.Id}");
+                throw;
+            }
         }
     }
 }
