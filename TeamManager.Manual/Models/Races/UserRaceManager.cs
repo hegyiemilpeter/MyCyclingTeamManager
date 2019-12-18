@@ -129,7 +129,7 @@ namespace TeamManager.Manual.Models
                 if(imageUri != null)
                 {
                     userRace.ImageUrl = imageUri.ToString();
-                    userRace.ImageIsValid = true;
+                    userRace.ResultIsValid = true;
                 }
             }
             
@@ -169,11 +169,11 @@ namespace TeamManager.Manual.Models
                 throw new KeyNotFoundException(userRaceId.ToString());
             }
 
-            result.ImageIsValid = !(result.ImageIsValid.HasValue && result.ImageIsValid.Value);
+            result.ResultIsValid = !(result.ResultIsValid.HasValue && result.ResultIsValid.Value);
             dbContext.Entry(result).State = EntityState.Modified;
             await dbContext.SaveChangesAsync();
             
-            logger.LogInformation($"Status of result {result.Id} became {result.ImageIsValid.Value}");
+            logger.LogInformation($"Status of result {result.Id} became {result.ResultIsValid.Value}");
         }
 
         private ResultModel ToResultModel(UserRace x)
@@ -184,7 +184,7 @@ namespace TeamManager.Manual.Models
                 CategoryResult = x.CategoryResult,
                 IsDriver = x.IsTakePartAsDriver.HasValue && x.IsTakePartAsDriver.Value,
                 IsStaff = x.IsTakePartAsStaff.HasValue && x.IsTakePartAsStaff.Value,
-                Points = pointCalculator.CalculatePoints(x.Race.PointWeight, x.Race.OwnOrganizedEvent, x.CategoryResult, x.IsTakePartAsStaff, x.IsTakePartAsDriver),
+                Points = pointCalculator.CalculatePoints(x.Race.PointWeight, x.Race.OwnOrganizedEvent, x),
                 Race = x.Race.Name,
                 RaceId = x.RaceId,
                 UserId = x.UserId,
@@ -192,7 +192,7 @@ namespace TeamManager.Manual.Models
                 Image = x.ImageUrl,
                 RaceDate = x.Race.Date,
                 ResultId = x.Id,
-                ImageIsValid = x.ImageIsValid
+                ResultIsValid = x.ResultIsValid
             };
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Interfaces;
 
 namespace TeamManager.Manual.Models
@@ -14,16 +15,21 @@ namespace TeamManager.Manual.Models
         private static int TOP_10_BONUS = 1;
         private static int TOP_3_BONUS = 2;
 
-        public int CalculatePoints(int raceWeight, bool ownEvent, int? categoryResult, bool? staff, bool? driver)
+        public int CalculatePoints(int raceWeight, bool ownEvent, UserRace userRace)
         {
             int result = 0;
-            if (categoryResult.HasValue && categoryResult.Value > 0)
+            if (userRace.ResultIsValid.HasValue && !userRace.ResultIsValid.Value)
             {
-                if (categoryResult.Value <= 3)
+                return result;
+            }
+
+            if (userRace.CategoryResult.HasValue && userRace.CategoryResult.Value > 0)
+            {
+                if (userRace.CategoryResult.Value <= 3)
                 {
                     result += TOP_3_BONUS;
                 }
-                else if (categoryResult.Value <= 10)
+                else if (userRace.CategoryResult.Value <= 10)
                 {
                     result += TOP_10_BONUS;
                 }
@@ -31,7 +37,7 @@ namespace TeamManager.Manual.Models
                 result += raceWeight;
             }
 
-            if (staff.HasValue && staff.Value)
+            if (userRace.IsTakePartAsStaff.HasValue && userRace.IsTakePartAsStaff.Value)
             {
                 if (ownEvent)
                 {
@@ -43,7 +49,7 @@ namespace TeamManager.Manual.Models
                 }
             }
 
-            if (driver.HasValue && driver.Value)
+            if (userRace.IsTakePartAsDriver.HasValue && userRace.IsTakePartAsDriver.Value)
             {
                 result += DRIVER_POINTS;
             }

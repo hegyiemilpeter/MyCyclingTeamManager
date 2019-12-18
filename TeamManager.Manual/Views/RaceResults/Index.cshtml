@@ -45,13 +45,13 @@
                             <form asp-action="ChangeImageValidationStatus" method="post">
                                 <input type="hidden" name="resultId" value="@result.ResultId" />
                                 <input type="hidden" name="userId" value="@Model.UserId" />
-                                @if (result.ImageIsValid.HasValue && result.ImageIsValid.Value)
+                                @if (result.ResultIsValid.HasValue && result.ResultIsValid.Value)
                                 {
-                                    <input type="submit" value="@Localizer["Unverify image"]" />
+                                    <input type="submit" value="@Localizer["Discard result"]" />
                                 }
                                 else
                                 {
-                                    <input type="submit" value="@Localizer["Verify image"]" />
+                                    <input type="submit" value="@Localizer["Accept result"]" />
                                 }
                             </form>
                         }

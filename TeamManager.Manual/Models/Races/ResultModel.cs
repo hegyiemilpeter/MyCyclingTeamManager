@@ -16,6 +16,6 @@ namespace TeamManager.Manual.Models
         public int Points { get; set; }
         public int RacePointWeight { get; set; }
         public string Image { get; set; }
-        public bool? ImageIsValid { get; set; }
+        public bool? ResultIsValid { get; set; }
     }
 }

@@ -120,8 +120,14 @@
   <data name="Abs." xml:space="preserve">
     <value>Abszolút</value>
   </data>
+  <data name="Accept result" xml:space="preserve">
+    <value>Eredmény jóváhagyása</value>
+  </data>
   <data name="Cat." xml:space="preserve">
     <value>Kategória</value>
+  </data>
+  <data name="Discard result" xml:space="preserve">
+    <value>Eredmény érvénytelenítése</value>
   </data>
   <data name="Driver" xml:space="preserve">
     <value>Sofőr</value>
@@ -134,11 +140,5 @@
   </data>
   <data name="Staff" xml:space="preserve">
     <value>Segítő</value>
-  </data>
-  <data name="Unverify image" xml:space="preserve">
-    <value>Kép érvénytelenítése</value>
-  </data>
-  <data name="Verify image" xml:space="preserve">
-    <value>Kép jóváhagyása</value>
   </data>
 </root>
