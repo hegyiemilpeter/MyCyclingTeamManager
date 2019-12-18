@@ -32,7 +32,7 @@ namespace TeamManager.Manual.Models
             logger = log;
         }
 
-        public async Task<Uri> SaveRaceImageAsync(User user, Stream imageStream, string fileName, Race race)
+        public async Task<Uri> SaveRaceImageAsync(User user, Race race, Stream imageStream, string contentType)
         {
             try
             {
@@ -42,7 +42,8 @@ namespace TeamManager.Manual.Models
                     return null;
                 }
 
-                string blobContainerName = race.Date.Value.Year + "-" + race.Name.ToLower().Replace(" ", "-").RemoveDiacritics();
+                string fileName = GenerateFileName(contentType);
+                string blobContainerName = GenerateBlobContainerName(race);
                 BlobContainerClient container = new BlobContainerClient(AzureConnectionString, blobContainerName);
                 await container.CreateIfNotExistsAsync(PublicAccessType.BlobContainer);
                 Response<BlobContentInfo> blob = await container.UploadBlobAsync(fileName, imageStream);
@@ -54,6 +55,29 @@ namespace TeamManager.Manual.Models
                 logger.LogError(e, $"Image cannot be saved to {race.Name} by {user.Email}");
                 return null;
             }
+        }
+
+        private static string GenerateBlobContainerName(Race race)
+        {
+            return race.Date.Value.Year + "-" + race.Name.ToLower().Replace(" ", "-").RemoveDiacritics();
+        }
+
+        private static string GenerateFileName(string contentType)
+        {
+            string fileName = Guid.NewGuid().ToString();
+            switch (contentType)
+            {
+                case "image/jpeg":
+                    fileName += ".jpg";
+                    break;
+                case "image/png":
+                    fileName += ".png";
+                    break;
+                default:
+                    break;
+            }
+
+            return fileName;
         }
 
         public async Task<Stream> DownloadImageAsync(Uri imageUrl)

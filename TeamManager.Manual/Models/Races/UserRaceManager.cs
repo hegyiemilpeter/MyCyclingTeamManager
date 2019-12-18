@@ -140,7 +140,6 @@ namespace TeamManager.Manual.Models
             
             await dbContext.SaveChangesAsync();
             logger.LogInformation($"{user.Email} successfully added a new result for Race {raceId}");
-
         }
 
         private async Task<Uri> UploadImage(User user, IFormFile image, UserRace userRace)
@@ -149,7 +148,7 @@ namespace TeamManager.Manual.Models
             image.CopyTo(memoryStream);
             memoryStream.Position = 0;
 
-            return await imageStore.SaveRaceImageAsync(user, memoryStream, image.FileName, userRace.Race);
+            return await imageStore.SaveRaceImageAsync(user, userRace.Race, memoryStream, image.ContentType);
         }
 
         public IList<ResultModel> GetRaceResultsByUser(User user)
