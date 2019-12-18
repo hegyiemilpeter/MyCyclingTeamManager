@@ -129,6 +129,9 @@
   <data name="At least one distance is required." xml:space="preserve">
     <value>Legalább egy táv megadása kötelező.</value>
   </data>
+  <data name="At least one result is required." xml:space="preserve">
+    <value>Adj meg eredményt vagy segítői tevékenységet.</value>
+  </data>
   <data name="City is required." xml:space="preserve">
     <value>A város kötelező.</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="House number is required." xml:space="preserve">
     <value>A házszám kötelező.</value>
+  </data>
+  <data name="Image is required when you send an absolute or category result." xml:space="preserve">
+    <value>Képfeltöltés kötelező ha eredményt küldesz be.</value>
   </data>
   <data name="Individual time trial" xml:space="preserve">
     <value>Országúti időfutam</value>
@@ -191,6 +197,9 @@
   </data>
   <data name="Other" xml:space="preserve">
     <value>Egyéb</value>
+  </data>
+  <data name="PNG or JPG format is required for images." xml:space="preserve">
+    <value>PNG vagy JPG formátumú képet tölts fel.</value>
   </data>
   <data name="Road race" xml:space="preserve">
     <value>Országúti mezőnyverseny</value>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
@@ -19,13 +20,15 @@ namespace TeamManager.Manual.Controllers
         private readonly CustomUserManager userManager; 
         private readonly IRaceManager raceManager;
         private readonly ILogger<RaceResultsController> logger;
+        private readonly IStringLocalizer<SharedResources> localizer;
 
-        public RaceResultsController(IUserRaceManager userRaceMgr, IRaceManager raceMgr, CustomUserManager userMgr, ILogger<RaceResultsController> raceResultsLogger)
+        public RaceResultsController(IUserRaceManager userRaceMgr, IRaceManager raceMgr, CustomUserManager userMgr, ILogger<RaceResultsController> raceResultsLogger, IStringLocalizer<SharedResources> loc)
         {
             userRaceManager = userRaceMgr;
             userManager = userMgr;
             raceManager = raceMgr;
             logger = raceResultsLogger;
+            localizer = loc;
         }
 
         public IActionResult Add(int? id = null)
@@ -49,7 +52,7 @@ namespace TeamManager.Manual.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(AddResultViewModel model)
         {
-            model.Validate(ModelState);
+            model.Validate(ModelState, localizer);
             if (!ModelState.IsValid)
             {
                 logger.LogDebug("Invalid model state for AddRaceResult.");
