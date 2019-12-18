@@ -1,0 +1,40 @@
+﻿@model BillViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Add new bill"];
+}
+
+<h1>@ViewData["Title"]</h1>
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-success">
+        @ViewBag.Message
+    </div>
+}
+<div class="container">
+    <div class="col-md-5">
+        <form asp-action="Add" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="PurchaseDate">@Localizer["Purchase date"]</label>
+                <input asp-for="PurchaseDate" class="form-control" />
+                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount">@Localizer["Amount"]</label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image">@Localizer["Scanned bill"]</label>
+                <input asp-for="Image" class="form-control-file" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div>
+                <span class="alert-light">@Localizer["Only cash bills can be accepted, others will be removed."]</span>
+            </div>
+            <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+

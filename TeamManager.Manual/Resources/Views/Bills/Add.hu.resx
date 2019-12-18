@@ -117,61 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Absolute result" xml:space="preserve">
-    <value>Abszolút eredmény</value>
-  </data>
-  <data name="Add" xml:space="preserve">
-    <value>Elhasznált pont hozzáadása</value>
-  </data>
   <data name="Add new bill" xml:space="preserve">
-    <value>Számla feltöltés</value>
-  </data>
-  <data name="All consumed points:" xml:space="preserve">
-    <value>Összesen felhasznált pont:</value>
-  </data>
-  <data name="All gained points:" xml:space="preserve">
-    <value>Összes pont:</value>
+    <value>Új számla felvitele</value>
   </data>
   <data name="Amount" xml:space="preserve">
-    <value>Mennyiség</value>
+    <value>Összeg</value>
   </data>
-  <data name="Category result" xml:space="preserve">
-    <value>Korcsoportos eredmény</value>
+  <data name="Only cash bills can be accepted, others will be removed." xml:space="preserve">
+    <value>Felhívjuk figyelmedet, hogy csak készpénzes számlát áll módunkban befogadni.</value>
   </data>
-  <data name="Collected points" xml:space="preserve">
-    <value>Összegyűjtött pontok</value>
+  <data name="Purchase date" xml:space="preserve">
+    <value>Vásárlás napja</value>
   </data>
-  <data name="Consumed at" xml:space="preserve">
-    <value>Elhasználva</value>
+  <data name="Save" xml:space="preserve">
+    <value>Mentés</value>
   </data>
-  <data name="Consumed points" xml:space="preserve">
-    <value>Elhasznált pontok</value>
-  </data>
-  <data name="Driver" xml:space="preserve">
-    <value>Sofőr</value>
-  </data>
-  <data name="No points consumed yet." xml:space="preserve">
-    <value>Nem használt még el pontokat.</value>
-  </data>
-  <data name="No points gained yet." xml:space="preserve">
-    <value>Még nem gyűjtött pontokat.</value>
-  </data>
-  <data name="Point weight" xml:space="preserve">
-    <value>Súly</value>
-  </data>
-  <data name="Points" xml:space="preserve">
-    <value>Pontok</value>
-  </data>
-  <data name="Race" xml:space="preserve">
-    <value>Verseny</value>
-  </data>
-  <data name="Recorded by" xml:space="preserve">
-    <value>Rögzítette</value>
-  </data>
-  <data name="Staff" xml:space="preserve">
-    <value>Segítő</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Igen</value>
+  <data name="Scanned bill" xml:space="preserve">
+    <value>Szkennelt számla</value>
   </data>
 </root>

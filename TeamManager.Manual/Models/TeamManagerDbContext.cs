@@ -12,6 +12,7 @@ namespace TeamManager.Manual.Models
         public DbSet<RaceDistance> Distances { get; set; }
         public DbSet<UserRace> UserRaces { get; set; }
         public DbSet<PointConsuption> PointConsuptions { get; set; }
+        public DbSet<Bill> Bills { get; set; }
 
         public TeamManagerDbContext(DbContextOptions<TeamManagerDbContext> options) : base(options)
         {

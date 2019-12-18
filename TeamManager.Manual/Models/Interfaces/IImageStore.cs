@@ -10,7 +10,7 @@ namespace TeamManager.Manual.Models.Interfaces
     public interface IImageStore
     {
         Task<Uri> SaveRaceImageAsync(User user, Race race, Stream imageStream, string contentType);
-
+        Task<Uri> SaveBillImageAsync(DateTime purchaseDate, Stream imageStream, string contentType);
         Task<Stream> DownloadImageAsync(Uri imageUrl);
     }
 }

@@ -43,10 +43,8 @@ namespace TeamManager.Manual.Models
                 }
 
                 string fileName = GenerateFileName(contentType);
-                string blobContainerName = GenerateBlobContainerName(race);
-                BlobContainerClient container = new BlobContainerClient(AzureConnectionString, blobContainerName);
-                await container.CreateIfNotExistsAsync(PublicAccessType.BlobContainer);
-                Response<BlobContentInfo> blob = await container.UploadBlobAsync(fileName, imageStream);
+                string blobContainerName = GenerateBlobContainerNameForRace(race);
+                await UploadImage(imageStream, fileName, blobContainerName);
                 logger.LogInformation($"Image {blobContainerName}/{fileName} saved to {race.Name} by {user.Email}");
                 return GetBlobUri(blobContainerName, fileName);
             }
@@ -57,9 +55,44 @@ namespace TeamManager.Manual.Models
             }
         }
 
-        private static string GenerateBlobContainerName(Race race)
+        public async Task<Uri> SaveBillImageAsync(DateTime purchaseDate, Stream imageStream, string contentType)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(AzureConnectionString))
+                {
+                    logger.LogError($"No AzureBlobConnection is defined.");
+                    return null;
+                }
+
+                string fileName = GenerateFileName(contentType);
+                string blobContainerName = GenerateBlobContainerNameForBill(purchaseDate);
+                await UploadImage(imageStream, fileName, blobContainerName);
+                logger.LogInformation($"New bill uploaded: {blobContainerName}/{fileName}");
+                return GetBlobUri(blobContainerName, fileName);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Bill cannot be saved.");
+                return null;
+            }
+        }
+
+        private async Task UploadImage(Stream imageStream, string fileName, string blobContainerName)
+        {
+            BlobContainerClient container = new BlobContainerClient(AzureConnectionString, blobContainerName);
+            await container.CreateIfNotExistsAsync(PublicAccessType.BlobContainer);
+            Response<BlobContentInfo> blob = await container.UploadBlobAsync(fileName, imageStream);
+        }
+
+        private static string GenerateBlobContainerNameForRace(Race race)
         {
             return race.Date.Value.Year + "-" + race.Name.ToLower().Replace(" ", "-").RemoveDiacritics();
+        }
+
+        private string GenerateBlobContainerNameForBill(DateTime purchaseDate)
+        {
+            return "bill-" + purchaseDate.Year + "-" + purchaseDate.Month;
         }
 
         private static string GenerateFileName(string contentType)

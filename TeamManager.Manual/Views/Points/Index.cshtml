@@ -52,6 +52,9 @@ else
     <div>
         @Localizer["All gained points:"] @Model.CollectedPoints.Sum(x => x.Points)
     </div>
+    <div>
+        <a asp-action="Add" asp-controller="Bills" class="btn btn-outline-primary m-2">@Localizer["Add new bill"]</a>
+    </div>
 }
 <hr />
 <h1>@Localizer["Consumed points"]</h1>

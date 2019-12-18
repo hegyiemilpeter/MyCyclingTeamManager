@@ -102,6 +102,7 @@ namespace TeamManager.Manual
             services.AddScoped<IPointCalculator, PointCalculator>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IImageStore, AzureImageStore>();
+            services.AddScoped<IBillManager, BillManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -123,6 +123,9 @@
   <data name="Amount cannot be 0." xml:space="preserve">
     <value>A mennyiség nagyobb kell legyen 0-nál.</value>
   </data>
+  <data name="Amount should be greater than zero." xml:space="preserve">
+    <value>Az összegnek 0-nál nagyobbnak kell lennie.</value>
+  </data>
   <data name="As a zip code enter only 4 numbers." xml:space="preserve">
     <value>Az irányítószám 4 számjegyből kell álljon.</value>
   </data>
@@ -213,11 +216,17 @@
   <data name="Street is required." xml:space="preserve">
     <value>Az utca kötelező.</value>
   </data>
+  <data name="Successfully saved your bill." xml:space="preserve">
+    <value>Sikeres mentés.</value>
+  </data>
   <data name="Successfully sent contact e-mail!" xml:space="preserve">
     <value>Sikeres kapcsolatfelvétel! Köszönjük!</value>
   </data>
   <data name="T-shirt size is required." xml:space="preserve">
     <value>A pólóméret kiválasztása kötelező.</value>
+  </data>
+  <data name="The Amount field is required." xml:space="preserve">
+    <value>Az összeg megadása kötelező.</value>
   </data>
   <data name="The city is required." xml:space="preserve">
     <value>A város kötelező.</value>
@@ -237,6 +246,9 @@
   <data name="The entry deadline must be sooner than the race date." xml:space="preserve">
     <value>A nevezési határidő korábban kell legyen mint a verseny napja.</value>
   </data>
+  <data name="The Image field is required." xml:space="preserve">
+    <value>A szkennelt számla feltöltése kötelező.</value>
+  </data>
   <data name="The name is required." xml:space="preserve">
     <value>A név kötelező.</value>
   </data>
@@ -249,11 +261,17 @@
   <data name="The phone number is required." xml:space="preserve">
     <value>A telefonszám kötelező.</value>
   </data>
+  <data name="The Purchase date field is required." xml:space="preserve">
+    <value>A vásárlás dátuma kötelező.</value>
+  </data>
   <data name="The selected user does not have so many points. Maximum {0} is allowed." xml:space="preserve">
     <value>A kiválasztott versenyzőnek nincs ennyi pontja. Maxium {0} pontot adhatsz meg.</value>
   </data>
   <data name="The user is required." xml:space="preserve">
     <value>A versenyző kötelező.</value>
+  </data>
+  <data name="This field is required." xml:space="preserve">
+    <value>Kötelező mező</value>
   </data>
   <data name="Validation number does not match." xml:space="preserve">
     <value>A validációs szám nem megfelelő.</value>
