@@ -1,4 +1,7 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs.Specialized;
 using Diacritics.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -15,31 +18,56 @@ namespace TeamManager.Manual.Models
         private readonly IConfiguration configuration;
         private readonly ILogger<AzureImageStore> logger;
 
+        private string AzureConnectionString
+        {
+            get
+            {
+                return configuration.GetValue<string>("AzureBlobConnection");
+            }
+        }
+
         public AzureImageStore(IConfiguration config, ILogger<AzureImageStore> log)
         {
             configuration = config;
             logger = log;
         }
 
-        public async Task SaveRaceImageAsync(User user, Stream imageStream, string fileName, Race race)
+        public async Task<Uri> SaveRaceImageAsync(User user, Stream imageStream, string fileName, Race race)
         {
             try
             {
-                string azureConnectionString = configuration.GetValue<string>("AzureBlobConnection");
-                string blobName = race.Date.Value.Year + "-" + race.Name.ToLower().Replace(" ", "-").RemoveDiacritics();
-                if (!string.IsNullOrEmpty(azureConnectionString))
+                if (!string.IsNullOrEmpty(AzureConnectionString))
                 {
-                    BlobContainerClient container = new BlobContainerClient(azureConnectionString, blobName);
-                    await container.CreateIfNotExistsAsync(Azure.Storage.Blobs.Models.PublicAccessType.BlobContainer);
-                    await container.UploadBlobAsync(fileName, imageStream);
+                    logger.LogError($"No AzureBlobConnection is defined.");
+                    return null;
                 }
 
-                logger.LogInformation($"Image {blobName}/{fileName} saved to {race.Name} by {user.Email}");
+                string blobContainerName = race.Date.Value.Year + "-" + race.Name.ToLower().Replace(" ", "-").RemoveDiacritics();
+                BlobContainerClient container = new BlobContainerClient(AzureConnectionString, blobContainerName);
+                await container.CreateIfNotExistsAsync(PublicAccessType.BlobContainer);
+                Response<BlobContentInfo> blob = await container.UploadBlobAsync(fileName, imageStream);
+                logger.LogInformation($"Image {blobContainerName}/{fileName} saved to {race.Name} by {user.Email}");
+                return GetBlobUri(blobContainerName, fileName);
             }
             catch (Exception e)
             {
                 logger.LogError(e, $"Image cannot be saved to {race.Name} by {user.Email}");
+                return null;
             }
+        }
+
+        public async Task<Stream> DownloadImageAsync(Uri imageUrl)
+        {
+            BlobClient blockBlobClient = new BlobClient(imageUrl);
+            MemoryStream memoryStream = new MemoryStream();
+            await blockBlobClient.DownloadToAsync(memoryStream);
+            return memoryStream;
+        }
+
+        private Uri GetBlobUri(string containerName, string fileName)
+        {
+            BlockBlobClient blockBlobClient = new BlockBlobClient(AzureConnectionString, containerName, fileName);
+            return blockBlobClient.Uri;
         }
     }
 }

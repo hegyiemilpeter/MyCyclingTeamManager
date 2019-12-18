@@ -9,6 +9,8 @@ namespace TeamManager.Manual.Models.Interfaces
 {
     public interface IImageStore
     {
-        Task SaveRaceImageAsync(User user, Stream imageStream, string fileName, Race race);
+        Task<Uri> SaveRaceImageAsync(User user, Stream imageStream, string fileName, Race race);
+
+        Task<Stream> DownloadImageAsync(Uri imageUrl);
     }
 }

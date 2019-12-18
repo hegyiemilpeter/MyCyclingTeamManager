@@ -15,6 +15,8 @@ namespace TeamManager.Manual.Data
 
         public int? CategoryResult { get; set; }
         public int? AbsoluteResult { get; set; }
+        public string ImageUrl { get; set; }
+        public bool? ImageIsValid { get; set; }
 
         public virtual Race Race { get; set; }
         public virtual User User { get; set; }

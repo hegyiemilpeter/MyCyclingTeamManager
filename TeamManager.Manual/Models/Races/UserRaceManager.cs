@@ -123,19 +123,29 @@ namespace TeamManager.Manual.Models
             userRace.CategoryResult = categoryResult;
             userRace.AbsoluteResult = absoluteResult;
 
+            if (image != null && image.Length > 0)
+            {
+                userRace.ImageUrl = (await UploadImage(user, image, userRace)).ToString();
+                userRace.ImageIsValid = false;
+            }
+            
             if (update)
                 dbContext.Entry<UserRace>(userRace).State = EntityState.Modified;
             else
                 dbContext.UserRaces.Add(userRace);
-
+            
             await dbContext.SaveChangesAsync();
             logger.LogInformation($"{user.Email} successfully added a new result for Race {raceId}");
 
+        }
+
+        private async Task<Uri> UploadImage(User user, IFormFile image, UserRace userRace)
+        {
             Stream memoryStream = new MemoryStream();
             image.CopyTo(memoryStream);
             memoryStream.Position = 0;
-            
-            await imageStore.SaveRaceImageAsync(user, memoryStream, image.FileName, userRace.Race);
+
+            return await imageStore.SaveRaceImageAsync(user, memoryStream, image.FileName, userRace.Race);
         }
 
         public IList<ResultModel> GetRaceResultsByUser(User user)

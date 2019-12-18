@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -41,21 +42,21 @@ namespace TeamManager.Manual.Models.ViewModels
             }
         }
 
-        public void Validate(ModelStateDictionary modelState)
+        public void Validate(ModelStateDictionary modelState, IStringLocalizer localizer)
         {
             if(!AbsoluteResult.HasValue && !CategoryResult.HasValue && !IsTakePartAsDriver && !IsTakePartAsStaff)
             {
-                modelState.AddModelError("", "At least one result is required.");
+                modelState.AddModelError("", localizer["At least one result is required."]);
             }
 
             if((AbsoluteResult.HasValue || CategoryResult.HasValue) && Image == null)
             {
-                modelState.AddModelError("Image", "Image is required when you send a result.");
+                modelState.AddModelError("Image", localizer["Image is required when you send an absolute or category result."]);
             }
 
             if ((AbsoluteResult.HasValue || CategoryResult.HasValue) && Image != null && (Image.ContentType != "image/jpeg" && Image.ContentType != "image/png"))
             {
-                modelState.AddModelError("Image", "PNG or JPG format is required for images.");
+                modelState.AddModelError("Image", localizer["PNG or JPG format is required for images."]);
             }
         }
     }
