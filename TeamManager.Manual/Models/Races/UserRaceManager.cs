@@ -125,8 +125,12 @@ namespace TeamManager.Manual.Models
 
             if (image != null && image.Length > 0)
             {
-                userRace.ImageUrl = (await UploadImage(user, image, userRace)).ToString();
-                userRace.ImageIsValid = false;
+                Uri imageUri = await UploadImage(user, image, userRace);
+                if(imageUri != null)
+                {
+                    userRace.ImageUrl = imageUri.ToString();
+                    userRace.ImageIsValid = true;
+                }
             }
             
             if (update)
@@ -157,6 +161,21 @@ namespace TeamManager.Manual.Models
             return racesOfTheGivenUser.Select(x => ToResultModel(x)).ToList();
         }
 
+        public async Task ChangeValidatedStatus(int userRaceId)
+        {
+            UserRace result = dbContext.UserRaces.Find(userRaceId);
+            if (result == null)
+            {
+                throw new KeyNotFoundException(userRaceId.ToString());
+            }
+
+            result.ImageIsValid = !(result.ImageIsValid.HasValue && result.ImageIsValid.Value);
+            dbContext.Entry(result).State = EntityState.Modified;
+            await dbContext.SaveChangesAsync();
+            
+            logger.LogInformation($"Status of result {result.Id} became {result.ImageIsValid.Value}");
+        }
+
         private ResultModel ToResultModel(UserRace x)
         {
             return new ResultModel()
@@ -169,7 +188,11 @@ namespace TeamManager.Manual.Models
                 Race = x.Race.Name,
                 RaceId = x.RaceId,
                 UserId = x.UserId,
-                RacePointWeight = x.Race.PointWeight
+                RacePointWeight = x.Race.PointWeight,
+                Image = x.ImageUrl,
+                RaceDate = x.Race.Date,
+                ResultId = x.Id,
+                ImageIsValid = x.ImageIsValid
             };
         }
 

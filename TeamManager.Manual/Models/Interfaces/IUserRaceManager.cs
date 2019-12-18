@@ -18,5 +18,7 @@ namespace TeamManager.Manual.Models.Interfaces
         Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff, IFormFile image);
 
         IList<ResultModel> GetRaceResultsByUser(User user);
+
+        Task ChangeValidatedStatus(int userRaceId);
     }
 }

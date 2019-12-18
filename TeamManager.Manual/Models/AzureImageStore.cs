@@ -36,7 +36,7 @@ namespace TeamManager.Manual.Models
         {
             try
             {
-                if (!string.IsNullOrEmpty(AzureConnectionString))
+                if (string.IsNullOrEmpty(AzureConnectionString))
                 {
                     logger.LogError($"No AzureBlobConnection is defined.");
                     return null;

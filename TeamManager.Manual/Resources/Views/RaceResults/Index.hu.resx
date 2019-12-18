@@ -117,25 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Details" xml:space="preserve">
-    <value>Részletek</value>
+  <data name="Abs." xml:space="preserve">
+    <value>Abszolút</value>
   </data>
-  <data name="E-mail" xml:space="preserve">
-    <value>E-mail</value>
+  <data name="Cat." xml:space="preserve">
+    <value>Kategória</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Név</value>
+  <data name="Driver" xml:space="preserve">
+    <value>Sofőr</value>
   </data>
-  <data name="No users in the database." xml:space="preserve">
-    <value>Ha ezt a hibaüzit látod, akkor nagyon nagy baj van :D</value>
+  <data name="No results yet." xml:space="preserve">
+    <value>Nincsenek még eredmények.</value>
   </data>
-  <data name="Phone number" xml:space="preserve">
-    <value>Telefon</value>
+  <data name="Results of" xml:space="preserve">
+    <value>Eredmények - </value>
   </data>
-  <data name="Results" xml:space="preserve">
-    <value>Eredmények</value>
+  <data name="Staff" xml:space="preserve">
+    <value>Segítő</value>
   </data>
-  <data name="Users" xml:space="preserve">
-    <value>Versenyzők</value>
+  <data name="Unverify image" xml:space="preserve">
+    <value>Kép érvénytelenítése</value>
+  </data>
+  <data name="Verify image" xml:space="preserve">
+    <value>Kép jóváhagyása</value>
   </data>
 </root>

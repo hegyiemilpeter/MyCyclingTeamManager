@@ -35,28 +35,20 @@ namespace TeamManager.Manual.Controllers
         public async Task<IActionResult> Details(int? id = null)
         {
             string userId = id.HasValue ? id.Value.ToString() : userManager.GetUserId(User);
+            string visitorUserId = userManager.GetUserId(User);
+            if(!User.IsInRole(Roles.USER_MANAGER) && userId != visitorUserId)
+            {
+                logger.LogWarning($"{visitorUserId} is not authorized to visit User {userId}'s user details.");
+                return Challenge();
+            }
+
             UserModel userModel = await userManager.GetUserByIdAsync(userId);
             if (userModel == null)
             {
                 return NotFound();
             }
 
-            string visitorUserId = userManager.GetUserId(User);
-            if(!User.IsInRole(Roles.USER_MANAGER) && userId != visitorUserId)
-            {
-                logger.LogWarning($"{visitorUserId} is not authorized to visit User {userModel.Email}'s user details.");
-                return Challenge();
-            }
-
-            UserDetailsViewModel model = new UserDetailsViewModel()
-            {
-                UserData = userModel
-            };
-
-            User user = await userManager.FindByIdAsync(userModel.Id.ToString());
-            model.Results = userRaceManager.GetRaceResultsByUser(user).OrderBy(x => x.CategoryResult);
-
-            return View(model);
+            return View(userModel);
         }
 
         public async Task<IActionResult> Edit(int id)

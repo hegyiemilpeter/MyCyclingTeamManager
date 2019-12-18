@@ -1,87 +1,49 @@
-﻿@model UserDetailsViewModel
+﻿@model UserModel
 @inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = Model.UserData.FirstName + " " + Model.UserData.LastName;
+    ViewData["Title"] = Model.FirstName + " " + Model.LastName;
 }
 
-<h1>@Model.UserData.FirstName @Model.UserData.LastName</h1>
-<div class="row">
-    <div class="col-md m-1">
-        <h2>@Localizer["Personal data"]</h2>
-        <table class="table">
-            <tr>
-                <th>@Localizer["Birth date"]</th>
-                <td>@Model.UserData.BirthDate.ToString("yyyy.MM.dd")</td>
-            </tr>
-            <tr>
-                <th>@Localizer["Address"]</th>
-                <td>@string.Format($"{Model.UserData.ZipCode} {Model.UserData.City} {Model.UserData.Street} {Model.UserData.HouseNumber}")</td>
-            </tr>
-            <tr>
-                <th>@Localizer["Phone number"]</th>
-                <td>@Model.UserData.PhoneNumber</td>
-            </tr>
-            <tr>
-                <th>@Localizer["T-Shirt size"]</th>
-                <td>@Model.UserData.TShirtSize</td>
-            </tr>
-            <tr>
-                <th>@Localizer["AKESZ number"]</th>
-                <td>@Model.UserData.AKESZ</td>
-            </tr>
-            <tr>
-                <th>@Localizer["UCI Number"]</th>
-                <td>@Model.UserData.UCI</td>
-            </tr>
-            <tr>
-                <th>@Localizer["Ötpróba number"]</th>
-                <td>@Model.UserData.Otproba</td>
-            </tr>
-            <tr>
-                <th>@Localizer["Triathlete number"]</th>
-                <td>@Model.UserData.Triathlon</td>
-            </tr>
-        </table>
-        <a asp-action="Edit" asp-route-id="@Model.UserData.Id" class="btn btn-primary">@Localizer["Edit"]</a>
-        @if (User.IsInRole(Roles.USER_MANAGER) && !Model.UserData.VerifiedByAdmin)
-        {
-            <a asp-action="Verify" asp-route-id="@Model.UserData.Id" class="btn btn-success">@Localizer["Verify"]</a>
-        }
-    </div>
-    <div class="col-md m-1">
-        <h2>@Localizer["Results"]</h2>
-        <table class="table col-md m-1">
-            @if (Model.Results == null || Model.Results.Count() == 0)
-            {
-                <tr>
-                    <td>@Localizer["No results yet."]</td>
-                </tr>
-            }
-            else
-            {
-                foreach (var result in Model.Results)
-                {
-                    <tr>
-                        <th>@result.Race</th>
-                        <td>
-                            <span>@Localizer["Cat."] @result.CategoryResult</span>
-                            @if (result.AbsoluteResult.HasValue)
-                            {
-                                <span>@Localizer["Abs."] @result.AbsoluteResult.Value</span>
-                            }
-                            @if (result.IsStaff)
-                            {
-                                <span class="badge badge-pill badge-primary">@Localizer["Staff"]</span>
-                            }
-                            @if (result.IsDriver)
-                            {
-                                <span class="badge badge-pill badge-info">@Localizer["Driver"]</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            }
-        </table>
-    </div>
-</div>
+<h1>@Model.FirstName @Model.LastName</h1>
+<h2>@Localizer["Personal data"]</h2>
+<table class="table">
+    <tr>
+        <th>@Localizer["Birth date"]</th>
+        <td>@Model.BirthDate.ToString("yyyy.MM.dd")</td>
+    </tr>
+    <tr>
+        <th>@Localizer["Address"]</th>
+        <td>@string.Format($"{Model.ZipCode} {Model.City} {Model.Street} {Model.HouseNumber}")</td>
+    </tr>
+    <tr>
+        <th>@Localizer["Phone number"]</th>
+        <td>@Model.PhoneNumber</td>
+    </tr>
+    <tr>
+        <th>@Localizer["T-Shirt size"]</th>
+        <td>@Model.TShirtSize</td>
+    </tr>
+    <tr>
+        <th>@Localizer["AKESZ number"]</th>
+        <td>@Model.AKESZ</td>
+    </tr>
+    <tr>
+        <th>@Localizer["UCI Number"]</th>
+        <td>@Model.UCI</td>
+    </tr>
+    <tr>
+        <th>@Localizer["Ötpróba number"]</th>
+        <td>@Model.Otproba</td>
+    </tr>
+    <tr>
+        <th>@Localizer["Triathlete number"]</th>
+        <td>@Model.Triathlon</td>
+    </tr>
+</table>
+<a asp-controller="RaceResults" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary">@Localizer["Results"]</a>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">@Localizer["Edit"]</a>
+@if (User.IsInRole(Roles.USER_MANAGER) && !Model.VerifiedByAdmin)
+{
+    <a asp-action="Verify" asp-route-id="@Model.Id" class="btn btn-success">@Localizer["Verify"]</a>
+}

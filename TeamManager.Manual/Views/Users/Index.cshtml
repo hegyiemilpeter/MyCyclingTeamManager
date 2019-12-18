@@ -24,12 +24,15 @@ else
         <tbody>
             @foreach (var user in Model)
             {
-                <tr>
-                    <td>@user.FullName</td>
-                    <td>@user.Email</td>
-                    <td>@user.PhoneNumber</td>
-                    <td><a asp-action="Details" asp-controller="Users" asp-route-Id="@user.Id" class="btn btn-outline-primary btn-sm">@Localizer["Details"]</a></td>
-                </tr>
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td>
+                    <a asp-action="Index" asp-controller="RaceResults" asp-route-Id="@user.Id" class="btn btn-outline-primary btn-sm">@Localizer["Results"]</a>
+                    <a asp-action="Details" asp-controller="Users" asp-route-Id="@user.Id" class="btn btn-outline-secondary btn-sm">@Localizer["Details"]</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

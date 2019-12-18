@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Abs." xml:space="preserve">
-    <value>Abszolút</value>
-  </data>
   <data name="Address" xml:space="preserve">
     <value>Cím</value>
   </data>
@@ -129,17 +126,8 @@
   <data name="Birth date" xml:space="preserve">
     <value>Szül. dátum</value>
   </data>
-  <data name="Cat." xml:space="preserve">
-    <value>Kategória</value>
-  </data>
-  <data name="Driver" xml:space="preserve">
-    <value>Sofőr</value>
-  </data>
   <data name="Edit" xml:space="preserve">
     <value>Szerkesztés</value>
-  </data>
-  <data name="No results yet." xml:space="preserve">
-    <value>Nincsenek még eredmények.</value>
   </data>
   <data name="Personal data" xml:space="preserve">
     <value>Személyes adatok</value>
@@ -149,9 +137,6 @@
   </data>
   <data name="Results" xml:space="preserve">
     <value>Eredmények</value>
-  </data>
-  <data name="Staff" xml:space="preserve">
-    <value>Segítő</value>
   </data>
   <data name="T-Shirt size" xml:space="preserve">
     <value>Pólóméret</value>

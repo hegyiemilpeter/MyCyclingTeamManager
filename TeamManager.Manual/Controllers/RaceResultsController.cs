@@ -31,6 +31,27 @@ namespace TeamManager.Manual.Controllers
             localizer = loc;
         }
 
+        public async Task<IActionResult> Index(int? id = null)
+        {
+            string userId = id.HasValue ? id.Value.ToString() : userManager.GetUserId(User);
+            UserModel userModel = await userManager.GetUserByIdAsync(userId);
+            if (userModel == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userManager.FindByIdAsync(userModel.Id.ToString());
+            UserResultsViewModel model = new UserResultsViewModel
+            {
+                Results = userRaceManager.GetRaceResultsByUser(user).OrderBy(x => x.CategoryResult),
+                FirstName = user.FirstName, 
+                LastName = user.LastName, 
+                UserId = user.Id
+            };
+
+            return View(model);
+        }
+
         public IActionResult Add(int? id = null)
         {
            AddResultViewModel model = new AddResultViewModel();
@@ -64,6 +85,15 @@ namespace TeamManager.Manual.Controllers
             await userRaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsDriver, model.IsTakePartAsStaff, model.Image);
 
             return RedirectToAction("Index", "Points");
+        }
+
+        [Authorize(Roles = Roles.POINT_CONSUPTION_MANAGER)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeImageValidationStatus(int resultId, int userId)
+        {
+            await userRaceManager.ChangeValidatedStatus(resultId);
+            return RedirectToAction("Index", new { id = userId });
         }
     }
 }
