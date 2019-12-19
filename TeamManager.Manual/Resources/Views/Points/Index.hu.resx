@@ -129,11 +129,17 @@
   <data name="All consumed points:" xml:space="preserve">
     <value>Összesen felhasznált pont:</value>
   </data>
+  <data name="All gained points from bills:" xml:space="preserve">
+    <value>Számlákből gyűjtött pontok:</value>
+  </data>
   <data name="All gained points:" xml:space="preserve">
     <value>Összes pont:</value>
   </data>
   <data name="Amount" xml:space="preserve">
     <value>Mennyiség</value>
+  </data>
+  <data name="Bills" xml:space="preserve">
+    <value>Számlák</value>
   </data>
   <data name="Category result" xml:space="preserve">
     <value>Korcsoportos eredmény</value>
@@ -153,8 +159,11 @@
   <data name="No points consumed yet." xml:space="preserve">
     <value>Nem használt még el pontokat.</value>
   </data>
-  <data name="No points gained yet." xml:space="preserve">
-    <value>Még nem gyűjtött pontokat.</value>
+  <data name="No points gained yet from bills." xml:space="preserve">
+    <value>Még nem gyűjtött pontokat számlákból.</value>
+  </data>
+  <data name="No points gained yet from races." xml:space="preserve">
+    <value>Még nem gyűjtött pontokat versenyekből.</value>
   </data>
   <data name="Point weight" xml:space="preserve">
     <value>Súly</value>
@@ -162,14 +171,23 @@
   <data name="Points" xml:space="preserve">
     <value>Pontok</value>
   </data>
+  <data name="Purchase date" xml:space="preserve">
+    <value>Vásárlás napja</value>
+  </data>
   <data name="Race" xml:space="preserve">
     <value>Verseny</value>
+  </data>
+  <data name="Races" xml:space="preserve">
+    <value>Versenyek</value>
   </data>
   <data name="Recorded by" xml:space="preserve">
     <value>Rögzítette</value>
   </data>
   <data name="Staff" xml:space="preserve">
     <value>Segítő</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Összeg</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Igen</value>

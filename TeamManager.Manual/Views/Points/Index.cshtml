@@ -6,10 +6,11 @@
 }
 
 <h1>@Localizer["Collected points"]</h1>
-@if (Model.CollectedPoints == null || Model.CollectedPoints.Count == 0)
+<h4>@Localizer["Races"]</h4>
+@if (Model.Results == null || Model.Results.Count == 0)
 {
     <div class="row">
-        @Localizer["No points gained yet."]
+        @Localizer["No points gained yet from races."]
     </div>
 }
 else
@@ -28,7 +29,7 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var result in Model.CollectedPoints)
+                @foreach (var result in Model.Results)
                 {
                     <tr>
                         <td>@result.Race</td>
@@ -49,13 +50,48 @@ else
             </tbody>
         </table>
     </div>
-    <div>
-        @Localizer["All gained points:"] @Model.CollectedPoints.Sum(x => x.Points)
-    </div>
-    <div>
-        <a asp-action="Add" asp-controller="Bills" class="btn btn-outline-primary m-2">@Localizer["Add new bill"]</a>
+}
+<h4>@Localizer["Bills"]</h4>
+@if (Model.Bills == null || Model.Bills.Bills == null || Model.Bills.Bills.Count == 0)
+{
+    <div class="row">
+        @Localizer["No points gained yet from bills."]
     </div>
 }
+else
+{
+    <div class="row">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>@Localizer["Purchase date"]</th>
+                    <th>@Localizer["Value"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in Model.Bills.Bills)
+                {
+                    <tr>
+                        <td>@result.PurchaseDate.ToString("yyyy.MM.dd")</td>
+                        <td>@result.Amount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        @Localizer["All gained points from bills:"] @Model.Bills.Points
+    </div>
+}
+<div>
+    <a asp-action="Add" asp-controller="Bills" class="btn btn-outline-primary m-2">@Localizer["Add new bill"]</a>
+</div>
+@{
+    int allGainedPoints = Model.Results.Sum(x => x.Points) + Model.Bills.Points;
+}
+<h2>
+    @Localizer["All gained points:"] @allGainedPoints
+</h2>
 <hr />
 <h1>@Localizer["Consumed points"]</h1>
 @if (Model.ConsumedPoints == null || Model.ConsumedPoints.Count == 0)

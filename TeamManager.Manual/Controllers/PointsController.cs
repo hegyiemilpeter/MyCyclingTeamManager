@@ -21,13 +21,15 @@ namespace TeamManager.Manual.Controllers
         private readonly IUserRaceManager userRaceManager;
         private readonly IPointManager pointManager;
         private readonly ILogger<PointsController> logger;
+        private readonly IBillManager billManager;
 
-        public PointsController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IPointManager pointMgr, ILogger<PointsController> pointsControllerLogger)
+        public PointsController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IPointManager pointMgr, ILogger<PointsController> pointsControllerLogger, IBillManager bManager)
         {
             userManager = customUserManager;
             userRaceManager = userRaceMgr;
             pointManager = pointMgr;
             logger = pointsControllerLogger;
+            billManager = bManager;
         }
 
         public async Task<IActionResult> Index(int? id = null)
@@ -48,12 +50,14 @@ namespace TeamManager.Manual.Controllers
 
             IList<ResultModel> results = userRaceManager.GetRaceResultsByUser(user);
             IList<PointConsuption> pointConsuptions = await pointManager.ListConsumedPointsAsync(userId);
+            BillModel bills = await billManager.ListBillsByUserAsync(user.Id);
 
             PointsViewModel model = new PointsViewModel()
             {
                 UserId = user.Id,
-                CollectedPoints = results,
-                ConsumedPoints = pointConsuptions
+                Results = results,
+                ConsumedPoints = pointConsuptions,
+                Bills = bills
             };
 
             return View(model);

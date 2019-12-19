@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,14 @@ namespace TeamManager.Manual.Models
         private readonly TeamManagerDbContext dbContext;
         private readonly ILogger<BillManager> logger;
         private readonly IImageStore imageStore;
+        private readonly IPointCalculator pointCalculator;
 
-        public BillManager(TeamManagerDbContext context, ILogger<BillManager> bmLogger, IImageStore imgStore)
+        public BillManager(TeamManagerDbContext context, ILogger<BillManager> bmLogger, IImageStore imgStore, IPointCalculator pointCalc)
         {
             dbContext = context;
             logger = bmLogger;
             imageStore = imgStore;
+            pointCalculator = pointCalc;
         }
 
         public async Task CreateBillAsync(User user, int amount, DateTime createdAt, IFormFile image)
@@ -47,6 +50,14 @@ namespace TeamManager.Manual.Models
             await dbContext.SaveChangesAsync();
 
             logger.LogInformation($"A new bill created to {user.Email}. Id: {newBill.Id}");
+        }
+
+        public async Task<BillModel> ListBillsByUserAsync(int userId)
+        {
+            BillModel response = new BillModel();
+            response.Bills = await dbContext.Bills.Where(x => x.UserId == userId).ToListAsync();
+            response.Points = pointCalculator.CalculatePoints(response.Bills.Sum(x => x.Amount));
+            return response;
         }
     }
 }

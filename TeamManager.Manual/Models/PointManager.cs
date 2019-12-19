@@ -15,13 +15,15 @@ namespace TeamManager.Manual.Models
         private readonly CustomUserManager userManager;
         private readonly IUserRaceManager userRaceManager;
         private readonly ILogger<PointManager> logger;
+        private readonly IBillManager billManager;
 
-        public PointManager(TeamManagerDbContext context, CustomUserManager customUserMgr, IUserRaceManager userRaceMgr, ILogger<PointManager> pmLogger)
+        public PointManager(TeamManagerDbContext context, CustomUserManager customUserMgr, IUserRaceManager userRaceMgr, ILogger<PointManager> pmLogger, IBillManager billMgr)
         {
             dbContext = context;
             userManager = customUserMgr;
             userRaceManager = userRaceMgr;
             logger = pmLogger;
+            billManager = billMgr;
         }
 
         public async Task<int> GetAvailablePointAmountByUser(string userId)
@@ -33,9 +35,10 @@ namespace TeamManager.Manual.Models
                 throw new UserNotFoundException();
             }
 
-            int gainedPoints = userRaceManager.GetRaceResultsByUser(user).Sum(x => x.Points);
+            int gainedPointsFromResults = userRaceManager.GetRaceResultsByUser(user).Sum(x => x.Points);
+            int gainedPointsFromBills = (await billManager.ListBillsByUserAsync(user.Id)).Points;
             int consumedPoints = (await ListConsumedPointsAsync(userId)).Sum(x => x.Amount);
-            return gainedPoints - consumedPoints;
+            return (gainedPointsFromResults + gainedPointsFromBills) - consumedPoints;
         }
 
         public async Task<IList<PointConsuption>> ListConsumedPointsAsync(string userId)

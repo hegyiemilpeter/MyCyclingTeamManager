@@ -14,6 +14,12 @@ namespace TeamManager.Manual.Models
         private static int DRIVER_POINTS = 1;
         private static int TOP_10_BONUS = 1;
         private static int TOP_3_BONUS = 2;
+        private static int BILL_DIVIDER = 10000;
+
+        public int CalculatePoints(int billAmount)
+        {
+            return billAmount / BILL_DIVIDER;
+        }
 
         public int CalculatePoints(int raceWeight, bool ownEvent, UserRace userRace)
         {

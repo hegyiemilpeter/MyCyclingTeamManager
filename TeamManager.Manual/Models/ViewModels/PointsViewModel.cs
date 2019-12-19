@@ -8,8 +8,9 @@ namespace TeamManager.Manual.Models.ViewModels
 {
     public class PointsViewModel
     {
-        public IList<ResultModel> CollectedPoints { get; set; }
+        public IList<ResultModel> Results { get; set; }
         public IList<PointConsuption> ConsumedPoints { get; set; }
+        public BillModel Bills { get; set; }
         public int UserId { get; set; }
     }
 }
