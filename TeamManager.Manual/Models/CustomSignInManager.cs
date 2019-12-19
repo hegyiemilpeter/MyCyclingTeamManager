@@ -22,9 +22,14 @@ namespace TeamManager.Manual.Models
             this.configuration = configuration;
         }
 
+        public bool UserIsVerified(User user)
+        {
+            return !configuration.GetValue<bool>("UseAdminRestrictionForNewUsers") || user.VerifiedByAdmin;
+        }
+
         public override Task<bool> CanSignInAsync(User user)
         {
-            if (configuration.GetValue<bool>("UseAdminRestrictionForNewUsers") && !user.VerifiedByAdmin)
+            if (!UserIsVerified(user))
             {
                 Logger.LogWarning($"{user.Email} cannot log in without admin verification.");
                 return Task.FromResult(false);

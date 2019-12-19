@@ -55,6 +55,14 @@ namespace TeamManager.Manual.Controllers
             if(user != null)
             {
                 await signInManager.SignOutAsync();
+
+                if (!signInManager.UserIsVerified(user))
+                {
+                    ModelState.AddModelError("", localizer["User is not validated by admins."]);
+                    ViewBag.ReturnUrl = returnUrl;
+                    return View();
+                }
+
                 var result = await signInManager.PasswordSignInAsync(user, model.Password, false, true);
                 if (result.Succeeded)
                 {

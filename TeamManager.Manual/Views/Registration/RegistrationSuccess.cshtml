@@ -9,7 +9,7 @@
 <h1>@Localizer["Successful registration"]</h1>
 @if (Configuration.GetValue<bool>("UseAdminRestrictionForNewUsers"))
 {
-    <h3>@Localizer["Thank you for your registration, after an administrator verified you, you can log in. You will be notified via e-mail."]</h3>
+    <h3 class="alert alert-success">@Localizer["Thank you for your registration, after an administrator verified you, you can log in. You will be notified via e-mail."]</h3>
 }
 else
 {
