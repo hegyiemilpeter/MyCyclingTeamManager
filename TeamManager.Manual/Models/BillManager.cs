@@ -41,7 +41,7 @@ namespace TeamManager.Manual.Models
                 UserId = user.Id
             };
 
-            if (billUri == null)
+            if (billUri != null)
             {
                 newBill.Url = billUri.ToString();
             }

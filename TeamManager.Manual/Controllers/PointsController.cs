@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
@@ -22,14 +23,15 @@ namespace TeamManager.Manual.Controllers
         private readonly IPointManager pointManager;
         private readonly ILogger<PointsController> logger;
         private readonly IBillManager billManager;
-
-        public PointsController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IPointManager pointMgr, ILogger<PointsController> pointsControllerLogger, IBillManager bManager)
+        private readonly IStringLocalizer<SharedResources> localizer;
+        public PointsController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IPointManager pointMgr, ILogger<PointsController> pointsControllerLogger, IBillManager bManager, IStringLocalizer<SharedResources> sharedResourcesLocalizer)
         {
             userManager = customUserManager;
             userRaceManager = userRaceMgr;
             pointManager = pointMgr;
             logger = pointsControllerLogger;
             billManager = bManager;
+            localizer = sharedResourcesLocalizer;
         }
 
         public async Task<IActionResult> Index(int? id = null)
@@ -87,7 +89,7 @@ namespace TeamManager.Manual.Controllers
                 return NotFound();
             }
 
-            model.Validate(ModelState, await pointManager.GetAvailablePointAmountByUser(model.SelectedUserId));
+            model.Validate(ModelState, await pointManager.GetAvailablePointAmountByUser(model.SelectedUserId), localizer);
             if(!ModelState.IsValid)
             {
                 logger.LogDebug($"Invalid model for AddConsumedPoints.");

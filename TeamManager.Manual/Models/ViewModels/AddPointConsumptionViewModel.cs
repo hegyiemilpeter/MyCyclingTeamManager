@@ -16,11 +16,11 @@ namespace TeamManager.Manual.Models.ViewModels
         [Range(1, Double.MaxValue, ErrorMessage = "Must be between 1 and 1000.")]
         public int Amount { get; set; }
 
-        public void Validate(ModelStateDictionary modelState, int currentPointsOfUser)
+        public void Validate(ModelStateDictionary modelState, int currentPointsOfUser, IStringLocalizer localizer)
         {
             if(Amount > currentPointsOfUser)
             {
-                modelState.AddModelError(nameof(Amount), string.Format("The selected user does not have so many points. Maximum {0} is allowed.", currentPointsOfUser));
+                modelState.AddModelError(nameof(Amount), string.Format(localizer["The selected user does not have so many points. Maximum {0} is allowed."], currentPointsOfUser));
             }
         }
     }
