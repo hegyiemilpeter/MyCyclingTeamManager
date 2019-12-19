@@ -101,9 +101,7 @@ namespace TeamManager.Manual.Controllers
                 return NotFound();
             }
 
-            userModel.VerifiedByAdmin = true;
             await userManager.VerifyUserAsync(userModel, Url.Link("Default", new { controller = "Account", action = "Login" }));
-
             return RedirectToAction(nameof(Details), new { id });
         }
     }
