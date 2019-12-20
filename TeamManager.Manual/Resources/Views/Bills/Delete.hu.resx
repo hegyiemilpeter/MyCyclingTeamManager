@@ -117,25 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add new bill" xml:space="preserve">
-    <value>Új számla felvitele</value>
+  <data name="Are you sure, you want to delete the bill of {0} purchased at {1}?" xml:space="preserve">
+    <value>Biztosan törölni szeretnéd a {0} értékű, {1}.-i számlát? </value>
   </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Összeg</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Mégsem</value>
   </data>
-  <data name="Back" xml:space="preserve">
-    <value>Vissza</value>
+  <data name="Delete" xml:space="preserve">
+    <value>Számla törlése</value>
   </data>
-  <data name="Only cash bills can be accepted, others will be removed." xml:space="preserve">
-    <value>Felhívjuk figyelmedet, hogy csak készpénzes számlát áll módunkban befogadni.</value>
-  </data>
-  <data name="Purchase date" xml:space="preserve">
-    <value>Vásárlás napja</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Mentés</value>
-  </data>
-  <data name="Scanned bill" xml:space="preserve">
-    <value>Szkennelt számla</value>
+  <data name="OK" xml:space="preserve">
+    <value>Igen</value>
   </data>
 </root>

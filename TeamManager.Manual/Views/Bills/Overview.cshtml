@@ -1,0 +1,43 @@
+﻿@inject IViewLocalizer Localizer
+@model IList<Bill>
+
+@{
+    ViewData["Title"] = Localizer["Bill overview"];
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="col-md-6">
+    @if (Model == null || Model.Count == 0)
+    {
+        @Localizer["There aren't any bills in the database."]
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Localizer["Purchase date"]</th>
+                    <th>@Localizer["Amount"]</th>
+                    <th>@Localizer["User"]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bill in Model)
+                {
+                    <tr>
+                        <td>@bill.PurchaseDate.ToString("yyyy.MM.dd")</td>
+                        <td>@bill.Amount</td>
+                        <td>@bill.User.LastName @bill.User.FirstName</td>
+                        <td>
+                            @if (User.IsInRole(Roles.BILL_MANAGER))
+                            {
+                                <a asp-action="Delete" asp-route-billId="@bill.Id" class="btn btn-danger">@Localizer["Delete"]</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -1,0 +1,16 @@
+﻿@inject IViewLocalizer Localizer
+@model Bill
+
+@{
+    ViewData["Title"] = Localizer["Delete"];
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="alert alert-danger">
+    @Localizer["Are you sure, you want to delete the bill of {0} purchased at {1}?", Model.Amount, Model.PurchaseDate]
+</div>
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="submit" value="@Localizer["OK"]" class="btn btn-danger" />
+    <a asp-action="Overview" class="btn btn-outline-primary">@Localizer["Cancel"]</a>
+</form>

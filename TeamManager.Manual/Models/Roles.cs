@@ -10,10 +10,11 @@ namespace TeamManager.Manual.Models
         public const string POINT_CONSUPTION_MANAGER = "Point Consuption Manager";
         public const string RACE_MANAGER = "Race Manager";
         public const string USER_MANAGER = "User Manager";
+        public const string BILL_MANAGER = "Bill Manager";
 
         public static IEnumerable<string> GetAllRoles()
         {
-            return new[] { POINT_CONSUPTION_MANAGER, RACE_MANAGER, USER_MANAGER };
+            return new[] { POINT_CONSUPTION_MANAGER, RACE_MANAGER, USER_MANAGER, BILL_MANAGER };
         }
     }
 }

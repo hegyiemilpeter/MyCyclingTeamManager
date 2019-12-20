@@ -38,6 +38,13 @@ namespace TeamManager.Manual.Models
             await SendEmailAsync(to, subject, message);
         }
 
+        public async Task SendBillDeletedEmailAsync(string to, string lastName, int amount, DateTime purchaseDate, string url)
+        {
+            string subject = "Törölt számla";
+            string message = $"<h2>Kedves {lastName}!</h2><p>Tájékoztatunk hogy a Green Riders rendszerében <a href=\"{url}\">ezt</a> a számládat egy adminisztrátor törölte.</p><p>Összeg: {amount}</p><p>Vásárlás dátuma: {purchaseDate.ToString("yyyy.MM.dd")}</p>";
+            await SendEmailAsync(to, subject, message);
+        }
+
         private async Task SendEmailAsync(string to, string subject, string htmlContent)
         {
             if (!IsValidEmailTo(to))

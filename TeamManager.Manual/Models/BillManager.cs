@@ -17,13 +17,15 @@ namespace TeamManager.Manual.Models
         private readonly ILogger<BillManager> logger;
         private readonly IImageStore imageStore;
         private readonly IPointCalculator pointCalculator;
+        private readonly IEmailSender emailSender;
 
-        public BillManager(TeamManagerDbContext context, ILogger<BillManager> bmLogger, IImageStore imgStore, IPointCalculator pointCalc)
+        public BillManager(TeamManagerDbContext context, ILogger<BillManager> bmLogger, IImageStore imgStore, IPointCalculator pointCalc, IEmailSender mailSender)
         {
             dbContext = context;
             logger = bmLogger;
             imageStore = imgStore;
             pointCalculator = pointCalc;
+            emailSender = mailSender;
         }
 
         public async Task CreateBillAsync(User user, int amount, DateTime createdAt, IFormFile image)
@@ -50,6 +52,27 @@ namespace TeamManager.Manual.Models
             await dbContext.SaveChangesAsync();
 
             logger.LogInformation($"A new bill created to {user.Email}. Id: {newBill.Id}");
+        }
+
+        public async Task DeleteBillAsync(int billId)
+        {
+            Bill billToDelete = dbContext.Bills.Include(x => x.User).SingleOrDefault(x => x.Id == billId);
+            if(billToDelete != null)
+            {
+                dbContext.Bills.Remove(billToDelete);
+                await dbContext.SaveChangesAsync();
+                await emailSender.SendBillDeletedEmailAsync(billToDelete.User.Email, billToDelete.User.FirstName, billToDelete.Amount, billToDelete.PurchaseDate, billToDelete.Url);
+            }
+        }
+
+        public async Task<Bill> GetBillByIdAsync(int billId)
+        {
+            return await dbContext.FindAsync<Bill>(billId);
+        }
+
+        public async Task<IList<Bill>> ListBillsAsync()
+        {
+            return await dbContext.Bills.Include(x => x.User).ToListAsync();
         }
 
         public async Task<BillModel> ListBillsByUserAsync(int userId)

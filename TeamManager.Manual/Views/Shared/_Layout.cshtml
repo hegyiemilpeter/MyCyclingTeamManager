@@ -34,6 +34,12 @@
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="Points" class="nav-link">@Localizer["Pontok"]</a>
                         </li>
+                        @if (User.IsInRole(Roles.BILL_MANAGER))
+                        {
+                            <li class="nav-item">
+                                <a asp-action="Overview" asp-controller="Bills" class="nav-link">@Localizer["Bills"]</a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <nav class="navbar-nav">

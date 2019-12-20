@@ -13,5 +13,11 @@ namespace TeamManager.Manual.Models.Interfaces
         Task CreateBillAsync(User user, int amount, DateTime createdAt, IFormFile image);
 
         Task<BillModel> ListBillsByUserAsync(int userId);
+
+        Task<IList<Bill>> ListBillsAsync();
+
+        Task<Bill> GetBillByIdAsync(int billId);
+
+        Task DeleteBillAsync(int billId);
     }
 }

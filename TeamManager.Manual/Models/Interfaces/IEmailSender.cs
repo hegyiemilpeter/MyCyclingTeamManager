@@ -12,5 +12,7 @@ namespace TeamManager.Manual.Models.Interfaces
         Task SendContactEmailAsync(string to, string message, string replyTo);
 
         Task SendAdminVerifiedEmailAsync(string to, string firstName, string loginAddress);
+
+        Task SendBillDeletedEmailAsync(string to, string firstName, int amount, DateTime purchaseDate, string url);
     }
 }
