@@ -14,5 +14,6 @@ namespace TeamManager.Manual.Data
         public int Amount { get; set; }
         public DateTime PurchaseDate { get; set; }
         public string Url { get; set; }
+        public int Points { get; set; }
     }
 }

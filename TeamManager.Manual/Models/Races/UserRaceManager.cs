@@ -123,6 +123,9 @@ namespace TeamManager.Manual.Models
             userRace.CategoryResult = categoryResult;
             userRace.AbsoluteResult = absoluteResult;
 
+            Race race = dbContext.Races.Find(raceId);
+            userRace.Points = pointCalculator.CalculatePoints(race.PointWeight, race.OwnOrganizedEvent, userRace);
+
             if (image != null && image.Length > 0)
             {
                 Uri imageUri = await UploadImage(user, image, userRace);
@@ -183,7 +186,7 @@ namespace TeamManager.Manual.Models
                 CategoryResult = x.CategoryResult,
                 IsDriver = x.IsTakePartAsDriver.HasValue && x.IsTakePartAsDriver.Value,
                 IsStaff = x.IsTakePartAsStaff.HasValue && x.IsTakePartAsStaff.Value,
-                Points = pointCalculator.CalculatePoints(x.Race.PointWeight, x.Race.OwnOrganizedEvent, x),
+                Points = x.Points,
                 Race = x.Race.Name,
                 RaceId = x.RaceId,
                 UserId = x.UserId,

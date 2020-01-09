@@ -40,7 +40,8 @@ namespace TeamManager.Manual.Models
             {
                 Amount = amount,
                 PurchaseDate = createdAt,
-                UserId = user.Id
+                UserId = user.Id,
+                Points = pointCalculator.CalculatePoints(amount)
             };
 
             if (billUri != null)
@@ -79,7 +80,7 @@ namespace TeamManager.Manual.Models
         {
             BillModel response = new BillModel();
             response.Bills = await dbContext.Bills.Where(x => x.UserId == userId).ToListAsync();
-            response.Points = pointCalculator.CalculatePoints(response.Bills.Sum(x => x.Amount));
+            response.Points = response.Bills.Sum(x => x.Points);
             return response;
         }
     }
