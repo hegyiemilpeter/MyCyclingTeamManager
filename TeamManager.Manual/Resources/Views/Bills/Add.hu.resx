@@ -138,4 +138,7 @@
   <data name="Scanned bill" xml:space="preserve">
     <value>Szkennelt számla</value>
   </data>
+  <data name="We recommend CAM SCAN Android application to scan your bills." xml:space="preserve">
+    <value>A számla befotozásához a CAM SCAN alkalmazását ajánljuk.</value>
+  </data>
 </root>

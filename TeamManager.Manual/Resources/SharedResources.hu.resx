@@ -241,10 +241,10 @@
     <value>Az e-mail cím megadása kötelező.</value>
   </data>
   <data name="The entry deadline is required." xml:space="preserve">
-    <value>A nevezési határidő kötelező.</value>
+    <value>A jelentkezési határidő kötelező.</value>
   </data>
   <data name="The entry deadline must be sooner than the race date." xml:space="preserve">
-    <value>A nevezési határidő korábban kell legyen mint a verseny napja.</value>
+    <value>A jelentkezési határidő korábban kell legyen mint a verseny napja.</value>
   </data>
   <data name="The Image field is required." xml:space="preserve">
     <value>A szkennelt számla feltöltése kötelező.</value>
