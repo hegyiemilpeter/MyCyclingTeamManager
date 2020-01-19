@@ -147,6 +147,9 @@ namespace TeamManager.Manual.Models
             user.OtprobaNumber = model.Otproba;
             user.UCILicence = model.UCI;
             user.TriathleteLicence = model.Triathlon;
+            user.IDNumber = model.IDNumber;
+            user.BirthPlace = model.BirthPlace;
+            user.MothersName = model.MothersName;
 
             IdentityResult result = await base.UpdateAsync(user);
             if (!result.Succeeded)
@@ -186,7 +189,10 @@ namespace TeamManager.Manual.Models
                     AKESZ = user.AkeszNumber,
                     Otproba = user.OtprobaNumber,
                     Triathlon = user.TriathleteLicence,
-                    UCI = user.UCILicence
+                    UCI = user.UCILicence,
+                    BirthPlace = user.BirthPlace,
+                    MothersName = user.MothersName,
+                    IDNumber = user.IDNumber
                 };
 
                 Address usersAddress = DbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);

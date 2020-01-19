@@ -60,7 +60,10 @@ namespace TeamManager.Manual.Controllers
                 AkeszNumber = model.AKESZ,
                 OtprobaNumber = model.Otproba,
                 TriathleteLicence = model.Triathlon,
-                UCILicence = model.UCI
+                UCILicence = model.UCI,
+                BirthPlace = model.BirthPlace,
+                IDNumber = model.IDNumber,
+                MothersName = model.MothersName
             };
 
             IdentityResult createResult = await userManager.CreateAsync(user, model.Password, address, Url.Link("Default", new { controller = "Account", action = "Login" }));

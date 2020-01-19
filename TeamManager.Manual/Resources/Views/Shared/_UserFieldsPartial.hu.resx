@@ -117,22 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="E-mail" xml:space="preserve">
-    <value>E-mail</value>
+  <data name="5proba number" xml:space="preserve">
+    <value>Ötpróba azonosító</value>
   </data>
-  <data name="Login data" xml:space="preserve">
-    <value>Bejelentkezési adatok</value>
+  <data name="Address" xml:space="preserve">
+    <value>Cím</value>
   </data>
-  <data name="Password" xml:space="preserve">
-    <value>Jelszó</value>
+  <data name="Birth date" xml:space="preserve">
+    <value>Születési idő</value>
   </data>
-  <data name="Password confirmation" xml:space="preserve">
-    <value>Jelszó még egyszer</value>
+  <data name="Birth place" xml:space="preserve">
+    <value>Születési hely</value>
   </data>
-  <data name="Registrate" xml:space="preserve">
-    <value>Regisztrálok</value>
+  <data name="City" xml:space="preserve">
+    <value>Város</value>
   </data>
-  <data name="Registration" xml:space="preserve">
-    <value>Regisztráció</value>
+  <data name="First name" xml:space="preserve">
+    <value>Keresztnév</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Nem</value>
+  </data>
+  <data name="House number" xml:space="preserve">
+    <value>Házszám</value>
+  </data>
+  <data name="ID number" xml:space="preserve">
+    <value>Személyi ig. szám</value>
+  </data>
+  <data name="Identifiers" xml:space="preserve">
+    <value>Azonosító számok</value>
+  </data>
+  <data name="Last name" xml:space="preserve">
+    <value>Vezetéknév</value>
+  </data>
+  <data name="Mother's name" xml:space="preserve">
+    <value>Anyja neve</value>
+  </data>
+  <data name="Personal data" xml:space="preserve">
+    <value>Személyes adatok</value>
+  </data>
+  <data name="Phone number" xml:space="preserve">
+    <value>Telefonszám</value>
+  </data>
+  <data name="Select your gender" xml:space="preserve">
+    <value>Válaszd ki a nemedet</value>
+  </data>
+  <data name="Select your T-shirt size" xml:space="preserve">
+    <value>Válassz polóméretet</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Utca</value>
+  </data>
+  <data name="T-shirt size" xml:space="preserve">
+    <value>Pólóméret</value>
+  </data>
+  <data name="Triathlon licence" xml:space="preserve">
+    <value>Triatlon liszensz</value>
+  </data>
+  <data name="UCI licence" xml:space="preserve">
+    <value>UCI liszensz</value>
+  </data>
+  <data name="Zip code" xml:space="preserve">
+    <value>Irányítószám</value>
   </data>
 </root>

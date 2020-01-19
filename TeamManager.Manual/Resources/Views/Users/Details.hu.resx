@@ -123,11 +123,23 @@
   <data name="AKESZ number" xml:space="preserve">
     <value>AKESZ szám</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Vissza</value>
+  </data>
   <data name="Birth date" xml:space="preserve">
     <value>Szül. dátum</value>
   </data>
+  <data name="Birth place" xml:space="preserve">
+    <value>Szül. hely</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Szerkesztés</value>
+  </data>
+  <data name="ID Number" xml:space="preserve">
+    <value>Személyi ig. szám</value>
+  </data>
+  <data name="Mother's name" xml:space="preserve">
+    <value>Anyja neve</value>
   </data>
   <data name="Personal data" xml:space="preserve">
     <value>Személyes adatok</value>

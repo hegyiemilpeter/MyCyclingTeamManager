@@ -135,6 +135,9 @@
   <data name="At least one result is required." xml:space="preserve">
     <value>Adj meg eredményt vagy segítői tevékenységet.</value>
   </data>
+  <data name="Birth place is required." xml:space="preserve">
+    <value>A születési hely kötelező.</value>
+  </data>
   <data name="City is required." xml:space="preserve">
     <value>A város kötelező.</value>
   </data>
@@ -159,6 +162,9 @@
   <data name="House number is required." xml:space="preserve">
     <value>A házszám kötelező.</value>
   </data>
+  <data name="ID number is required." xml:space="preserve">
+    <value>A személyi igazolvány szám kötelező.</value>
+  </data>
   <data name="Image is required when you send an absolute or category result." xml:space="preserve">
     <value>Képfeltöltés kötelező ha eredményt küldesz be.</value>
   </data>
@@ -176,6 +182,9 @@
   </data>
   <data name="Message is required." xml:space="preserve">
     <value>Kötelező üzenetet írni.</value>
+  </data>
+  <data name="Mothers name is required." xml:space="preserve">
+    <value>Anyja neve kötelező.</value>
   </data>
   <data name="MTB Marathon" xml:space="preserve">
     <value>MTB Maraton</value>

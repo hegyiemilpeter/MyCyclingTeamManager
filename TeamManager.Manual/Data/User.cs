@@ -15,6 +15,9 @@ namespace TeamManager.Manual.Data
         [DataType(DataType.Date)]
         [PersonalData]
         public DateTime BirthDate { get; set; }
+        public string BirthPlace { get; set; }
+        public string IDNumber { get; set; }
+        public string MothersName { get; set; }
         public Gender Gender { get; set; }
         public Size TShirtSize { get; set; }
         public bool VerifiedByAdmin { get; set; }
@@ -23,5 +26,9 @@ namespace TeamManager.Manual.Data
         public string UCILicence { get; set; }
         public string OtprobaNumber { get; set; }
         public string TriathleteLicence { get; set; }
+
+        public bool HasEntryStatement { get; set; }
+        public bool HasGDPRStatement { get; set; }
+        public bool IsPro { get; set; }
     }
 }

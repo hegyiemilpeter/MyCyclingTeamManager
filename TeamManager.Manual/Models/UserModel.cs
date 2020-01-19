@@ -31,6 +31,15 @@ namespace TeamManager.Manual.Models
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
+        [Required(ErrorMessage = "Birth place is required.")]
+        public string BirthPlace { get; set; }
+        
+        [Required(ErrorMessage = "ID number is required.")]
+        public string IDNumber { get; set; }
+
+        [Required(ErrorMessage = "Mothers name is required.")]
+        public string MothersName { get; set; }
+
         [Required(ErrorMessage = "The phone number is required.")]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }

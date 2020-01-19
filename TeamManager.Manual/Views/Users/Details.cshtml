@@ -9,8 +9,16 @@
 <h2>@Localizer["Personal data"]</h2>
 <table class="table">
     <tr>
+        <th>@Localizer["Mother's name"]</th>
+        <td>@Model.MothersName</td>
+    </tr>
+    <tr>
         <th>@Localizer["Birth date"]</th>
         <td>@Model.BirthDate.ToString("yyyy.MM.dd")</td>
+    </tr>
+    <tr>
+        <th>@Localizer["Birth place"]</th>
+        <td>@Model.BirthPlace</td>
     </tr>
     <tr>
         <th>@Localizer["Address"]</th>
@@ -23,6 +31,10 @@
     <tr>
         <th>@Localizer["T-Shirt size"]</th>
         <td>@Model.TShirtSize</td>
+    </tr>
+    <tr>
+        <th>@Localizer["ID Number"]</th>
+        <td>@Model.IDNumber</td>
     </tr>
     <tr>
         <th>@Localizer["AKESZ number"]</th>
@@ -43,7 +55,12 @@
 </table>
 <a asp-controller="RaceResults" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary">@Localizer["Results"]</a>
 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">@Localizer["Edit"]</a>
-@if (User.IsInRole(Roles.USER_MANAGER) && !Model.VerifiedByAdmin)
+@if (User.IsInRole(Roles.USER_MANAGER))
 {
-    <a asp-action="Verify" asp-route-id="@Model.Id" class="btn btn-success">@Localizer["Verify"]</a>
+    @if(!Model.VerifiedByAdmin)
+    {
+        <a asp-action="Verify" asp-route-id="@Model.Id" class="btn btn-success">@Localizer["Verify"]</a>
+    }
+
+    <a asp-action="Index" class="btn btn-link">@Localizer["Back"]</a>
 }
