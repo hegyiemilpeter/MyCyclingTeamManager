@@ -124,7 +124,10 @@ namespace TeamManager.Manual.Models
             userRace.AbsoluteResult = absoluteResult;
 
             Race race = dbContext.Races.Find(raceId);
-            userRace.Points = pointCalculator.CalculatePoints(race.PointWeight, race.OwnOrganizedEvent, userRace);
+            if (user.IsPro)
+                userRace.Points = 0;
+            else
+                userRace.Points = pointCalculator.CalculatePoints(race.PointWeight, race.OwnOrganizedEvent, userRace);
 
             if (image != null && image.Length > 0)
             {

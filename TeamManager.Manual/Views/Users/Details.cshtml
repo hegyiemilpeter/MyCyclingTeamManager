@@ -5,7 +5,12 @@
     ViewData["Title"] = Model.FirstName + " " + Model.LastName;
 }
 
-<h1>@Model.FirstName @Model.LastName</h1>
+    <h1>
+        @if (Model.IsPro)
+        {
+            <span class="badge badge-success">@Localizer["Pro"] </span>
+        } @Model.FirstName @Model.LastName
+    </h1>
 <h2>@Localizer["Personal data"]</h2>
 <table class="table">
     <tr>

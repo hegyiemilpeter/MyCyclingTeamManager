@@ -147,6 +147,9 @@
   <data name="Phone number" xml:space="preserve">
     <value>Telefonszám</value>
   </data>
+  <data name="Pro" xml:space="preserve">
+    <value>Kiemelt</value>
+  </data>
   <data name="Results" xml:space="preserve">
     <value>Eredmények</value>
   </data>

@@ -25,7 +25,12 @@ else
             @foreach (var user in Model)
             {
             <tr>
-                <td>@user.FullName</td>
+                <td>
+                    @if (user.IsPro)
+                    {
+                        <span class="badge badge-success">@Localizer["Pro"] </span>
+                    } @user.FullName
+                </td>
                 <td>@user.Email</td>
                 <td>@user.PhoneNumber</td>
                 <td>

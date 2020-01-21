@@ -192,7 +192,8 @@ namespace TeamManager.Manual.Models
                     UCI = user.UCILicence,
                     BirthPlace = user.BirthPlace,
                     MothersName = user.MothersName,
-                    IDNumber = user.IDNumber
+                    IDNumber = user.IDNumber,
+                    IsPro = user.IsPro
                 };
 
                 Address usersAddress = DbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);

@@ -52,6 +52,8 @@ namespace TeamManager.Manual.Models
 
         public string FullName => FirstName + " " + LastName;
 
+        public bool IsPro { get; set; }
+
         public string UserName
         {
             get
