@@ -48,7 +48,7 @@ namespace TeamManager.Manual
                 {
                     // TODO: Get Developer names from environment variables / appsettings
                     builder.RequireAuthenticatedUser();
-                    builder.RequireUserName("emil.hegyi.19890802");
+                    builder.RequireUserName("emilpeter.hegyi.19890802");
                 });
             });
 
