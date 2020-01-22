@@ -12,7 +12,7 @@
 <h1>@Model.BaseModel.Name</h1>
 @if (User.IsInRole(Roles.RACE_MANAGER))
 {
-    @if (Model.EntriedRiders == null || Model.EntriedRiders.Count == 0 && Model.BaseModel.EntryDeadline > DateTime.Now)
+    @if ((Model.EntriedRiders == null || Model.EntriedRiders.Count == 0) && (!Model.BaseModel.EntryDeadline.HasValue || Model.BaseModel.EntryDeadline.Value > DateTime.Now))
     {
         <div class="alert alert-danger">
             <a asp-action="Delete" class="btn btn-sm btn-danger m-1" asp-route-id="@Model.BaseModel.Id">@Localizer["Delete race"]</a>
@@ -86,7 +86,7 @@
     </table>
 </div>
 <div class="row">
-    @if (Model.BaseModel.EntryDeadline > DateTime.Now)
+    @if (Model.BaseModel.EntryDeadline.HasValue && Model.BaseModel.EntryDeadline.Value > DateTime.Now)
     {
         if (!Model.UserApplied)
         {

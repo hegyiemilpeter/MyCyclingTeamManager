@@ -52,7 +52,7 @@ namespace TeamManager.Manual.Models
 
             if (modelState.GetFieldValidationState(nameof(Date)) == ModelValidationState.Valid &&
                 modelState.GetFieldValidationState(nameof(EntryDeadline)) == ModelValidationState.Valid
-                && Date.Value < EntryDeadline.Value)
+                && (EntryDeadline.HasValue &&  Date.Value < EntryDeadline.Value))
             {
                 modelState.AddModelError(string.Empty, localizer["The entry deadline must be sooner than the race date."]);
             }

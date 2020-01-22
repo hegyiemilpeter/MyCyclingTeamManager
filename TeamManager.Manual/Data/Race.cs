@@ -20,7 +20,6 @@ namespace TeamManager.Manual.Data
         public string City { get; set; }
         [Required]
         public RaceType? TypeOfRace { get; set; }
-        [Required(ErrorMessage = "The entry deadline is required.")]
         public DateTime? EntryDeadline { get; set; }
         [DataType(DataType.Url)]
         public string Website { get; set; }
