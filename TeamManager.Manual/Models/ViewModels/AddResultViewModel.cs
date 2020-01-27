@@ -15,7 +15,6 @@ namespace TeamManager.Manual.Models.ViewModels
         public int? AbsoluteResult { get; set; }
         public int? CategoryResult { get; set; }
         public bool IsTakePartAsStaff { get; set; }
-        public bool IsTakePartAsDriver { get; set; }
         public IFormFile Image { get; set; }
 
         public IEnumerable<SelectListItem> GetRaceSelectList
@@ -44,7 +43,7 @@ namespace TeamManager.Manual.Models.ViewModels
 
         public void Validate(ModelStateDictionary modelState, IStringLocalizer localizer)
         {
-            if(!AbsoluteResult.HasValue && !CategoryResult.HasValue && !IsTakePartAsDriver && !IsTakePartAsStaff)
+            if(!AbsoluteResult.HasValue && !CategoryResult.HasValue && !IsTakePartAsStaff)
             {
                 modelState.AddModelError("", localizer["At least one result is required."]);
             }

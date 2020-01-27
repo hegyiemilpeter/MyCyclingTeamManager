@@ -9,9 +9,8 @@ namespace TeamManager.Manual.Models
 {
     public class PointCalculator : IPointCalculator
     {
-        private static int STAFF_POINTS = 1;
-        private static int ORGANIZER_POINTS = 5;
-        private static int DRIVER_POINTS = 1;
+        private static int STAFF_POINTS = 2;
+        private static int ORGANIZER_POINTS = 2;
         private static int TOP_10_BONUS = 1;
         private static int TOP_3_BONUS = 2;
         private static int BILL_DIVIDER = 10000;
@@ -29,6 +28,7 @@ namespace TeamManager.Manual.Models
                 return result;
             }
 
+            result += 3;
             if (userRace.CategoryResult.HasValue && userRace.CategoryResult.Value > 0)
             {
                 if (userRace.CategoryResult.Value <= 3)
@@ -53,11 +53,6 @@ namespace TeamManager.Manual.Models
                 {
                     result += STAFF_POINTS;
                 }
-            }
-
-            if (userRace.IsTakePartAsDriver.HasValue && userRace.IsTakePartAsDriver.Value)
-            {
-                result += DRIVER_POINTS;
             }
 
             return result;

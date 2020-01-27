@@ -107,7 +107,7 @@ namespace TeamManager.Manual.Models
 
         #region Results
 
-        public async Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff, IFormFile image)
+        public async Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? staff, IFormFile image)
         {
             UserRace userRace = dbContext.UserRaces.Include(x => x.Race).SingleOrDefault(x => x.RaceId == raceId && x.UserId == user.Id);
             bool update = userRace != null;
@@ -118,7 +118,6 @@ namespace TeamManager.Manual.Models
                 userRace.RaceId = raceId;
             }
 
-            userRace.IsTakePartAsDriver = driver;
             userRace.IsTakePartAsStaff = staff;
             userRace.CategoryResult = categoryResult;
             userRace.AbsoluteResult = absoluteResult;
@@ -161,7 +160,7 @@ namespace TeamManager.Manual.Models
         {
             IList<UserRace> racesOfTheGivenUser = dbContext.UserRaces
                 .Include(x => x.Race)
-                .Where(x => x.UserId == user.Id && (x.AbsoluteResult.HasValue || x.CategoryResult.HasValue || (x.IsTakePartAsDriver.HasValue && x.IsTakePartAsDriver.Value) || (x.IsTakePartAsStaff.HasValue && x.IsTakePartAsStaff.Value)))
+                .Where(x => x.UserId == user.Id && (x.AbsoluteResult.HasValue || x.CategoryResult.HasValue || (x.IsTakePartAsStaff.HasValue && x.IsTakePartAsStaff.Value)))
                 .ToList();
             return racesOfTheGivenUser.Select(x => ToResultModel(x)).ToList();
         }
@@ -187,7 +186,6 @@ namespace TeamManager.Manual.Models
             {
                 AbsoluteResult = x.AbsoluteResult,
                 CategoryResult = x.CategoryResult,
-                IsDriver = x.IsTakePartAsDriver.HasValue && x.IsTakePartAsDriver.Value,
                 IsStaff = x.IsTakePartAsStaff.HasValue && x.IsTakePartAsStaff.Value,
                 Points = x.Points,
                 Race = x.Race.Name,

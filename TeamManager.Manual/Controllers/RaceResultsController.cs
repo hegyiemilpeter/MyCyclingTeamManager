@@ -82,7 +82,7 @@ namespace TeamManager.Manual.Controllers
             }
 
             User user = await userManager.FindByNameAsync(User.Identity.Name);
-            await userRaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsDriver, model.IsTakePartAsStaff, model.Image);
+            await userRaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsStaff, model.Image);
 
             return RedirectToAction("Index", "Points");
         }

@@ -15,7 +15,7 @@ namespace TeamManager.Manual.Models.Interfaces
 
         Task<IList<UserModel>> ListEntriedUsersAsync(int id);
 
-        Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? driver, bool? staff, IFormFile image);
+        Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? staff, IFormFile image);
 
         IList<ResultModel> GetRaceResultsByUser(User user);
 
