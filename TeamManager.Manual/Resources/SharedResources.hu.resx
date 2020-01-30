@@ -283,7 +283,7 @@
     <value>Kötelező mező</value>
   </data>
   <data name="User is not validated by admins." xml:space="preserve">
-    <value>A bejelentkezéshez az fiókod jóváhagyására van szükség. Amint ez megtörtént e-mailben értesítünk.</value>
+    <value>A csapatvezetők még nem hagyták jóvá a regisztrációdat, így nem tudsz belépni. Amint ez megtörtént e-mailben értesítünk. Köszönjük türelmedet!</value>
   </data>
   <data name="Validation number does not match." xml:space="preserve">
     <value>A validációs szám nem megfelelő.</value>
