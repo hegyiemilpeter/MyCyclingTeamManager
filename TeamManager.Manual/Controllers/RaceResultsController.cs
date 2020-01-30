@@ -60,7 +60,7 @@ namespace TeamManager.Manual.Controllers
                 model.SelectedRaceId = id;
            }
 
-           model.Races = raceManager.ListPastRaces();
+           model.Races = raceManager.ListRacesForResultAdd();
            if (id.HasValue)
            {
                model.SelectedRaceId = id;
@@ -77,7 +77,7 @@ namespace TeamManager.Manual.Controllers
             if (!ModelState.IsValid)
             {
                 logger.LogDebug("Invalid model state for AddRaceResult.");
-                model.Races = raceManager.ListPastRaces();
+                model.Races = raceManager.ListRacesForResultAdd();
                 return View(model);
             }
 

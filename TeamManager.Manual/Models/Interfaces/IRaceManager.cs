@@ -19,7 +19,7 @@ namespace TeamManager.Manual.Models.Interfaces
 
         IList<RaceModel> ListUpcomingRaces();
 
-        IList<RaceModel> ListPastRaces();
+        IList<RaceModel> ListRacesForResultAdd();
 
         RaceModel GetRaceById(int raceId);
     }

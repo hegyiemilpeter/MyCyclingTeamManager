@@ -50,7 +50,7 @@ namespace TeamManager.Manual.Models
             return ListRaces(dbContext.Races.Where(x => x.Date.HasValue && x.Date.Value > DateTime.Now).ToList());
         }
 
-        public IList<RaceModel> ListPastRaces()
+        public IList<RaceModel> ListRacesForResultAdd()
         {
             return ListRaces(dbContext.Races.Where(x => x.Date.HasValue && x.Date.Value < DateTime.Now).ToList());
         }

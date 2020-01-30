@@ -2,8 +2,6 @@
 A team manager application for my cycling team, build with ASP.NET Core 3.0
 
 #### Remaining features
-
-* Deadline to save results for riders (for point - 2 days, configurable)
 * Admin should be capable to add race result to everybody (over deadline, too)
 
 #### Future plans

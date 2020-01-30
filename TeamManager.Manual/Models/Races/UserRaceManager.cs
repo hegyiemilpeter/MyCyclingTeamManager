@@ -9,6 +9,7 @@ using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace TeamManager.Manual.Models
 {
@@ -19,13 +20,15 @@ namespace TeamManager.Manual.Models
         private readonly IPointCalculator pointCalculator;
         private readonly ILogger<UserRaceManager> logger;
         private readonly IImageStore imageStore;
-        public UserRaceManager(TeamManagerDbContext context, CustomUserManager customUserManager, IPointCalculator pointMgr, IImageStore imageStore, ILogger<UserRaceManager> userRaceManagerlogger)
+        private readonly IConfiguration configuration;
+        public UserRaceManager(TeamManagerDbContext context, CustomUserManager customUserManager, IPointCalculator pointMgr, IImageStore imageStore, ILogger<UserRaceManager> userRaceManagerlogger, IConfiguration config)
         {
             dbContext = context;
             userManager = customUserManager;
             pointCalculator = pointMgr;
             this.imageStore = imageStore;
             logger = userRaceManagerlogger;
+            configuration = config;
         }
 
         #region Entries
@@ -109,7 +112,7 @@ namespace TeamManager.Manual.Models
 
         public async Task AddResultAsync(User user, int raceId, int? absoluteResult, int? categoryResult, bool? staff, IFormFile image)
         {
-            UserRace userRace = dbContext.UserRaces.Include(x => x.Race).SingleOrDefault(x => x.RaceId == raceId && x.UserId == user.Id);
+            UserRace userRace = dbContext.UserRaces.SingleOrDefault(x => x.RaceId == raceId && x.UserId == user.Id);
             bool update = userRace != null;
             if (!update)
             {
@@ -123,10 +126,15 @@ namespace TeamManager.Manual.Models
             userRace.AbsoluteResult = absoluteResult;
 
             Race race = dbContext.Races.Find(raceId);
-            if (user.IsPro)
-                userRace.Points = 0;
-            else
-                userRace.Points = pointCalculator.CalculatePoints(race.PointWeight, race.OwnOrganizedEvent, userRace);
+            
+            DateTime deadline = race.Date.Value.AddDays(7);
+            int deadlineDaysForPointConsuption = configuration.GetValue<int>("ResultAddDeadline");
+            if (deadlineDaysForPointConsuption > 0)
+            {
+                deadline = new DateTime(race.Date.Value.Year, race.Date.Value.Month, race.Date.Value.AddDays(deadlineDaysForPointConsuption).Day, 23, 59, 59);
+            }
+
+            userRace.Points = pointCalculator.CalculatePoints(user.IsPro, race.PointWeight, race.OwnOrganizedEvent, deadline, userRace);
 
             if (image != null && image.Length > 0)
             {
@@ -144,7 +152,7 @@ namespace TeamManager.Manual.Models
                 dbContext.UserRaces.Add(userRace);
             
             await dbContext.SaveChangesAsync();
-            logger.LogInformation($"{user.Email} successfully added a new result for Race {raceId}");
+            logger.LogInformation($"{user.Email} successfully added a new result for Race {race.Name}");
         }
 
         private async Task<Uri> UploadImage(User user, IFormFile image, UserRace userRace)
