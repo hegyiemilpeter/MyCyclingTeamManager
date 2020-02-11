@@ -22,7 +22,6 @@ namespace TeamManager.Manual.Models.ViewModels
             get
             {
                 List<SelectListItem> response = new List<SelectListItem>();
-                response.Add(new SelectListItem() { Text = "Select a race", Value = null });
 
                 if(Races != null)
                 {

@@ -55,7 +55,7 @@ namespace TeamManager.Manual.Controllers
 
         [HttpGet]
         [Authorize(Roles = Roles.RACE_MANAGER)]
-        public IActionResult Add() =>  View(new RaceModel());
+        public IActionResult Add() =>  View(new RaceModel() { PointWeight = 1 });
 
         [HttpPost]
         [Authorize(Roles = Roles.RACE_MANAGER)]

@@ -12,7 +12,9 @@
     <form asp-action="Add" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label asp-for="Races">@Localizer["Race"]</label>
-            <select asp-for="SelectedRaceId" asp-items="@Model.GetRaceSelectList" class="form-control"></select>
+            <select asp-for="SelectedRaceId" asp-items="@Model.GetRaceSelectList" class="form-control">
+                <option label="@Localizer["Select a race"]" value=""></option>
+            </select>
             <span asp-validation-for="SelectedRaceId" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -30,8 +32,9 @@
             <span asp-validation-for="Image" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="IsTakePartAsStaff">@Localizer["I was staff"]</label>
-            <input type="checkbox" asp-for="IsTakePartAsStaff" class="form-control" />
+            <label asp-for="IsTakePartAsStaff">
+                <input type="checkbox" asp-for="IsTakePartAsStaff" /> @Localizer["I was staff"]
+            </label>
         </div>
         <input type="submit" value="@Localizer["Save"]" class="btn btn-primary m-1" />
         <a asp-action="Index" asp-controller="Races" class="btn btn-outline-primary m-1">@Localizer["Back to races"]</a>

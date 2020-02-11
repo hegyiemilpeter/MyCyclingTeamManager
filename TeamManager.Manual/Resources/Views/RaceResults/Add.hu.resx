@@ -141,6 +141,9 @@
   <data name="Save" xml:space="preserve">
     <value>Mentés</value>
   </data>
+  <data name="Select a race" xml:space="preserve">
+    <value>Válassz versenyt</value>
+  </data>
   <data name="Upload image (in case of result)" xml:space="preserve">
     <value>Kép (csak eredmény esetén kötelező)</value>
   </data>

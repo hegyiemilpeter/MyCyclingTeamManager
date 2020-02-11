@@ -10,11 +10,7 @@
 
 <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
 <div class="row">
-    <div class="col-sm form-group">
-        <label asp-for="OwnOrganizedEvent">@Localizer["Own"]</label>
-        <input type="checkbox" asp-for="OwnOrganizedEvent" class="form-control" />
-        <span asp-validation-for="OwnOrganizedEvent" class="text-danger"></span>
-    </div>
+    
     <div class="col-md form-group">
         <label asp-for="Name">@Localizer["Name"]</label>
         <input asp-for="Name" class="form-control" />
@@ -64,5 +60,11 @@
         <input asp-for="Website" class="form-control" />
         <span asp-validation-for="Website" class="text-danger"></span>
     </div>
+</div>
+<div class="col-sm">
+    <label asp-for="OwnOrganizedEvent">
+        <input type="checkbox" asp-for="OwnOrganizedEvent" /> @Localizer["Own"]
+    </label>
+    <span asp-validation-for="OwnOrganizedEvent" class="text-danger"></span>
 </div>
 @await Html.PartialAsync("_AddDistancePartial", Model)

@@ -52,7 +52,7 @@ namespace TeamManager.Manual.Models
 
         public IList<RaceModel> ListRacesForResultAdd()
         {
-            return ListRaces(dbContext.Races.Where(x => x.Date.HasValue && x.Date.Value < DateTime.Now).ToList());
+            return ListRaces(dbContext.Races.Where(x => x.Date.HasValue && x.Date.Value < DateTime.Now).OrderByDescending(x => x.Date.Value).ToList());
         }
 
         private IList<RaceModel> ListRaces(IList<Race> from)
