@@ -65,7 +65,10 @@ namespace TeamManager.Manual.Models
             if (!user.VerifiedByAdmin)
             {
                 user.VerifiedByAdmin = true;
-                await UpdateAsync(user);
+
+                DbContext.Entry(user).State = EntityState.Modified;
+                await DbContext.SaveChangesAsync();
+
                 Logger.LogDebug($"{user.Email} verified.");
 
                 await EmailSender.SendAdminVerifiedEmailAsync(user.Email, user.FirstName, loginUrl);
