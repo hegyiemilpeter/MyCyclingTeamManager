@@ -77,14 +77,14 @@ namespace TeamManager.Manual.Models
 
         private bool IsEmailOnWildCardList(string email)
         {
-            string[] wildCardEmails = Configuration.GetValue<string[]>("WildcardEmails");
-            if(wildCardEmails == null || wildCardEmails.Length == 0)
+            var wildCardEmails = Configuration.GetSection("WildcardEmails").AsEnumerable();
+            if(wildCardEmails == null || wildCardEmails.Count() == 0)
             {
                 Logger.LogDebug("No wildcard e-mails are in the configuration.");
                 return false;
             }
 
-            return wildCardEmails.Contains(email);
+            return wildCardEmails.Any(x => x.Value == email);
         }
 
         public async Task<IdentityResult> SendForgotPasswordEmailAsync(User user, string host)
