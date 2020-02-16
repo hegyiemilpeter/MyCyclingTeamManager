@@ -138,7 +138,7 @@ namespace TeamManager.Manual.Models
 
             if (image != null && image.Length > 0)
             {
-                Uri imageUri = await UploadImage(user, image, userRace);
+                Uri imageUri = await UploadImage(user, image, race);
                 if(imageUri != null)
                 {
                     userRace.ImageUrl = imageUri.ToString();
@@ -155,13 +155,13 @@ namespace TeamManager.Manual.Models
             logger.LogInformation($"{user.Email} successfully added a new result for Race {race.Name}");
         }
 
-        private async Task<Uri> UploadImage(User user, IFormFile image, UserRace userRace)
+        private async Task<Uri> UploadImage(User user, IFormFile image, Race race)
         {
             Stream memoryStream = new MemoryStream();
             image.CopyTo(memoryStream);
             memoryStream.Position = 0;
 
-            return await imageStore.SaveRaceImageAsync(user, userRace.Race, memoryStream, image.ContentType);
+            return await imageStore.SaveRaceImageAsync(user, race, memoryStream, image.ContentType);
         }
 
         public IList<ResultModel> GetRaceResultsByUser(User user)
