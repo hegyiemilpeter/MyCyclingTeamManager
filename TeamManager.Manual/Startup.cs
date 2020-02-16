@@ -52,6 +52,11 @@ namespace TeamManager.Manual
                 });
             });
 
+            services.Configure<PasswordOptions>(options =>
+            {
+                options.RequireNonAlphanumeric = false;
+            });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
