@@ -8,6 +8,8 @@ A team manager application for my cycling team, build with ASP.NET Core 3.0
 * Upload and view images for races
 * Profile image for user
 * Redesign of some page (points fe.)
+* Enable to add an event without distance (just in case of type = other)
+* Enable to create a race entry connecting to a race distance
 
 * Design update by Tomi
 * E-mail notification about important deadlines

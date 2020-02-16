@@ -38,6 +38,7 @@ namespace TeamManager.Manual
                 .AddIdentity<User, IdentityRole<int>>(options =>
                 {
                     options.User.RequireUniqueEmail = true;
+                    options.Password.RequireNonAlphanumeric = false;
                 })
                 .AddEntityFrameworkStores<TeamManagerDbContext>()
                 .AddDefaultTokenProviders();
@@ -50,11 +51,6 @@ namespace TeamManager.Manual
                     builder.RequireAuthenticatedUser();
                     builder.RequireUserName("emilpeter.hegyi.19890802");
                 });
-            });
-
-            services.Configure<PasswordOptions>(options =>
-            {
-                options.RequireNonAlphanumeric = false;
             });
 
             services.Configure<CookiePolicyOptions>(options =>
