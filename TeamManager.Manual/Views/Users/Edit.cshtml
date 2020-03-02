@@ -10,6 +10,7 @@
     <div class="row">
         <input type="hidden" asp-for="Id" value="@Model.Id" />
         <input type="hidden" asp-for="Email" value="@Model.Email" />
+        <input type="hidden" asp-for="VerifiedByAdmin" value="@Model.VerifiedByAdmin" />
         @await Html.PartialAsync("_UserFieldsPartial", Model)
     </div>
     <hr />

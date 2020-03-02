@@ -3,6 +3,9 @@ A team manager application for my cycling team, build with ASP.NET Core 3.0
 
 #### Remaining features
 * Admin should be capable to add race result to everybody (over deadline, too)
+* Race distances should be refactored: a rider can be capable to choose a distance, not just a race
+* Distance should be double, not integer
+* Notifications about important deadlines
 
 #### Future plans
 * Upload and view images for races

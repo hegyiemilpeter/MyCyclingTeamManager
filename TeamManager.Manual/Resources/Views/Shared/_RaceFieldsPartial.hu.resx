@@ -136,7 +136,7 @@
     <value>Saját szervezés</value>
   </data>
   <data name="Point weight" xml:space="preserve">
-    <value>Pont</value>
+    <value>Pontszorzó (x 3 pont)</value>
   </data>
   <data name="Remark" xml:space="preserve">
     <value>Megjegyzés</value>

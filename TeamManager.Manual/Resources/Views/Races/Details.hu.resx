@@ -145,7 +145,7 @@
     <value>Jelentkezési határidő</value>
   </data>
   <data name="Points" xml:space="preserve">
-    <value>Pontérték</value>
+    <value>Pontszorzó (x 3 pont)</value>
   </data>
   <data name="Race cannot be deleted, because there are entried riders or the entry deadline is over." xml:space="preserve">
     <value>A verseny addig nem törölhető amíg vannak rá jelentkezett versenyzők.</value>
