@@ -107,6 +107,6 @@
     {
         <a asp-action="Add" asp-controller="RaceResults" asp-route-id="@Model.BaseModel.Id" class="btn btn-success m-1">@Localizer["Add result"]</a>
     }
-    <a asp-action="Index" class="btn btn-primary m-1">@Localizer["Back"]</a>
+    <a asp-action="Index" asp-route-year="@Model.BaseModel.Date?.Year" asp-route-month="@Model.BaseModel.Date?.Month" class="btn btn-primary m-1">@Localizer["Back"]</a>
 </div>
 

@@ -6,7 +6,6 @@ A team manager application for my cycling team, build with ASP.NET Core 3.0
 * Race distances should be refactored: a rider can be capable to choose a distance, not just a race
 * Distance should be double, not integer
 * Notifications about important deadlines
-* Races: navigate back to the current month from race details
 
 #### Future plans
 * Upload and view images for races
