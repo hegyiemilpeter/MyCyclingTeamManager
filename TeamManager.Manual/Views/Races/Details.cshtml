@@ -23,7 +23,7 @@
         <div class="alert alert-danger">@Localizer["Race cannot be deleted, because there are entried riders or the entry deadline is over."]</div>
     }
 }
-<div class="row">
+<div class="row m-2">
     <table class="col-md-6 table">
         <tr>
             <th>@Localizer["Date"]</th>
@@ -85,7 +85,7 @@
         </tr>
     </table>
 </div>
-<div class="row">
+<div class="row m-2">
     @if (Model.BaseModel.EntryDeadline.HasValue && Model.BaseModel.EntryDeadline.Value > DateTime.Now)
     {
         if (!Model.UserApplied)

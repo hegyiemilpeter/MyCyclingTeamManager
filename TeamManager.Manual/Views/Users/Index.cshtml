@@ -5,41 +5,46 @@
     ViewData["Title"] = Localizer["Users"];
 }
 
-<h1>@Localizer["Users"]</h1>
-@if(Model == null || Model.Count() == 0)
-{
-    <div>@Localizer["No users in the database."]</div>
-}
-else
-{
-    <table class="table">
-        <thead class="thead-light">
-            <tr>
-                <th>@Localizer["Name"]</th>
-                <th>@Localizer["E-mail"]</th>
-                <th>@Localizer["Phone number"]</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in Model)
-            {
-            <tr>
-                <td>
-                    @if (user.IsPro)
-                    {
-                        <span class="badge badge-success">@Localizer["Pro"] </span>
-                    } @user.FullName
-                </td>
-                <td>@user.Email</td>
-                <td>@user.PhoneNumber</td>
-                <td>
-                    <a asp-action="Index" asp-controller="RaceResults" asp-route-Id="@user.Id" class="btn btn-outline-primary btn-sm">@Localizer["Results"]</a>
-                    <a asp-action="Details" asp-controller="Users" asp-route-Id="@user.Id" class="btn btn-outline-secondary btn-sm">@Localizer["Details"]</a>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
-}
+<div class="row m-2">
+    <h1>@Localizer["Users"]</h1>
+    @if (Model == null || Model.Count() == 0)
+    {
+        <div>@Localizer["No users in the database."]</div>
+    }
+    else
+    {
+        <table class="table table-hover table-responsive-sm">
+            <thead class="thead-light">
+                <tr>
+                    <th>@Localizer["Name"]</th>
+                    <th>@Localizer["E-mail"]</th>
+                    <th>@Localizer["Phone number"]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td style="white-space:nowrap">
+                            @if (user.IsPro)
+                            {
+                                <span class="badge badge-success">@Localizer["Pro"] </span>
+                            } @user.FullName
+                        </td>
+                        <td style="word-wrap: hyphenate">@user.Email</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>
+                            <a asp-action="Index" asp-controller="RaceResults" asp-route-Id="@user.Id" class="btn btn-outline-primary btn-sm">@Localizer["Results"]</a>
+                            @if (User.IsInRole(Roles.USER_MANAGER))
+                            {
+                                <a asp-action="Details" asp-controller="Users" asp-route-Id="@user.Id" class="btn btn-outline-secondary btn-sm">@Localizer["Details"]</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 

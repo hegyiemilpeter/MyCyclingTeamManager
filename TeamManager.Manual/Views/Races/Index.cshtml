@@ -8,22 +8,22 @@
     ViewBag.Title = Localizer["Races"];
 }
 
-<h1>@Localizer["Races"]</h1>
-<div class="text-center">
-    <raceDate number-of-months="4" start-month="@ViewBag.Month" start-year="@ViewBag.Year"></raceDate>
-</div>
-@if (Model == null || Model.Count == 0)
-{
-    <hr />
-    <h5>@Localizer["No races in the database for this month."]</h5>
-}
-else
-{
-    <div class="m-3">
-        <table class="table">
-            <thead class="thead-light">
+<div class="row m-2">
+    <h1>@Localizer["Races"]</h1>
+    <div class="text-center m-3" style="width: 100%">
+        <raceDate number-of-months="4" start-month="@ViewBag.Month" start-year="@ViewBag.Year"></raceDate>
+    </div>
+
+    @if (Model == null || Model.Count == 0)
+    {
+            <hr />
+            <h5>@Localizer["No races in the database for this month."]</h5>
+    }
+    else
+    {
+        <table class="table table-hover table-responsive-sm">
+            <thead class="thead-light text-center">
                 <tr>
-                    <th></th>
                     <th>@Localizer["Date"]</th>
                     <th>@Localizer["Race name"]</th>
                     <th>@Localizer["Type"]</th>
@@ -36,18 +36,8 @@ else
             @foreach (var race in Model)
             {
                 <tr>
-                    @if (race.OwnOrganizedEvent)
-                    {
-                        <td>
-                            <span class="badge badge-danger">!</span>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
                     <td>@race.Date?.ToString("yyyy.MM.dd")</td>
-                    <td>@race.Name</td>
+                    <td style="white-space:nowrap;">@race.Name</td>
                     <td>
                         @(race.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(race.TypeOfRace.Value, StringLocalizer) : "")
                     </td>
@@ -55,12 +45,12 @@ else
                         @race.CityString
                     </td>
                     <td>
-                        @race.DistancesString
-                    </td>
+                            @race.DistancesString
+                        </td>
                     <td>@race.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
-                    <td>
+                    <td class="text-center">
                         <a asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@race.Id">@Localizer["View"]</a>
-                        @if(User.IsInRole(Roles.RACE_MANAGER))
+                        @if (User.IsInRole(Roles.RACE_MANAGER))
                         {
                             <a asp-action="Edit" class="btn btn-sm btn-outline-dark" asp-route-id="@race.Id">@Localizer["Edit"]</a>
                         }
@@ -68,11 +58,13 @@ else
                 </tr>
             }
         </table>
-    </div>
-}
-@if (User.IsInRole(Roles.RACE_MANAGER))
-{
-    <a asp-action="Add" class="btn btn-primary btn-sm">@Localizer["New"]</a>
-}
-
-<a asp-action="Add" asp-controller="RaceResults" class="btn btn-primary btn-sm">@Localizer["Add Result"]</a>
+    }
+    
+</div>
+<div class="row m-2">
+    @if (User.IsInRole(Roles.RACE_MANAGER))
+    {
+        <a asp-action="Add" class="btn btn-primary btn-sm mr-1">@Localizer["New"]</a>
+    }
+    <a asp-action="Add" asp-controller="RaceResults" class="btn btn-primary btn-sm">@Localizer["Add Result"]</a>
+</div>
