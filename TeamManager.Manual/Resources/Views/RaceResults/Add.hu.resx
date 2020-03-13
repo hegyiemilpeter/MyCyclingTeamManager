@@ -117,34 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Absolute result" xml:space="preserve">
-    <value>Abszolút eredmény</value>
-  </data>
   <data name="Add race result" xml:space="preserve">
     <value>Versenyeredmény hozzáadása</value>
   </data>
   <data name="Back to races" xml:space="preserve">
     <value>Vissza a versenyekhez</value>
   </data>
-  <data name="Category result" xml:space="preserve">
-    <value>Korcsoportos eredmény</value>
-  </data>
-  <data name="I was driver" xml:space="preserve">
-    <value>Sofőr voltam</value>
-  </data>
-  <data name="I was staff" xml:space="preserve">
-    <value>Segítő voltam</value>
-  </data>
-  <data name="Race" xml:space="preserve">
-    <value>Verseny</value>
-  </data>
   <data name="Save" xml:space="preserve">
     <value>Mentés</value>
-  </data>
-  <data name="Select a race" xml:space="preserve">
-    <value>Válassz versenyt</value>
-  </data>
-  <data name="Upload image (in case of result)" xml:space="preserve">
-    <value>Kép (csak eredmény esetén kötelező)</value>
   </data>
 </root>

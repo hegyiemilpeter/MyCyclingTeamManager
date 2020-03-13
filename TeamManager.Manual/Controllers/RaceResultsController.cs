@@ -55,11 +55,6 @@ namespace TeamManager.Manual.Controllers
         public IActionResult Add(int? id = null)
         {
            AddResultViewModel model = new AddResultViewModel();
-           if(id != null)
-           {
-                model.SelectedRaceId = id;
-           }
-
            model.Races = raceManager.ListRacesForResultAdd();
            if (id.HasValue)
            {
@@ -85,6 +80,35 @@ namespace TeamManager.Manual.Controllers
             await userRaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsStaff, model.Image);
 
             return RedirectToAction("Index", "Points");
+        }
+
+        [Authorize(Roles = Roles.USER_MANAGER)]
+        public async Task<IActionResult> AddResultToUser()
+        {
+            IList<RaceModel> races = raceManager.ListRacesForResultAdd();
+            IEnumerable<UserModel> userModels = await userManager.ListUsersAsync();
+
+            return View(new AddResultToUserViewModel(races, null, userModels, null));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.USER_MANAGER)]
+        public async Task<IActionResult> AddResultToUser(AddResultToUserViewModel model)
+        {
+            model.Validate(ModelState, localizer);
+            if (!ModelState.IsValid)
+            {
+                logger.LogDebug("Invalid model state for AddRaceResultToUsers.");
+                model.Races = raceManager.ListRacesForResultAdd();
+                model.Users = await userManager.ListUsersAsync();
+                return View(model);
+            }
+
+            User user = await userManager.FindByIdAsync(model.SelectedUserId.Value.ToString());
+            await userRaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsStaff, model.Image);
+
+            return RedirectToAction(nameof(Index), new { id = model.SelectedUserId });
         }
 
         [Authorize(Roles = Roles.POINT_CONSUPTION_MANAGER)]

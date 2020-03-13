@@ -9,6 +9,16 @@ namespace TeamManager.Manual.Models.ViewModels
 {
     public class AddResultViewModel
     {
+        public AddResultViewModel()
+        {
+        }
+
+        public AddResultViewModel(IList<RaceModel> races, int? selectedRaceId)
+        {
+            Races = races;
+            SelectedRaceId = selectedRaceId;
+        }
+
         public IList<RaceModel> Races { get; set; }
         [Required]
         public int? SelectedRaceId { get; set; }

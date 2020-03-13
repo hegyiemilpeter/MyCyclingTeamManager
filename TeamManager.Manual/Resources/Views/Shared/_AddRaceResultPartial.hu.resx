@@ -117,43 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add Result" xml:space="preserve">
-    <value>Eredmény hozzáadása</value>
+  <data name="Absolute result" xml:space="preserve">
+    <value>Abszolút eredmény</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>Város</value>
+  <data name="Category result" xml:space="preserve">
+    <value>Korcsoportos eredmény</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Dátum</value>
+  <data name="I was driver" xml:space="preserve">
+    <value>Sofőr voltam</value>
   </data>
-  <data name="Distances" xml:space="preserve">
-    <value>Távok</value>
+  <data name="I was staff" xml:space="preserve">
+    <value>Segítő voltam</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Szerkesztés</value>
+  <data name="Race" xml:space="preserve">
+    <value>Verseny</value>
   </data>
-  <data name="Entry deadline" xml:space="preserve">
-    <value>Jelentkezési határidő</value>
+  <data name="Select a race" xml:space="preserve">
+    <value>Válassz versenyt</value>
   </data>
-  <data name="New" xml:space="preserve">
-    <value>Új</value>
-  </data>
-  <data name="New user result" xml:space="preserve">
-    <value>Új versenyzői eredmény</value>
-  </data>
-  <data name="No races in the database for this month." xml:space="preserve">
-    <value>Nincs verseny rögzítve erre a hónapra.</value>
-  </data>
-  <data name="Race name" xml:space="preserve">
-    <value>Verseny neve</value>
-  </data>
-  <data name="Races" xml:space="preserve">
-    <value>Versenynaptár</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Típus</value>
-  </data>
-  <data name="View" xml:space="preserve">
-    <value>Részletek</value>
+  <data name="Upload image (in case of result)" xml:space="preserve">
+    <value>Kép (csak eredmény esetén kötelező)</value>
   </data>
 </root>

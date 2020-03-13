@@ -1,0 +1,26 @@
+﻿@model AddResultToUserViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Add race result to user"];
+}
+
+    <div class="m-2">
+        <h1>@Localizer["Add race result to user"]</h1>
+        <hr />
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div class="row">
+            <form asp-action="AddResultToUser" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Users">@Localizer["User"]</label>
+                    <select asp-for="SelectedUserId" asp-items="@Model.GetUserList" class="form-control">
+                        <option label="@Localizer["Select a user"]" value=""></option>
+                    </select>
+                    <span asp-validation-for="SelectedUserId" class="text-danger"></span>
+                </div>
+                @await Html.PartialAsync("_AddRaceResultPartial")
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-primary m-1" />
+                <a asp-action="Index" asp-controller="Races" class="btn btn-outline-primary m-1">@Localizer["Back to races"]</a>
+            </form>
+        </div>
+    </div>

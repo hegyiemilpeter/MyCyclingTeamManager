@@ -117,43 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add Result" xml:space="preserve">
-    <value>Eredmény hozzáadása</value>
+  <data name="Add race result to user" xml:space="preserve">
+    <value>Eredmény hozzáadása felhasználóhoz</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>Város</value>
+  <data name="Back to races" xml:space="preserve">
+    <value>Vissza a versenyekhez</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Dátum</value>
+  <data name="Save" xml:space="preserve">
+    <value>Mentés</value>
   </data>
-  <data name="Distances" xml:space="preserve">
-    <value>Távok</value>
+  <data name="Select a user" xml:space="preserve">
+    <value>Válassz versenyzőt</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Szerkesztés</value>
-  </data>
-  <data name="Entry deadline" xml:space="preserve">
-    <value>Jelentkezési határidő</value>
-  </data>
-  <data name="New" xml:space="preserve">
-    <value>Új</value>
-  </data>
-  <data name="New user result" xml:space="preserve">
-    <value>Új versenyzői eredmény</value>
-  </data>
-  <data name="No races in the database for this month." xml:space="preserve">
-    <value>Nincs verseny rögzítve erre a hónapra.</value>
-  </data>
-  <data name="Race name" xml:space="preserve">
-    <value>Verseny neve</value>
-  </data>
-  <data name="Races" xml:space="preserve">
-    <value>Versenynaptár</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Típus</value>
-  </data>
-  <data name="View" xml:space="preserve">
-    <value>Részletek</value>
+  <data name="User" xml:space="preserve">
+    <value>Versenyző</value>
   </data>
 </root>

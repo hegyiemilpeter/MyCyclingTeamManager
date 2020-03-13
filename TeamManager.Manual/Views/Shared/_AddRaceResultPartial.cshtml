@@ -1,0 +1,29 @@
+﻿@model  TeamManager.Manual.Models.ViewModels.AddResultViewModel
+@inject IViewLocalizer Localizer
+
+<div class="form-group">
+    <label asp-for="Races">@Localizer["Race"]</label>
+    <select asp-for="SelectedRaceId" asp-items="@Model.GetRaceSelectList" class="form-control">
+        <option label="@Localizer["Select a race"]" value=""></option>
+    </select>
+    <span asp-validation-for="SelectedRaceId" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="AbsoluteResult">@Localizer["Absolute result"]</label>
+    <input asp-for="AbsoluteResult" class="form-control" />
+</div>
+<div class="form-group">
+    <label asp-for="CategoryResult">@Localizer["Category result"]</label>
+    <input asp-for="CategoryResult" class="form-control" />
+    <span asp-validation-for="CategoryResult" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Image">@Localizer["Upload image (in case of result)"]</label>
+    <input asp-for="Image" class="form-control-file" />
+    <span asp-validation-for="Image" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="IsTakePartAsStaff">
+        <input type="checkbox" asp-for="IsTakePartAsStaff" /> @Localizer["I was staff"]
+    </label>
+</div>
