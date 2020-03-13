@@ -96,7 +96,7 @@ namespace TeamManager.Manual.Controllers
             }
 
             await billManager.CreateBillAsync(user, viewModel.Amount, viewModel.PurchaseDate.Value, viewModel.Image);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Points");
         }
     }
 }
