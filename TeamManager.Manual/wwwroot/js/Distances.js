@@ -5,8 +5,10 @@
 
     var newDistanceField = document.createElement("input");
     newDistanceField.setAttribute("type", "number");
+    newDistanceField.setAttribute("step", ".1");
     newDistanceField.setAttribute("name", "DistanceLengths");
     newDistanceField.setAttribute("id", "DistanceLengths");
+    newDistanceField.setAttribute("pattern", "^\d*(\.\d{0,1})?$");
     newDistanceField.setAttribute("class", "m-2 form-control");
 
     newDistanceDiv.appendChild(newDistanceField);

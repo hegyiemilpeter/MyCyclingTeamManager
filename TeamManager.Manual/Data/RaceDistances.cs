@@ -12,6 +12,6 @@ namespace TeamManager.Manual.Data
         /// <summary>
         /// Race distance in km-s.
         /// </summary>
-        public int Distance { get; set; }
+        public double Distance { get; set; }
     }
 }

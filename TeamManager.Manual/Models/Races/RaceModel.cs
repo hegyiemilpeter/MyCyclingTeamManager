@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using TeamManager.Manual.Data;
 
@@ -9,16 +10,16 @@ namespace TeamManager.Manual.Models
 {
     public class RaceModel : Race
     {
-        public IList<int> DistanceLengths { get; set; }
+        public string[] DistanceLengths { get; set; }
 
         public string DistancesString
         {
             get
             {
                 string distancesString = null;
-                for (int i = 0; i < DistanceLengths.Count; i++)
+                for (int i = 0; i < DistanceLengths.Count(); i++)
                 {
-                    distancesString += i == DistanceLengths.Count - 1 ? DistanceLengths[i] + " km " : DistanceLengths[i] + " km, ";
+                    distancesString += i == DistanceLengths.Count() - 1 ? DistanceLengths[i] + " km " : DistanceLengths[i] + " km, ";
                 }
 
                 return distancesString;
@@ -41,11 +42,11 @@ namespace TeamManager.Manual.Models
 
         public void Validate(ModelStateDictionary modelState, IStringLocalizer localizer)
         {
-            if (DistanceLengths == null || DistanceLengths.Count == 0)
+            if (DistanceLengths == null || DistanceLengths.Count() == 0)
             {
                 modelState.AddModelError(nameof(DistanceLengths), localizer["At least one distance is required."]);
             }
-            else if(DistanceLengths.Any(d => d <= 0))
+            else if(DistanceLengths.Any(d => Double.Parse(d, CultureInfo.InvariantCulture) <= 0))
             {
                 modelState.AddModelError(nameof(DistanceLengths), localizer["All distances should be greater than 0."]);
             }

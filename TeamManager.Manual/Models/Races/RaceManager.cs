@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using TeamManager.Manual.Data;
@@ -30,7 +31,7 @@ namespace TeamManager.Manual.Models
                 foreach (var length in raceModel.DistanceLengths)
                 {
                     RaceDistance distance = new RaceDistance();
-                    distance.Distance = length;
+                    distance.Distance = double.Parse(length, CultureInfo.InvariantCulture);
                     distance.RaceId = race.Id;
                     dbContext.Distances.Add(distance);
                 }
@@ -101,11 +102,11 @@ namespace TeamManager.Manual.Models
             // Add new distances
             foreach (var distance in model.DistanceLengths)
             {
-                if(!dbContext.Distances.Any(x => x.RaceId == raceToUpdate.Id && x.Distance == distance))
+                if(!dbContext.Distances.Any(x => x.RaceId == raceToUpdate.Id && x.Distance == double.Parse(distance, CultureInfo.InvariantCulture)))
                 {
                     RaceDistance newDistance = new RaceDistance()
                     {
-                        Distance = distance,
+                        Distance = double.Parse(distance, CultureInfo.InvariantCulture),
                         RaceId = raceToUpdate.Id
                     };
 
@@ -117,7 +118,7 @@ namespace TeamManager.Manual.Models
             var distances = dbContext.Distances.Where(x => x.RaceId == raceToUpdate.Id);
             foreach (var distance in distances)
             {
-                if (!model.DistanceLengths.Contains(distance.Distance))
+                if (!model.DistanceLengths.Any(x => double.Parse(x, CultureInfo.InvariantCulture) == distance.Distance))
                 {
                     dbContext.Distances.Remove(distance);
                 }
@@ -159,7 +160,7 @@ namespace TeamManager.Manual.Models
                     OwnOrganizedEvent = r.OwnOrganizedEvent
                 };
 
-                raceModel.DistanceLengths = dbContext.Distances.Where(x => x.RaceId == r.Id).Select(d => d.Distance).ToList();
+                raceModel.DistanceLengths = dbContext.Distances.Where(x => x.RaceId == r.Id).Select(d => d.Distance.ToString()).ToArray();
                 return raceModel;
             }
             catch (Exception e)
