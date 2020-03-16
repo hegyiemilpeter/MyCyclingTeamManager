@@ -340,3 +340,4 @@ ASALocalRun/
 healthchecksdb
 /TeamManager.Manual/appsettings.Production.json
 /TeamManager.Manual.NotificationSender/appsettings.json
+/TeamManager.Manual.NotificationSender/appsettings.Production.json
