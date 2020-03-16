@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Interfaces;
 

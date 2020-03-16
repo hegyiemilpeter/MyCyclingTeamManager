@@ -5,10 +5,9 @@ using SendGrid.Helpers.Mail;
 using System;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using TeamManager.Manual.Models.Exceptions;
-using TeamManager.Manual.Models.Interfaces;
+using TeamManager.Manual.Core.Interfaces;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Services
 {
     public class EmailSender : IEmailSender
     {
@@ -71,7 +70,7 @@ namespace TeamManager.Manual.Models
             if (sendGridResponse.StatusCode != System.Net.HttpStatusCode.Accepted)
             {
                 Logger.LogError($"Email sending failed: {sendGridResponse.StatusCode} {sendGridResponse.Body}");
-                throw new EmailSendingException();
+                throw new Exception();
             }
 
             Logger.LogInformation($"E-mail sent to {to} about {subject}");
