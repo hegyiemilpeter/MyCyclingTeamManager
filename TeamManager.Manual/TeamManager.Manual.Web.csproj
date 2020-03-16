@@ -8,16 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20190926083703_CleanedRaceEntity.cs" />
-    <Compile Remove="Data\Migrations\20190926083703_CleanedRaceEntity.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200109103005_PointsStoredInDatabase.cs" />
-    <Compile Remove="Data\Migrations\20200109103005_PointsStoredInDatabase.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.0.0" />
     <PackageReference Include="Diacritics" Version="2.1.19293.1" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0" />
@@ -31,7 +23,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="Sendgrid" Version="9.12.0" />
-    <PackageReference Include="StackExchange.Redis" Version="2.0.601" />
   </ItemGroup>
 
   <ItemGroup>

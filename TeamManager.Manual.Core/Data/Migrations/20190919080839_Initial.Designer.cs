@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamManager.Manual.Models;
+using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Data.Migrations
+namespace TeamManager.Manual.Migrations
 {
     [DbContext(typeof(TeamManagerDbContext))]
-    [Migration("20190919101331_AddressCreated")]
-    partial class AddressCreated
+    [Migration("20190919080839_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,27 +128,6 @@ namespace TeamManager.Manual.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("TeamManager.Manual.Data.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("City");
-
-                    b.Property<string>("Country");
-
-                    b.Property<string>("HouseNumber");
-
-                    b.Property<string>("Street");
-
-                    b.Property<string>("ZipCode");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("TeamManager.Manual.Data.User", b =>

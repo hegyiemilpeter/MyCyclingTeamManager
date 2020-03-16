@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamManager.Manual.Models;
 
 namespace TeamManager.Manual.Data.Migrations
 {
     [DbContext(typeof(TeamManagerDbContext))]
-    [Migration("20200119170958_ExtendedUserWithAdditionalDataFields")]
-    partial class ExtendedUserWithAdditionalDataFields
+    [Migration("20200127163244_RemovedDriverAsResult")]
+    partial class RemovedDriverAsResult
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -256,7 +255,6 @@ namespace TeamManager.Manual.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntryDeadline")
-                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -438,9 +436,6 @@ namespace TeamManager.Manual.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsEntryRequired")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsTakePartAsDriver")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsTakePartAsStaff")

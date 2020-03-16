@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Data
 {
     public class TeamManagerDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {

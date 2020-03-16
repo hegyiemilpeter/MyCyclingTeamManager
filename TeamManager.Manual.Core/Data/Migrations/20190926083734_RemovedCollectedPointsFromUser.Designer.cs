@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamManager.Manual.Models;
 
 namespace TeamManager.Manual.Data.Migrations
 {
     [DbContext(typeof(TeamManagerDbContext))]
-    [Migration("20191030143843_AddedAdminVerifiedFlagToUser")]
-    partial class AddedAdminVerifiedFlagToUser
+    [Migration("20190926083734_RemovedCollectedPointsFromUser")]
+    partial class RemovedCollectedPointsFromUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -179,58 +178,6 @@ namespace TeamManager.Manual.Data.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("TeamManager.Manual.Data.IdentificationNumber", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("IdentificationNumbers");
-                });
-
-            modelBuilder.Entity("TeamManager.Manual.Data.PointConsuption", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Remark")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PointConsuptions");
-                });
-
             modelBuilder.Entity("TeamManager.Manual.Data.Race", b =>
                 {
                     b.Property<int>("Id")
@@ -317,6 +264,9 @@ namespace TeamManager.Manual.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ConsumedPoints")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -369,9 +319,6 @@ namespace TeamManager.Manual.Data.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("VerifiedByAdmin")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -398,7 +345,13 @@ namespace TeamManager.Manual.Data.Migrations
                     b.Property<int?>("CategoryResult")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsEntryPaid")
+                        .HasColumnType("bit");
+
                     b.Property<bool?>("IsEntryRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsPointsDisabled")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsTakePartAsDriver")
@@ -467,24 +420,6 @@ namespace TeamManager.Manual.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.HasOne("TeamManager.Manual.Data.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TeamManager.Manual.Data.IdentificationNumber", b =>
-                {
-                    b.HasOne("TeamManager.Manual.Data.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TeamManager.Manual.Data.PointConsuption", b =>
-                {
-                    b.HasOne("TeamManager.Manual.Data.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

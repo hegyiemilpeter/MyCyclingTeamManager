@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamManager.Manual.Models;
+using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Data.Migrations
+namespace TeamManager.Manual.Migrations
 {
     [DbContext(typeof(TeamManagerDbContext))]
-    [Migration("20200306161716_DistanceIsDouble")]
-    partial class DistanceIsDouble
+    partial class TeamManagerDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

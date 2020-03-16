@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Core.Services;
+using TeamManager.Manual.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace TeamManager.Manual.NotificationSender
 {
@@ -14,9 +16,9 @@ namespace TeamManager.Manual.NotificationSender
             try
             {
                 ServiceProvider serviceProvider = BuildServiceProvider();
-                IEmailSender emailSender = serviceProvider.GetRequiredService<IEmailSender>();
-                emailSender.SendContactEmailAsync("hegyi.emil.peter@gmail.com", $"Job test {DateTime.UtcNow.ToString()}", "hegyi.emil.peter@gmail.com").Wait();
-                Console.WriteLine("Email sent successfully.");
+                INotificationSender notificationSender = serviceProvider.GetRequiredService<INotificationSender>();
+                notificationSender.SendEntryDeadlineNotificationsAsync().Wait();
+                Console.WriteLine("Notifications sent successfully.");
             }
             catch (Exception e)
             {
@@ -33,11 +35,15 @@ namespace TeamManager.Manual.NotificationSender
                 .AddJsonFile("appsettings.json", false, true);
 
             IConfiguration configuration = builder.Build();
-
             services.AddLogging();
-            services.AddDbContext<>();
+            services.AddDbContext<TeamManagerDbContext>(dbContextOptions =>
+            {
+                dbContextOptions.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
+
             services.AddSingleton(configuration);
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<INotificationSender, TeamManager.Manual.Core.Services.NotificationSender>();
 
             return services.BuildServiceProvider();
         }

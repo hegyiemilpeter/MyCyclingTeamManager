@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamManager.Manual.Models;
 
 namespace TeamManager.Manual.Data.Migrations
 {
     [DbContext(typeof(TeamManagerDbContext))]
-    [Migration("20190926123113_AddedIdentifierNumbersToUser")]
-    partial class AddedIdentifierNumbersToUser
+    [Migration("20200306161716_DistanceIsDouble")]
+    partial class DistanceIsDouble
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -179,27 +178,62 @@ namespace TeamManager.Manual.Data.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("TeamManager.Manual.Data.IdentificationNumber", b =>
+            modelBuilder.Entity("TeamManager.Manual.Data.Bill", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Type")
+                    b.Property<int>("Amount")
                         .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("IdentificationNumbers");
+                    b.ToTable("Bills");
+                });
+
+            modelBuilder.Entity("TeamManager.Manual.Data.PointConsuption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PointConsuptions");
                 });
 
             modelBuilder.Entity("TeamManager.Manual.Data.Race", b =>
@@ -221,7 +255,6 @@ namespace TeamManager.Manual.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntryDeadline")
-                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -255,8 +288,8 @@ namespace TeamManager.Manual.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Distance")
-                        .HasColumnType("int");
+                    b.Property<double>("Distance")
+                        .HasColumnType("float");
 
                     b.Property<int>("RaceId")
                         .HasColumnType("int");
@@ -281,15 +314,18 @@ namespace TeamManager.Manual.Data.Migrations
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
 
+                    b.Property<string>("AkeszNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("BirthPlace")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ConsumedPoints")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
@@ -304,6 +340,18 @@ namespace TeamManager.Manual.Data.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
+                    b.Property<bool>("HasEntryStatement")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasGDPRStatement")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("IDNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPro")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -313,6 +361,9 @@ namespace TeamManager.Manual.Data.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("MothersName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -320,6 +371,9 @@ namespace TeamManager.Manual.Data.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<string>("OtprobaNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -336,12 +390,21 @@ namespace TeamManager.Manual.Data.Migrations
                     b.Property<int>("TShirtSize")
                         .HasColumnType("int");
 
+                    b.Property<string>("TriathleteLicence")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<string>("UCILicence")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<bool>("VerifiedByAdmin")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -369,23 +432,23 @@ namespace TeamManager.Manual.Data.Migrations
                     b.Property<int?>("CategoryResult")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("IsEntryPaid")
-                        .HasColumnType("bit");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsEntryRequired")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsPointsDisabled")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsTakePartAsDriver")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsTakePartAsStaff")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
                     b.Property<int>("RaceId")
                         .HasColumnType("int");
+
+                    b.Property<bool?>("ResultIsValid")
+                        .HasColumnType("bit");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -450,7 +513,16 @@ namespace TeamManager.Manual.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TeamManager.Manual.Data.IdentificationNumber", b =>
+            modelBuilder.Entity("TeamManager.Manual.Data.Bill", b =>
+                {
+                    b.HasOne("TeamManager.Manual.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TeamManager.Manual.Data.PointConsuption", b =>
                 {
                     b.HasOne("TeamManager.Manual.Data.User", "User")
                         .WithMany()

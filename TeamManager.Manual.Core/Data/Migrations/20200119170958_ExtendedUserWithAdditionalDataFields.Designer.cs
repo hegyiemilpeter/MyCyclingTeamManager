@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamManager.Manual.Models;
 
 namespace TeamManager.Manual.Data.Migrations
 {
     [DbContext(typeof(TeamManagerDbContext))]
-    [Migration("20200109103522_PointsAreStoredInDatabase")]
-    partial class PointsAreStoredInDatabase
+    [Migration("20200119170958_ExtendedUserWithAdditionalDataFields")]
+    partial class ExtendedUserWithAdditionalDataFields
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -322,6 +321,9 @@ namespace TeamManager.Manual.Data.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("BirthPlace")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -339,6 +341,18 @@ namespace TeamManager.Manual.Data.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
+                    b.Property<bool>("HasEntryStatement")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasGDPRStatement")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("IDNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPro")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -347,6 +361,9 @@ namespace TeamManager.Manual.Data.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("MothersName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")

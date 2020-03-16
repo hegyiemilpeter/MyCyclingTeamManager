@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamManager.Manual.Models;
 
 namespace TeamManager.Manual.Data.Migrations
 {
     [DbContext(typeof(TeamManagerDbContext))]
-    [Migration("20190927133038_AddedPointConsuptions")]
-    partial class AddedPointConsuptions
+    [Migration("20191030143843_AddedAdminVerifiedFlagToUser")]
+    partial class AddedAdminVerifiedFlagToUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -368,6 +367,9 @@ namespace TeamManager.Manual.Data.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<bool>("VerifiedByAdmin")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

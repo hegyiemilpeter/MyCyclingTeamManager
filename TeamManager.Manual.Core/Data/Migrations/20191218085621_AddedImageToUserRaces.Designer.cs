@@ -3,15 +3,16 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamManager.Manual.Models;
 
-namespace TeamManager.Manual.Migrations
+namespace TeamManager.Manual.Data.Migrations
 {
     [DbContext(typeof(TeamManagerDbContext))]
-    partial class TeamManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191218085621_AddedImageToUserRaces")]
+    partial class AddedImageToUserRaces
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,35 +178,6 @@ namespace TeamManager.Manual.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("TeamManager.Manual.Data.Bill", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PurchaseDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Bills");
-                });
-
             modelBuilder.Entity("TeamManager.Manual.Data.PointConsuption", b =>
                 {
                     b.Property<int>("Id")
@@ -254,6 +226,7 @@ namespace TeamManager.Manual.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntryDeadline")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -287,8 +260,8 @@ namespace TeamManager.Manual.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Distance")
-                        .HasColumnType("float");
+                    b.Property<int>("Distance")
+                        .HasColumnType("int");
 
                     b.Property<int>("RaceId")
                         .HasColumnType("int");
@@ -319,9 +292,6 @@ namespace TeamManager.Manual.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("BirthPlace")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -339,18 +309,6 @@ namespace TeamManager.Manual.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<bool>("HasEntryStatement")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HasGDPRStatement")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("IDNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsPro")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -359,9 +317,6 @@ namespace TeamManager.Manual.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("MothersName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -431,23 +386,23 @@ namespace TeamManager.Manual.Migrations
                     b.Property<int?>("CategoryResult")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("ImageIsValid")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsEntryRequired")
                         .HasColumnType("bit");
 
+                    b.Property<bool?>("IsTakePartAsDriver")
+                        .HasColumnType("bit");
+
                     b.Property<bool?>("IsTakePartAsStaff")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
                     b.Property<int>("RaceId")
                         .HasColumnType("int");
-
-                    b.Property<bool?>("ResultIsValid")
-                        .HasColumnType("bit");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -506,15 +461,6 @@ namespace TeamManager.Manual.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.HasOne("TeamManager.Manual.Data.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TeamManager.Manual.Data.Bill", b =>
-                {
-                    b.HasOne("TeamManager.Manual.Data.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

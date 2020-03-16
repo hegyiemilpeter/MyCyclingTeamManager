@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamManager.Manual.Models;
 
 namespace TeamManager.Manual.Data.Migrations
 {
     [DbContext(typeof(TeamManagerDbContext))]
-    [Migration("20190926083734_RemovedCollectedPointsFromUser")]
-    partial class RemovedCollectedPointsFromUser
+    [Migration("20190925124510_ExtendedRaceResults")]
+    partial class ExtendedRaceResults
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -205,9 +204,6 @@ namespace TeamManager.Manual.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("OwnOrganizedEvent")
-                        .HasColumnType("bit");
-
                     b.Property<int>("PointWeight")
                         .HasColumnType("int");
 
@@ -260,6 +256,9 @@ namespace TeamManager.Manual.Data.Migrations
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("CollectedPoints")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -430,7 +429,7 @@ namespace TeamManager.Manual.Data.Migrations
             modelBuilder.Entity("TeamManager.Manual.Data.RaceDistance", b =>
                 {
                     b.HasOne("TeamManager.Manual.Data.Race", "Race")
-                        .WithMany()
+                        .WithMany("Distances")
                         .HasForeignKey("RaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

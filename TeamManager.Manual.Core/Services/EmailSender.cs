@@ -4,6 +4,7 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
 using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 using TeamManager.Manual.Core.Interfaces;
 
@@ -41,6 +42,19 @@ namespace TeamManager.Manual.Core.Services
         {
             string subject = "Törölt számla";
             string message = $"<h2>Kedves {lastName}!</h2><p>Tájékoztatunk hogy a Green Riders rendszerében <a href=\"{url}\">ezt</a> a számládat egy adminisztrátor törölte.</p><p>Összeg: {amount}</p><p>Vásárlás dátuma: {purchaseDate.ToString("yyyy.MM.dd")}</p>";
+            await SendEmailAsync(to, subject, message);
+        }
+
+        public async Task SendRaceEntryDeadlineIsComingAsync(string to, string name, int days, params string[] races)
+        {
+            StringBuilder racesString = new StringBuilder();
+            for (int i = 0; i < races.Length; i++)
+            {
+                racesString.Append($"<p>{races[i]}</>");
+            }
+
+            string message = $"<h2>Kedves {name}!</h2><p>Értesítünk, hogy a következő versenyek nevezési határideje {days} napon belül lejár.</p><div>{racesString.ToString()}</div>";
+            string subject = "Közelgő nevezési határidők";
             await SendEmailAsync(to, subject, message);
         }
 
@@ -91,5 +105,7 @@ namespace TeamManager.Manual.Core.Services
                 return false;
             }
         }
+
+
     }
 }

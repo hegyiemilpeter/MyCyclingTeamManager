@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace TeamManager.Manual.Core.Interfaces
@@ -14,5 +12,7 @@ namespace TeamManager.Manual.Core.Interfaces
         Task SendAdminVerifiedEmailAsync(string to, string firstName, string loginAddress);
 
         Task SendBillDeletedEmailAsync(string to, string firstName, int amount, DateTime purchaseDate, string url);
+
+        Task SendRaceEntryDeadlineIsComingAsync(string to, string name, int days, params string[] race);
     }
 }
