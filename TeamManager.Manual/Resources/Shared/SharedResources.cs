@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TeamManager.Manual
+namespace TeamManager.Manual.Web
 {
     public class SharedResources
     {
