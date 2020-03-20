@@ -27,13 +27,20 @@ namespace TeamManager.Manual.Core.Services
         {
             try
             {
+                logger.LogDebug("Sending entry deadline notifications...");
                 int notificationBeforeEntryDeadlineInDays = 7;
                 DateTime deadline = DateTime.UtcNow.AddDays(notificationBeforeEntryDeadlineInDays);
-                IEnumerable<Race> races = dbContext.Races.Where(x => x.EntryDeadline.HasValue && (x.EntryDeadline.Value.Date == deadline.Date)).AsEnumerable();
-                if(races.Count() > 0)
+                IEnumerable<string> races = dbContext.Races.Where(x => x.EntryDeadline.HasValue && (x.EntryDeadline.Value.Date == deadline.Date)).Select(x => x.Name).AsEnumerable();
+                if(races == null || races.Count() == 0)
                 {
-                    await emailSender.SendRaceEntryDeadlineIsComingAsync("bringafan-se@googlegroups.com", "Versenyzők", notificationBeforeEntryDeadlineInDays, races.Select(x => x.Name).ToArray());
+                    logger.LogInformation("No races found for sending entry deadline notification.");
+                    return;
                 }
+
+                logger.LogDebug($"{races.Count()} found for sending entry deadline notification.");
+                await emailSender.SendRaceEntryDeadlineIsComingAsync("bringafan-se@googlegroups.com", "Versenyzők", notificationBeforeEntryDeadlineInDays, races.ToArray());
+                logger.LogInformation($"Notifications are sent about the entry deadline of the following races.", races);
+                logger.LogDebug("Send entry deadline notifications finished.");
             }
             catch (Exception e)
             {
