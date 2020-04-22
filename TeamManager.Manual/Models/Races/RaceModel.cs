@@ -42,7 +42,7 @@ namespace TeamManager.Manual.Models
 
         public void Validate(ModelStateDictionary modelState, IStringLocalizer localizer)
         {
-            if (DistanceLengths == null || DistanceLengths.Count() == 0)
+            if (DistanceLengths == null || DistanceLengths.Count() == 0 || DistanceLengths.All(x => string.IsNullOrWhiteSpace(x)))
             {
                 modelState.AddModelError(nameof(DistanceLengths), localizer["At least one distance is required."]);
             }
