@@ -21,15 +21,15 @@
     }
     else
     {
-        <table class="table table-hover table-responsive-sm">
+        <table class="table table-hover table-responsive">
             <thead class="thead-light text-center">
                 <tr>
                     <th>@Localizer["Date"]</th>
                     <th>@Localizer["Race name"]</th>
-                    <th>@Localizer["Type"]</th>
-                    <th>@Localizer["City"]</th>
-                    <th>@Localizer["Distances"]</th>
-                    <th>@Localizer["Entry deadline"]</th>
+                    <th class="d-none d-md-table-cell">@Localizer["Type"]</th>
+                    <th class="d-none d-md-table-cell">@Localizer["City"]</th>
+                    <th class="d-none d-md-table-cell">@Localizer["Distances"]</th>
+                    <th class="d-none d-md-table-cell">@Localizer["Entry deadline"]</th>
                     <th></th>
                 </tr>
             </thead>
@@ -38,16 +38,16 @@
                 <tr>
                     <td>@race.Date?.ToString("yyyy.MM.dd")</td>
                     <td style="white-space:nowrap;">@race.Name</td>
-                    <td>
+                    <td class="d-none d-md-table-cell">
                         @(race.TypeOfRace.HasValue ? EnumHelper<RaceType>.GetDisplayValue(race.TypeOfRace.Value, StringLocalizer) : "")
                     </td>
-                    <td>
+                    <td class="d-none d-md-table-cell">
                         @race.CityString
                     </td>
-                    <td>
+                    <td class="d-none d-md-table-cell">
                             @race.DistancesString
                         </td>
-                    <td>@race.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
+                    <td class="d-none d-md-table-cell">@race.EntryDeadline?.ToString("yyyy.MM.dd HH:mm")</td>
                     <td class="text-center">
                         <a asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@race.Id">@Localizer["View"]</a>
                         @if (User.IsInRole(Roles.RACE_MANAGER))

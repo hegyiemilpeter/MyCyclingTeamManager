@@ -4,10 +4,10 @@
     ViewBag.Title = Localizer["Home"];
 }
 
-<div class="row mt-2">
+<div class="row py-2">
     <div class="col-lg-12 text-center">
         <div class="align-content-center">
-            <img src="~/img/green_riders_logo.jpg" alt="Emil Hegyi's photo" width="300" height="300">
+            <img src="~/img/green_riders_logo.jpg" class="img-fluid" alt="Emil Hegyi's photo" width="300" height="300">
             <h1 class="card-title">@Localizer["Welcome at Green Riders!"]</h1>
             <p class="card-text">@Localizer["This system is made for team members. If you want to join us please click to Contact below. If you are the member of the team, please log in to start use the system."]</p>
             <a asp-action="Contact" class="btn btn-primary">@Localizer["Contact"]</a>
