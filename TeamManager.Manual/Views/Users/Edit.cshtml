@@ -13,8 +13,6 @@
         <input type="hidden" asp-for="VerifiedByAdmin" value="@Model.VerifiedByAdmin" />
         @await Html.PartialAsync("_UserFieldsPartial", Model)
     </div>
-    <hr />
-    <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
-    <a asp-action="Details" class="btn btn-link">@Localizer["Back"]</a>
+    <input type="submit" value="@Localizer["Save"]" class="btn btn-primary my-2" />
+    <a asp-action="Details" class="btn btn-link my-2">@Localizer["Back"]</a>
 </form>
-

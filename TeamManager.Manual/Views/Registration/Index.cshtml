@@ -8,14 +8,13 @@
 }
 
 <h1>@Localizer["Registration"]</h1>
-<div>
+<div class="my-4">
     @Localizer["Welcome to the online system of Green Riders. For access to full system, you need to register. Your private data will be used to contact you and to race entries.<br />All data is required, except AKESZ, UCI licence, Triatlon licence and Ötpróba number.<br />If you completed the form, click the Registration button below. If all data formats are correct, your account will be created."]
 </div>
-<hr />
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <form asp-action="Index" method="post">
     <div class="row">
-        <div class="col-12">
+        <div class="col-lg-3">
             <h3>@Localizer["Login data"]</h3>
             <div class="form-group">
                 <label asp-for="Email">@Localizer["E-mail"]</label>
@@ -35,6 +34,5 @@
         </div>
         @await Html.PartialAsync("_UserFieldsPartial", Model)
     </div>
-    <hr />
-    <input type="submit" value="@Localizer["Registrate"]" class="btn btn-primary" />
+    <input type="submit" value="@Localizer["Registrate"]" class="btn btn-primary my-2" />
 </form>
