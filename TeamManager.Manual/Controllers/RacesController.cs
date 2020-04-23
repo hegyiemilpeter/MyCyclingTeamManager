@@ -9,8 +9,10 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
-using TeamManager.Manual.Models.Interfaces;
+using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Web;
+using TeamManager.Manual.Core.Models;
+using TeamManager.Manual.ViewModels;
 
 namespace TeamManager.Manual.Controllers
 {
@@ -56,12 +58,12 @@ namespace TeamManager.Manual.Controllers
 
         [HttpGet]
         [Authorize(Roles = Roles.RACE_MANAGER)]
-        public IActionResult Add() =>  View(new RaceModel() { PointWeight = 1 });
+        public IActionResult Add() =>  View(new RaceViewModel() { PointWeight = 1 });
 
         [HttpPost]
         [Authorize(Roles = Roles.RACE_MANAGER)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(RaceModel race)
+        public async Task<IActionResult> Add(RaceViewModel race)
         {
             race.Validate(ModelState, localizer);
             if (!ModelState.IsValid)
@@ -77,15 +79,16 @@ namespace TeamManager.Manual.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            RaceDetailsModel model = new RaceDetailsModel();
+            RaceDetailsViewModel model = new RaceDetailsViewModel();
             RaceModel race = raceManager.GetRaceById(id);
             if(race == null)
             {
                 return NotFound();
             }
 
-            model.BaseModel = race;
-            model.EntriedRiders = await userRaceManager.ListEntriedUsersAsync(id);
+            throw new NotImplementedException();
+            model.BaseModel = null;
+            model.EntriedRiders = null;
 
             User user = await userManager.FindByNameAsync(User.Identity.Name);
             model.UserApplied = model.EntriedRiders.Any(x => x.Id == user.Id);
@@ -103,13 +106,16 @@ namespace TeamManager.Manual.Controllers
                 return NotFound();
             }
 
-            return View(race);
+            throw new NotImplementedException();
+            RaceViewModel viewModel = new RaceViewModel();
+
+            return View(viewModel);
         }
 
         [HttpPost]
         [Authorize(Roles = Roles.RACE_MANAGER)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(RaceModel race)
+        public async Task<IActionResult> Edit(RaceViewModel race)
         {
             race.Validate(ModelState, localizer);
             if (!ModelState.IsValid)

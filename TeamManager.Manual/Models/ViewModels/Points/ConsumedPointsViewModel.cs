@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Models.ViewModels
+namespace TeamManager.Manual.ViewModels
 {
     public class ConsumedPointsViewModel
     {

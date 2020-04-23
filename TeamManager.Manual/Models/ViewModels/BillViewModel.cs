@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace TeamManager.Manual.Models.ViewModels
+namespace TeamManager.Manual.ViewModels
 {
     public class BillViewModel
     {

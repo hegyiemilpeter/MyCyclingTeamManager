@@ -11,9 +11,9 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
-using TeamManager.Manual.Models.ViewModels;
 using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Web;
+using TeamManager.Manual.ViewModels;
 
 namespace TeamManager.Manual.Controllers
 {

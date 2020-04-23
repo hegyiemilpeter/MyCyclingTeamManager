@@ -1,17 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using TeamManager.Manual.Data;
+using TeamManager.Manual.Core.Models;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.ViewModels
 {
-    public class RaceModel : Race
+    public class RaceViewModel : RaceModel
     {
-        public string[] DistanceLengths { get; set; }
-
         public string DistancesString
         {
             get

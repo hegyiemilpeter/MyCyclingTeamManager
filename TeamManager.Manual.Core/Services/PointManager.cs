@@ -3,25 +3,22 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TeamManager.Manual.Data;
-using TeamManager.Manual.Models.Exceptions;
-using TeamManager.Manual.Models.Interfaces;
-using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Core.Interfaces;
+using Microsoft.Extensions.Logging;
+using TeamManager.Manual.Core.Exceptions;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Services
 {
     public class PointManager : IPointManager
     {
         private readonly TeamManagerDbContext dbContext;
-        private readonly CustomUserManager userManager;
         private readonly IUserRaceManager userRaceManager;
         private readonly ILogger<PointManager> logger;
         private readonly IBillManager billManager;
 
-        public PointManager(TeamManagerDbContext context, CustomUserManager customUserMgr, IUserRaceManager userRaceMgr, ILogger<PointManager> pmLogger, IBillManager billMgr)
+        public PointManager(TeamManagerDbContext context, IUserRaceManager userRaceMgr, ILogger<PointManager> pmLogger, IBillManager billMgr)
         {
             dbContext = context;
-            userManager = customUserMgr;
             userRaceManager = userRaceMgr;
             logger = pmLogger;
             billManager = billMgr;
@@ -29,7 +26,7 @@ namespace TeamManager.Manual.Models
 
         public async Task<int> GetAvailablePointAmountByUser(string userId)
         {
-            User user = await userManager.FindByIdAsync(userId);
+            User user = await dbContext.Users.FindAsync(userId);
             if (user == null)
             {
                 logger.LogWarning($"User with id {userId} is not found");
@@ -44,7 +41,7 @@ namespace TeamManager.Manual.Models
 
         public async Task<IList<PointConsuption>> ListConsumedPointsAsync(string userId)
         {
-            User user = await userManager.FindByIdAsync(userId);
+            User user = await dbContext.Users.FindAsync(userId);
             if(user == null)
             {
                 logger.LogWarning($"User with id {userId} is not found");
@@ -56,14 +53,14 @@ namespace TeamManager.Manual.Models
 
         public async Task AddConsumedPointAsync(string userId, int amount, string creatorUserId, string remark)
         {
-            User user = await userManager.FindByIdAsync(userId);
+            User user = await dbContext.Users.FindAsync(userId);
             if(user == null)
             {
                 logger.LogWarning($"User with id {userId} is not found");
                 throw new UserNotFoundException();
             }
 
-            User creator = await userManager.FindByIdAsync(creatorUserId);
+            User creator = await dbContext.Users.FindAsync(creatorUserId);
             if(creator == null)
             {
                 logger.LogWarning($"User with id {creatorUserId} is not found");

@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using TeamManager.Manual.Core.Models;
 using TeamManager.Manual.Data;
-using TeamManager.Manual.Models.Interfaces;
+using TeamManager.Manual.Core.Interfaces;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Services
 {
     public class RaceManager : IRaceManager
     {

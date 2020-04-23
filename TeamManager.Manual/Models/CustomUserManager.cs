@@ -10,9 +10,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using TeamManager.Manual.Core.Interfaces;
+using TeamManager.Manual.Core.Models;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
-using TeamManager.Manual.Models.Interfaces;
 
 namespace TeamManager.Manual.Models
 {

@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using TeamManager.Manual.Core.Models;
 
-namespace TeamManager.Manual.Models.ViewModels
+namespace TeamManager.Manual.ViewModels
 {
     public class AddResultToUserViewModel : AddResultViewModel
     {

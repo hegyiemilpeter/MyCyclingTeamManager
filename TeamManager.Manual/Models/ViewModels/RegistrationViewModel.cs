@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TeamManager.Manual.Models.ViewModels
+namespace TeamManager.Manual.ViewModels
 {
-    public class RegistrationViewModel : UserModel
+    public class RegistrationViewModel : UserViewModel
     {
         #region Login data
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
-using TeamManager.Manual.Models.ViewModels;
+using TeamManager.Manual.ViewModels;
 
 namespace TeamManager.Manual.Controllers
 {

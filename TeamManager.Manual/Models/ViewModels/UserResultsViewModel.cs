@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using TeamManager.Manual.Core.Models;
 
-namespace TeamManager.Manual.Models.ViewModels
+namespace TeamManager.Manual.ViewModels
 {
     public class UserResultsViewModel
     {

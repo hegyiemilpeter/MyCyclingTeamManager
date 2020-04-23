@@ -6,9 +6,11 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
-using TeamManager.Manual.Models.Interfaces;
-using TeamManager.Manual.Models.ViewModels;
+using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Web;
+using TeamManager.Manual.Core.Models;
+using TeamManager.Manual.ViewModels;
+using System;
 
 namespace TeamManager.Manual.Controllers
 {
@@ -67,13 +69,14 @@ namespace TeamManager.Manual.Controllers
                 return Challenge();
             }
 
-            UserModel model = await userManager.GetUserByNameAsync(user.UserName);
+            throw new NotImplementedException();
+            UserViewModel model = new UserViewModel();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(UserModel model)
+        public async Task<IActionResult> Edit(UserViewModel model)
         {
             model.Validate(ModelState, localizer);
             if (!ModelState.IsValid)

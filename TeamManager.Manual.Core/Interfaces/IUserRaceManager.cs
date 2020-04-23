@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using TeamManager.Manual.Core.Models;
 using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Models.Interfaces
+namespace TeamManager.Manual.Core.Interfaces
 {
     public interface IUserRaceManager
     {
-        Task AddEntryAsync(User user, RaceModel race);
+        Task AddEntryAsync(User user, Race race);
 
-        Task RemoveEntryAsync(User user, RaceModel race);
+        Task RemoveEntryAsync(User user, Race race);
 
         Task<IList<UserModel>> ListEntriedUsersAsync(int id);
 

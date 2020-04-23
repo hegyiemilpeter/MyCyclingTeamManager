@@ -5,27 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TeamManager.Manual.Data;
-using TeamManager.Manual.Models.Exceptions;
-using TeamManager.Manual.Models.Interfaces;
+using TeamManager.Manual.Core.Interfaces;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using TeamManager.Manual.Core.Interfaces;
+using TeamManager.Manual.Core.Models;
+using TeamManager.Manual.Core.Exceptions;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Services
 {
     public class UserRaceManager : IUserRaceManager
     {
         private readonly TeamManagerDbContext dbContext;
-        private readonly CustomUserManager userManager;
         private readonly IPointCalculator pointCalculator;
         private readonly ILogger<UserRaceManager> logger;
         private readonly IImageStore imageStore;
         private readonly IConfiguration configuration;
-        public UserRaceManager(TeamManagerDbContext context, CustomUserManager customUserManager, IPointCalculator pointMgr, IImageStore imageStore, ILogger<UserRaceManager> userRaceManagerlogger, IConfiguration config)
+        public UserRaceManager(TeamManagerDbContext context, IPointCalculator pointMgr, IImageStore imageStore, ILogger<UserRaceManager> userRaceManagerlogger, IConfiguration config)
         {
             dbContext = context;
-            userManager = customUserManager;
             pointCalculator = pointMgr;
             this.imageStore = imageStore;
             logger = userRaceManagerlogger;
@@ -34,7 +32,7 @@ namespace TeamManager.Manual.Models
 
         #region Entries
 
-        public async Task AddEntryAsync(User user, RaceModel race)
+        public async Task AddEntryAsync(User user, Race race)
         {
             if (user != null && race != null)
             {
@@ -68,7 +66,7 @@ namespace TeamManager.Manual.Models
             }
         }
 
-        public async Task RemoveEntryAsync(User user, RaceModel race)
+        public async Task RemoveEntryAsync(User user, Race race)
         {
             if (user != null && race != null)
             {
@@ -100,7 +98,8 @@ namespace TeamManager.Manual.Models
             List<UserModel> response = new List<UserModel>();
             foreach (var user in entriedUsers)
             {
-                response.Add(userManager.CreateUserModel(user));
+                throw new NotImplementedException();
+                // response.Add(userManager.CreateUserModel(user));
             }
 
             logger.LogDebug($"{response.Count} entried riders returned for Race {id}");

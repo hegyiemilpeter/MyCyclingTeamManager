@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Models
 {
     public class ResultModel
     {

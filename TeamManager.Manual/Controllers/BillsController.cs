@@ -8,7 +8,7 @@ using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Core.Models;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
-using TeamManager.Manual.Models.ViewModels;
+using TeamManager.Manual.ViewModels;
 using TeamManager.Manual.Web;
 
 namespace TeamManager.Manual.Controllers

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TeamManager.Manual.Models.Exceptions
+namespace TeamManager.Manual.Core.Exceptions
 {
     public class DeadlineException : Exception
     {

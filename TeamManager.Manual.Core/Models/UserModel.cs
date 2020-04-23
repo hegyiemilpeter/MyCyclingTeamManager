@@ -1,14 +1,9 @@
 ﻿using Diacritics.Extensions;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Localization;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Models
 {
     public class UserModel
     {
@@ -96,14 +91,5 @@ namespace TeamManager.Manual.Models
         public string Triathlon { get; set; }
 
         #endregion
-
-        public void Validate(ModelStateDictionary modelState, IStringLocalizer localizer)
-        {
-            if (BirthDate > (new DateTime(DateTime.Today.Year, 12, 31).AddYears(-7)))
-            {
-                modelState.AddModelError(nameof(BirthDate), localizer["You have to be at least 6 years old to be part of the system."]);
-            }
-
-        }
     }
 }
