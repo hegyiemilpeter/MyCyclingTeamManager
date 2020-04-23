@@ -135,9 +135,6 @@
   <data name="New" xml:space="preserve">
     <value>Új</value>
   </data>
-  <data name="New user result" xml:space="preserve">
-    <value>Új versenyzői eredmény</value>
-  </data>
   <data name="No races in the database for this month." xml:space="preserve">
     <value>Nincs verseny rögzítve erre a hónapra.</value>
   </data>

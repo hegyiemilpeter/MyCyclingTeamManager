@@ -44,6 +44,30 @@
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="Bills" class="nav-link">@Localizer["Bills"]</a>
                         </li>
+                        @if (User.IsInRole(Roles.BILL_MANAGER) || User.IsInRole(Roles.POINT_CONSUPTION_MANAGER) || User.IsInRole(Roles.USER_MANAGER) || User.IsInRole(Roles.RACE_MANAGER))
+                        {
+                            <li class="nav-item dropdown">
+                                <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">@Localizer["Admin functions"]</a>
+                                <div class="dropdown-menu">
+                                    @if (User.IsInRole(Roles.BILL_MANAGER))
+                                    {
+                                        <a class="dropdown-item" asp-action="Overview" asp-controller="Bills">@Localizer["Bill overview"]</a>
+                                    }
+                                    @if (User.IsInRole(Roles.POINT_CONSUPTION_MANAGER))
+                                    {
+                                        <a class="dropdown-item" asp-action="AddConsumedPoints" asp-controller="Points">@Localizer["Add consumed points"]</a>
+                                    }
+                                    @if (User.IsInRole(Roles.USER_MANAGER))
+                                    {
+                                        <a class="dropdown-item" asp-action="AddResultToUser" asp-controller="RaceResults">@Localizer["Add result to user"]</a>
+                                    }
+                                    @if (User.IsInRole(Roles.RACE_MANAGER))
+                                    {
+                                        <a class="dropdown-item" asp-action="Add" asp-controller="Races">@Localizer["Add new race"]</a>
+                                    }
+                                </div>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">
