@@ -1,7 +1,7 @@
 ﻿using System;
 using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Models.Interfaces
+namespace TeamManager.Manual.Core.Interfaces
 {
     public interface IPointCalculator
     {

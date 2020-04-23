@@ -8,10 +8,10 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Data;
-using TeamManager.Manual.Models.Interfaces;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Services
 {
     public class AzureImageStore : IImageStore
     {

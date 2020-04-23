@@ -10,6 +10,7 @@ using TeamManager.Manual.Models.Interfaces;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using TeamManager.Manual.Core.Interfaces;
 
 namespace TeamManager.Manual.Models
 {

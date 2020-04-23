@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TeamManager.Manual.Data;
-using TeamManager.Manual.Models.ViewModels;
+using TeamManager.Manual.Core.Models;
 
-namespace TeamManager.Manual.Models.Interfaces
+namespace TeamManager.Manual.Core.Interfaces
 {
     public interface IBillManager
     {

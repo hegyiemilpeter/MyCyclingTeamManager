@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Models.Interfaces
+namespace TeamManager.Manual.Core.Interfaces
 {
     public interface IImageStore
     {

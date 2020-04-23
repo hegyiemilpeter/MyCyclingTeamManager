@@ -6,6 +6,7 @@ using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
 using Microsoft.Extensions.Logging;
+using TeamManager.Manual.Core.Interfaces;
 
 namespace TeamManager.Manual.Models
 {

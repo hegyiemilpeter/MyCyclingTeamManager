@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Models
 {
     public class BillModel
     {

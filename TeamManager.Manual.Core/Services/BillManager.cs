@@ -7,10 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TeamManager.Manual.Core.Interfaces;
+using TeamManager.Manual.Core.Models;
 using TeamManager.Manual.Data;
-using TeamManager.Manual.Models.Interfaces;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Services
 {
     public class BillManager : IBillManager
     {

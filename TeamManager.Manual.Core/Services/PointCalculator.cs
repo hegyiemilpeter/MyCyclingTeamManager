@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TeamManager.Manual.Data;
-using TeamManager.Manual.Models.Exceptions;
-using TeamManager.Manual.Models.Interfaces;
+using TeamManager.Manual.Core.Exceptions;
+using TeamManager.Manual.Core.Interfaces;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Services
 {
     public class PointCalculator : IPointCalculator
     {

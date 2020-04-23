@@ -1,7 +1,7 @@
 ﻿using System;
 using TeamManager.Manual.Data;
 
-namespace TeamManager.Manual.Models.Exceptions
+namespace TeamManager.Manual.Core.Exceptions
 {
     public class PointCalculationException : Exception
     {
