@@ -38,12 +38,12 @@ namespace TeamManager.Manual.Infrastructure.TagHelpers
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContextData);
 
             DateTime baseDate = new DateTime(StartYear == 0 ? DateTime.Now.Year : StartYear, StartMonth == 0 ? DateTime.Now.Month : StartMonth, 1);
-            TagBuilder backArrow = CreateButton(urlHelper, baseDate.AddMonths(-1), "btn btn-outline-primary btn-sm m-1", "<<");
+            TagBuilder backArrow = CreateButton(urlHelper, baseDate.AddMonths(-1), "btn btn-outline-primary btn-sm m-1", 0, "<<");
             output.Content.AppendHtml(backArrow);
 
             for (int i = NumberOfMonths; i > 0; i--)
             {
-                TagBuilder previousMonthButton = CreateButton(urlHelper, baseDate.AddMonths(-1 * i), "btn btn-outline-primary btn-sm m-1");
+                TagBuilder previousMonthButton = CreateButton(urlHelper, baseDate.AddMonths(-1 * i), "btn btn-outline-primary btn-sm m-1", i);
                 output.Content.AppendHtml(previousMonthButton);
             }
 
@@ -52,18 +52,34 @@ namespace TeamManager.Manual.Infrastructure.TagHelpers
 
             for (int i = 1; i <= NumberOfMonths; i++)
             {
-                TagBuilder nextMonthButton = CreateButton(urlHelper, baseDate.AddMonths(i), "btn btn-outline-primary btn-sm m-1");
+                TagBuilder nextMonthButton = CreateButton(urlHelper, baseDate.AddMonths(i), "btn btn-outline-primary btn-sm m-1", i);
                 output.Content.AppendHtml(nextMonthButton);
             }
 
-            TagBuilder forwardArrow = CreateButton(urlHelper, baseDate.AddMonths(1), "btn btn-outline-primary btn-sm m-1", ">>");
+            TagBuilder forwardArrow = CreateButton(urlHelper, baseDate.AddMonths(1), "btn btn-outline-primary btn-sm m-1", 0, ">>");
             output.Content.AppendHtml(forwardArrow);
         }
 
-        private static TagBuilder CreateButton(IUrlHelper urlHelper, DateTime dateOfActualMonth, string cssClass, string label = null)
+        private static TagBuilder CreateButton(IUrlHelper urlHelper, DateTime dateOfActualMonth, string cssClass, int distanceFromCenter = 0, string label = null)
         {
             TagBuilder button = new TagBuilder("a");
             button.AddCssClass(cssClass);
+
+            if (string.IsNullOrEmpty(label))
+            {
+                if (distanceFromCenter == 1)
+                {
+                    button.AddCssClass("d-none d-md-inline");
+                }
+                else if (distanceFromCenter == 2)
+                {
+                    button.AddCssClass("d-none d-md-inline");
+                }
+                else if (distanceFromCenter >= 3)
+                {
+                    button.AddCssClass("d-none d-lg-inline");
+                }
+            }
 
             string href = urlHelper.ActionLink("Index", "Races", new { year = dateOfActualMonth.Year, month = dateOfActualMonth.Month });
             button.Attributes.Add("href", href);
