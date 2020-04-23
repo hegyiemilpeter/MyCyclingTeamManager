@@ -117,37 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Bills" xml:space="preserve">
-    <value>Számlák</value>
+  <data name="Absolute result" xml:space="preserve">
+    <value>Abszolút eredmény</value>
+  </data>
+  <data name="Add Result" xml:space="preserve">
+    <value>Eredmény hozzáadása</value>
+  </data>
+  <data name="All gained points from results:" xml:space="preserve">
+    <value>Összes pont (eredményekből):</value>
+  </data>
+  <data name="Category result" xml:space="preserve">
+    <value>Korcsoportos eredmény</value>
   </data>
   <data name="Collected points" xml:space="preserve">
     <value>Gyűjtött pontok</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Bejelentkezés</value>
+  <data name="Driver" xml:space="preserve">
+    <value>Sofőr</value>
   </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Kijelentkezés</value>
+  <data name="No points gained yet from races." xml:space="preserve">
+    <value>Még nem gyűjtött pontokat versenyekből.</value>
   </data>
-  <data name="My profile" xml:space="preserve">
-    <value>Profil</value>
+  <data name="Point weight" xml:space="preserve">
+    <value>Súly</value>
   </data>
   <data name="Points" xml:space="preserve">
     <value>Pontok</value>
   </data>
-  <data name="Privacy" xml:space="preserve">
-    <value>Adatvédelem</value>
+  <data name="Purchase date" xml:space="preserve">
+    <value>Vásárlás napja</value>
+  </data>
+  <data name="Race" xml:space="preserve">
+    <value>Verseny</value>
   </data>
   <data name="Races" xml:space="preserve">
     <value>Versenyek</value>
   </data>
-  <data name="Register" xml:space="preserve">
-    <value>Regisztráció</value>
+  <data name="Staff" xml:space="preserve">
+    <value>Segítő</value>
   </data>
-  <data name="Riders" xml:space="preserve">
-    <value>Versenyzők</value>
+  <data name="Value" xml:space="preserve">
+    <value>Összeg</value>
   </data>
-  <data name="Used points" xml:space="preserve">
-    <value>Elhasznált pontok</value>
+  <data name="Yes" xml:space="preserve">
+    <value>Igen</value>
   </data>
 </root>

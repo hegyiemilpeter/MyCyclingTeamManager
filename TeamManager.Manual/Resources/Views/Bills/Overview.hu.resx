@@ -117,14 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add new bill" xml:space="preserve">
+    <value>Számla feltöltés</value>
+  </data>
+  <data name="All gained points from bills:" xml:space="preserve">
+    <value>Számlákből gyűjtött pontok:</value>
+  </data>
   <data name="Amount" xml:space="preserve">
     <value>Összeg</value>
   </data>
   <data name="Bill overview" xml:space="preserve">
     <value>Számlák áttekintése</value>
   </data>
+  <data name="Bills" xml:space="preserve">
+    <value>Számlák</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Törlés</value>
+  </data>
+  <data name="Download link" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="No points gained yet from bills." xml:space="preserve">
+    <value>Még nem gyűjtött pontokat számlákból.</value>
   </data>
   <data name="Purchase date" xml:space="preserve">
     <value>Vásárlás dátuma</value>
@@ -134,5 +149,8 @@
   </data>
   <data name="User" xml:space="preserve">
     <value>Név</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Letöltés</value>
   </data>
 </root>

@@ -1,0 +1,55 @@
+﻿@model CollectedPointsViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Collected points"];
+}
+
+<h1 class="mb-3">@Localizer["Collected points"]</h1>
+@if (Model.Results == null || Model.Results.Count == 0)
+{
+    @Localizer["No points gained yet from races."]
+}
+else
+{
+    <table class="table table-responsive-sm">
+        <thead class="thead-light">
+            <tr>
+                <th>@Localizer["Race"]</th>
+                <th>@Localizer["Point weight"]</th>
+                <th>@Localizer["Absolute result"]</th>
+                <th>@Localizer["Category result"]</th>
+                <th>@Localizer["Driver"]</th>
+                <th>@Localizer["Staff"]</th>
+                <th>@Localizer["Points"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var result in Model.Results)
+            {
+                <tr>
+                    <td style="white-space:nowrap">@result.Race</td>
+                    <td>@result.RacePointWeight</td>
+                    <td>@result.AbsoluteResult</td>
+                    <td>@result.CategoryResult</td>
+                    <td>
+                        @if (result.IsDriver)
+                        {<span class="badge badge-pill badge-success">@Localizer["Yes"]</span>}
+                    </td>
+                    <td>
+                        @if (result.IsStaff)
+                        {<span class="badge badge-pill badge-success">@Localizer["Yes"]</span>}
+                    </td>
+                    <td>@result.Points</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h5>
+        @Localizer["All gained points from results:"] @Model.Results.Sum(x => x.Points)
+    </h5>
+}
+<div>
+    <a asp-action="Add" asp-controller="RaceResults" class="btn btn-primary btn-sm m-2">@Localizer["Add Result"]</a>
+</div>

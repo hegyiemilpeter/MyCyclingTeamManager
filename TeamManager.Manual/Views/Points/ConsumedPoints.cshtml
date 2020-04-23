@@ -1,0 +1,47 @@
+﻿@model ConsumedPointsViewModel
+@inject IViewLocalizer Localizer
+
+
+@{
+    ViewData["Title"] = Localizer["Consumed points"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mb-3">@Localizer["Consumed points"]</h1>
+@if (Model.ConsumedPoints == null || Model.ConsumedPoints.Count == 0)
+{
+    @Localizer["No points consumed yet."]
+}
+else
+{
+    <table class="table table-responsive-sm">
+        <thead class="thead-light">
+            <tr>
+                <th>@Localizer["Consumed at"]</th>
+                <th>@Localizer["Amount"]</th>
+                <th>@Localizer["Recorded by"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var consumedPoint in Model.ConsumedPoints)
+            {
+                <tr>
+                    <td>@consumedPoint.CreatedAt.ToString("yyyy.MM.dd HH:mm")</td>
+                    <td>@consumedPoint.Amount</td>
+                    <td>@consumedPoint.CreatedBy</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h5>
+        @Localizer["All consumed points:"] @Model.ConsumedPoints.Sum(x => x.Amount)
+    </h5>
+}
+
+@if (User.IsInRole(Roles.POINT_CONSUPTION_MANAGER))
+{
+    <div>
+        <a asp-action="AddConsumedPoints" class="btn btn-sm btn-primary m-2" asp-route-id="@Model.UserId">@Localizer["Add"]</a>
+    </div>
+}

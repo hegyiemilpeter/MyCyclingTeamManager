@@ -9,7 +9,6 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models;
-using TeamManager.Manual.Models.Exceptions;
 using TeamManager.Manual.Models.Interfaces;
 using TeamManager.Manual.Models.ViewModels;
 using TeamManager.Manual.Web;
@@ -35,32 +34,52 @@ namespace TeamManager.Manual.Controllers
             localizer = sharedResourcesLocalizer;
         }
 
-        public async Task<IActionResult> Index(int? id = null)
+        public async Task<IActionResult> CollectedPoints(int? id = null)
         {
             string userId = id.HasValue ? id.Value.ToString() : userManager.GetUserId(User);
             User user = await userManager.FindByIdAsync(userId);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound(id);
             }
 
             string visitorUserId = userManager.GetUserId(User);
-            if(!User.IsInRole(Roles.POINT_CONSUPTION_MANAGER) && user.Id != int.Parse(visitorUserId))
+            if (!User.IsInRole(Roles.POINT_CONSUPTION_MANAGER) && user.Id != int.Parse(visitorUserId))
             {
-                logger.LogWarning($"Unauthorized access to points of {user.FirstName} {user.LastName} by User.Id = {visitorUserId}");
+                logger.LogWarning($"Unauthorized access to collected points of {user.FirstName} {user.LastName} by User.Id = {visitorUserId}");
                 return Challenge();
             }
 
             IList<ResultModel> results = userRaceManager.GetRaceResultsByUser(user);
-            IList<PointConsuption> pointConsuptions = await pointManager.ListConsumedPointsAsync(userId);
-            BillModel bills = await billManager.ListBillsByUserAsync(user.Id);
+            CollectedPointsViewModel model = new CollectedPointsViewModel()
+            {
+                Results = results
+            };
 
-            PointsViewModel model = new PointsViewModel()
+            return View(model);
+        }
+
+        public async Task<IActionResult> ConsumedPoints(int? id = null)
+        {
+            string userId = id.HasValue ? id.Value.ToString() : userManager.GetUserId(User);
+            User user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound(id);
+            }
+
+            string visitorUserId = userManager.GetUserId(User);
+            if (!User.IsInRole(Roles.POINT_CONSUPTION_MANAGER) && user.Id != int.Parse(visitorUserId))
+            {
+                logger.LogWarning($"Unauthorized access to consupted points of {user.FirstName} {user.LastName} by User.Id = {visitorUserId}");
+                return Challenge();
+            }
+
+            IList<PointConsuption> consuptions = await pointManager.ListConsumedPointsAsync(userId);
+            ConsumedPointsViewModel model = new ConsumedPointsViewModel()
             {
                 UserId = user.Id,
-                Results = results,
-                ConsumedPoints = pointConsuptions,
-                Bills = bills
+                ConsumedPoints = consuptions
             };
 
             return View(model);
@@ -101,7 +120,7 @@ namespace TeamManager.Manual.Controllers
             string creatorUserId = userManager.GetUserId(User);
             await pointManager.AddConsumedPointAsync(model.SelectedUserId, model.Amount, creatorUserId, model.Remark);
 
-            return RedirectToAction(nameof(Index), new { id = model.SelectedUserId });
+            return RedirectToAction(nameof(ConsumedPoints), new { id = model.SelectedUserId });
         }
 
         private async Task<IEnumerable<SelectListItem>> GetUsersSelectList()
