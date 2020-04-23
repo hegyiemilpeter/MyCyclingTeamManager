@@ -39,7 +39,7 @@ namespace TeamManager.Manual.Models.ViewModels
                     {
                         response.Add(new SelectListItem()
                         {
-                            Text = race.Name,
+                            Text = $"'{race.Date.Value.ToString("yy.MM.dd")} - {race.Name}",
                             Value = race.Id.ToString(),
                             Selected = SelectedRaceId.HasValue && SelectedRaceId.Value == race.Id
                         });

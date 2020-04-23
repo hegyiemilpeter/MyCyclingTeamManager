@@ -44,7 +44,7 @@ namespace TeamManager.Manual.Controllers
             User user = await userManager.FindByIdAsync(userModel.Id.ToString());
             UserResultsViewModel model = new UserResultsViewModel
             {
-                Results = userRaceManager.GetRaceResultsByUser(user).OrderBy(x => x.CategoryResult),
+                Results = userRaceManager.GetRaceResultsByUser(user).OrderByDescending(x => x.RaceDate),
                 FirstName = user.FirstName, 
                 LastName = user.LastName, 
                 UserId = user.Id

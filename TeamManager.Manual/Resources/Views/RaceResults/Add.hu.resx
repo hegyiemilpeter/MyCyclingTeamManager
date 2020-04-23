@@ -120,8 +120,8 @@
   <data name="Add race result" xml:space="preserve">
     <value>Versenyeredmény hozzáadása</value>
   </data>
-  <data name="Back to races" xml:space="preserve">
-    <value>Vissza a versenyekhez</value>
+  <data name="Back" xml:space="preserve">
+    <value>Vissza</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Mentés</value>

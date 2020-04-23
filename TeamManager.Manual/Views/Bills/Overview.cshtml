@@ -5,7 +5,7 @@
     ViewData["Title"] = Localizer["Bill overview"];
 }
 
-<h1 class="mb-3">@ViewData["Title"]</h1>
+<h1>@ViewData["Title"]</h1>
 @if (Model == null || Model.Count == 0)
 {
     @Localizer["There aren't any bills in the database yet."]

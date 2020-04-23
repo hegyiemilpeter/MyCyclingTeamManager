@@ -6,40 +6,38 @@
 }
 
 <h1>@Localizer["Results of"] @Model.FirstName @Model.LastName</h1>
-<div class="card-deck m-1">
-    @if (Model.Results == null || Model.Results.Count() == 0)
-    {
-        @Localizer["No results yet."]
-    }
-    else
-    {
-        foreach (var result in Model.Results)
-        {
-            @if (!string.IsNullOrEmpty(result.Image))
+@if (Model.Results == null || Model.Results.Count() == 0)
+{
+    @Localizer["No results yet."]
+}
+else
+{
+    <table class="table table-responsive-sm table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>@Localizer["Date"]</th>
+                <th>@Localizer["Race"]</th>
+                <th>@Localizer["Abs."]</th>
+                <th>@Localizer["Cat."]</th>
+                <th>@Localizer["Image"]</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var result in Model.Results)
             {
-                <div class="card m-1" style="width: 12rem;">
-                    <img src="@result.Image" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">@result.Race</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@result.RaceDate.Value.ToString("yyyy.MM.dd")</h6>
-                        <p class="card-text">
-                            @if (result.CategoryResult.HasValue)
-                            {
-                                <span>@Localizer["Cat."] @result.CategoryResult</span>
-                            }
-                            @if (result.AbsoluteResult.HasValue)
-                            {
-                                <span>@Localizer["Abs."] @result.AbsoluteResult.Value</span>
-                            }
-                            @if (result.IsStaff)
-                            {
-                                <span class="badge badge-pill badge-primary">@Localizer["Staff"]</span>
-                            }
-                            @if (result.IsDriver)
-                            {
-                                <span class="badge badge-pill badge-info">@Localizer["Driver"]</span>
-                            }
-                        </p>
+                <tr>
+                    <td>@string.Format("'{0}",result.RaceDate.Value.ToString("yy.MM.dd"))</td>
+                    <td>@result.Race</td>
+                    <td>@result.AbsoluteResult.Value</td>
+                    <td>@result.CategoryResult</td>
+                    <td>
+                        @if(!string.IsNullOrEmpty(result.Image))
+                        {
+                            <a href="@result.Image" target="_blank" class="btn btn-primary btn-sm">@Localizer["View"]</a>
+                        }
+                    </td>
+                    <td>
                         @if (User.IsInRole(Roles.POINT_CONSUPTION_MANAGER))
                         {
                             <form asp-action="ChangeImageValidationStatus" method="post">
@@ -55,36 +53,12 @@
                                 }
                             </form>
                         }
-                    </div>
-                </div>
+                    </td>
+                </tr>
             }
-            else
-            {
-                <div class="card m-1" style="width: 12rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">@result.Race</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@result.RaceDate.Value.ToString("yyyy.MM.dd")</h6>
-                        <p class="card-text">
-                            @if (result.CategoryResult.HasValue)
-                            {
-                                <span>@Localizer["Cat."] @result.CategoryResult</span>
-                            }
-                            @if (result.AbsoluteResult.HasValue)
-                            {
-                                <span>@Localizer["Abs."] @result.AbsoluteResult.Value</span>
-                            }
-                            @if (result.IsStaff)
-                            {
-                                <span class="badge badge-pill badge-primary">@Localizer["Staff"]</span>
-                            }
-                            @if (result.IsDriver)
-                            {
-                                <span class="badge badge-pill badge-info">@Localizer["Driver"]</span>
-                            }
-                        </p>
-                    </div>
-                </div>
-            }
-        }
-    }
+        </tbody>
+    </table>
+}
+<div>
+    <a asp-action="Index" asp-controller="Users" class="btn btn-link m-2">@Localizer["Back"]</a>
 </div>
