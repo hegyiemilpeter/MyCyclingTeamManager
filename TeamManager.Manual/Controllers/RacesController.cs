@@ -46,9 +46,11 @@ namespace TeamManager.Manual.Controllers
                 month = DateTime.Now.Month;
             }
 
-            IList<RaceModel> model = raceManager.ListRaces()
+            IList<RaceViewModel> model = raceManager.ListRaces()
                 .Where(x => x.Date.HasValue && x.Date.Value.Year == year && x.Date.Value.Month == month)
-                .OrderBy(r => r.Date).ToList();
+                .OrderBy(r => r.Date)
+                .Select(x => new RaceViewModel(x))
+                .ToList();
 
             ViewBag.Year = year;
             ViewBag.Month = month;
@@ -86,12 +88,11 @@ namespace TeamManager.Manual.Controllers
                 return NotFound();
             }
 
-            throw new NotImplementedException();
-            model.BaseModel = null;
-            model.EntriedRiders = null;
+            model.BaseModel = new RaceViewModel(raceManager.GetRaceById(id));
+            model.EntriedRiders = await userRaceManager.ListEntriedUsersAsync(id);
 
             User user = await userManager.FindByNameAsync(User.Identity.Name);
-            model.UserApplied = model.EntriedRiders.Any(x => x.Id == user.Id);
+            model.UserApplied = model.EntriedRiders.Contains($"{user.FirstName} {user.LastName}");
 
             return View(model);
         }
@@ -106,9 +107,7 @@ namespace TeamManager.Manual.Controllers
                 return NotFound();
             }
 
-            throw new NotImplementedException();
-            RaceViewModel viewModel = new RaceViewModel();
-
+            RaceViewModel viewModel = new RaceViewModel(race);
             return View(viewModel);
         }
 

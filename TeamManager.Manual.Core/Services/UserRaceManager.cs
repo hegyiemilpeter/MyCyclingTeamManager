@@ -86,24 +86,17 @@ namespace TeamManager.Manual.Core.Services
             }
         }
 
-        public async Task<IList<UserModel>> ListEntriedUsersAsync(int id)
+        public async Task<IList<string>> ListEntriedUsersAsync(int id)
         {
             IEnumerable<int> userIds = dbContext.UserRaces.Where(x => x.RaceId == id && x.IsEntryRequired.HasValue && x.IsEntryRequired.Value).Select(x => x.UserId).ToList();
             if (userIds == null)
             {
-                return new List<UserModel>();
+                return new List<string>();
             }
 
-            var entriedUsers = await dbContext.Users.Where(x => userIds.Contains(x.Id)).ToListAsync();
-            List<UserModel> response = new List<UserModel>();
-            foreach (var user in entriedUsers)
-            {
-                throw new NotImplementedException();
-                // response.Add(userManager.CreateUserModel(user));
-            }
-
-            logger.LogDebug($"{response.Count} entried riders returned for Race {id}");
-            return response;
+            IList<string> entriedUsers = await dbContext.Users.Where(x => userIds.Contains(x.Id)).Select(x => $"{x.FirstName} {x.LastName}").ToListAsync();
+            logger.LogDebug($"{entriedUsers.Count} entried riders returned for Race {id}");
+            return entriedUsers;
         }
 
         #endregion

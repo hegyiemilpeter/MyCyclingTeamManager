@@ -69,9 +69,9 @@ namespace TeamManager.Manual.Controllers
                 return Challenge();
             }
 
-            throw new NotImplementedException();
-            UserViewModel model = new UserViewModel();
-            return View(model);
+            UserModel model = await userManager.GetUserByNameAsync(user.UserName);
+            UserViewModel viewModel = new UserViewModel(model);
+            return View(viewModel);
         }
 
         [HttpPost]

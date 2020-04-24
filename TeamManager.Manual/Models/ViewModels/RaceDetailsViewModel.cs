@@ -9,6 +9,6 @@ namespace TeamManager.Manual.ViewModels
 
         public bool UserApplied { get; set; }
 
-        public IList<UserViewModel> EntriedRiders { get; set; }
+        public IList<string> EntriedRiders { get; set; }
     }
 }

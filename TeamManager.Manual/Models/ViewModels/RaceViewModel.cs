@@ -4,11 +4,23 @@ using System;
 using System.Globalization;
 using System.Linq;
 using TeamManager.Manual.Core.Models;
+using TeamManager.Manual.Web.Models.ViewModels;
 
 namespace TeamManager.Manual.ViewModels
 {
     public class RaceViewModel : RaceModel
     {
+        public RaceViewModel()
+        {
+        }
+
+
+        public RaceViewModel(RaceModel model)
+        {
+            if(model != null)
+                ModelToViewModelConverter.Convert(model, this);
+        }
+
         public string DistancesString
         {
             get
