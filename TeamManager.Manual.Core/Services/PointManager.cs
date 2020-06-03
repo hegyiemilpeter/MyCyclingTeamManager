@@ -41,7 +41,7 @@ namespace TeamManager.Manual.Core.Services
 
         public async Task<IList<PointConsuption>> ListConsumedPointsAsync(string userId)
         {
-            User user = await dbContext.Users.FindAsync(userId);
+            User user = await dbContext.Users.FindAsync(int.Parse(userId));
             if(user == null)
             {
                 logger.LogWarning($"User with id {userId} is not found");
