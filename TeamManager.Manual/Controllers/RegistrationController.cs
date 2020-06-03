@@ -40,34 +40,7 @@ namespace TeamManager.Manual.Controllers
                 return View();
             }
 
-            Address address = new Address()
-            {
-                City = model.City,
-                Country = model.Country,
-                HouseNumber = model.HouseNumber,
-                Street = model.Street,
-                ZipCode = model.ZipCode
-            };
-
-            User user = new User()
-            {
-                BirthDate = model.BirthDate,
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Gender = model.Gender.Value,
-                PhoneNumber = model.PhoneNumber,
-                TShirtSize = model.TShirtSize.Value,
-                AkeszNumber = model.AKESZ,
-                OtprobaNumber = model.Otproba,
-                TriathleteLicence = model.Triathlon,
-                UCILicence = model.UCI,
-                BirthPlace = model.BirthPlace,
-                IDNumber = model.IDNumber,
-                MothersName = model.MothersName
-            };
-
-            IdentityResult createResult = await userManager.CreateAsync(user, model.Password, address, Url.Link("Default", new { controller = "Account", action = "Login" }));
+            IdentityResult createResult = await userManager.CreateAsync(model, model.Password, Url.Link("Default", new { controller = "Account", action = "Login" }));
             if (!createResult.Succeeded)
             {
                 AddModelError(createResult);

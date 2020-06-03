@@ -38,26 +38,12 @@ namespace TeamManager.Manual.Core.Repository
             return Task.CompletedTask;
         }
 
-        public void SetUsersAddress(int userId, Address address)
-        {
-            User user = DbContext.Users.Find(userId);
-            user.Address = address;
-
-            if(DbContext.Entry(user).State == Microsoft.EntityFrameworkCore.EntityState.Unchanged)
-            {
-                DbContext.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            }
-        }
-
-        public void VerifyUser(int userId)
+        public async void VerifyUser(int userId)
         {
             User user = DbContext.Users.Find(userId);
             user.VerifiedByAdmin = true;
 
-            if (DbContext.Entry(user).State == Microsoft.EntityFrameworkCore.EntityState.Unchanged)
-            {
-                DbContext.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            }
+            await UpdateAsync(user);
         }
 
         #region IDisposableSupport

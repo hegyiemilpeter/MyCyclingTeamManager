@@ -14,6 +14,7 @@ using TeamManager.Manual.Core.Models;
 using TeamManager.Manual.Core.Repository;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
+using TeamManager.Manual.ViewModels;
 
 namespace TeamManager.Manual.Models
 {
@@ -30,17 +31,44 @@ namespace TeamManager.Manual.Models
             EmailSender = emailSender;
         }
 
-        // For unit testing purposes
-        public CustomUserManager(UnitOfWork unitOfWork, IConfiguration configuration, IEmailSender emailSender, IUserStore<User> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<User> passwordHasher, IEnumerable<IUserValidator<User>> userValidators, IEnumerable<IPasswordValidator<User>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<User>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
+        // Only for unit testing purposes
+        protected internal CustomUserManager(UnitOfWork unitOfWork, IConfiguration configuration, IEmailSender emailSender) : base(null, null, null, null, null, null, null, null, null)
         {
             UnitOfWork = unitOfWork;
             Configuration = configuration;
             EmailSender = emailSender;
         }
 
-        public async Task<IdentityResult> CreateAsync(User user, string password, Address address, string loginUrl)
+        public async Task<IdentityResult> CreateAsync(UserViewModel model, string password, string loginUrl)
         {
-            user.UserName = user.FirstName.Replace(" ", "").RemoveDiacritics().ToLower() + "." + user.LastName.Replace(" ", "").RemoveDiacritics().ToLower() + "." + user.BirthDate.ToString("yyyyMMdd");
+            Address address = new Address()
+            {
+                City = model.City,
+                Country = model.Country,
+                HouseNumber = model.HouseNumber,
+                Street = model.Street,
+                ZipCode = model.ZipCode
+            };
+
+            User user = new User()
+            {
+                BirthDate = model.BirthDate,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Gender = model.Gender.Value,
+                PhoneNumber = model.PhoneNumber,
+                TShirtSize = model.TShirtSize.Value,
+                AkeszNumber = model.AKESZ,
+                OtprobaNumber = model.Otproba,
+                TriathleteLicence = model.Triathlon,
+                UCILicence = model.UCI,
+                BirthPlace = model.BirthPlace,
+                IDNumber = model.IDNumber,
+                MothersName = model.MothersName,
+                UserName = model.FirstName.Replace(" ", "").RemoveDiacritics().ToLower() + "." + model.LastName.Replace(" ", "").RemoveDiacritics().ToLower() + "." + model.BirthDate.ToString("yyyyMMdd"),
+                Address = address
+            };
 
             IdentityResult identityResult = await base.CreateAsync(user, password);
             if (!identityResult.Succeeded)
@@ -53,19 +81,7 @@ namespace TeamManager.Manual.Models
                 await VerifyUserAsync(user, loginUrl);
             }
 
-            try
-            {
-                await UnitOfWork.AddressRepository.CreateAsync(address);
-                UnitOfWork.UserRepository.SetUsersAddress(user.Id, address);
-                UnitOfWork.Save();
-
-                return identityResult;
-            }
-            catch
-            {
-                identityResult.Errors.Append(new IdentityError() { Description = $"Update with address and/or identification number failed for {user.FirstName} {user.LastName}." });
-                return identityResult;
-            }
+            return identityResult;
         }
         public async Task VerifyUserAsync(User user, string loginUrl)
         {
