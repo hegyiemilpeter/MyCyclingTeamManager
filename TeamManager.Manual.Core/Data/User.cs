@@ -8,6 +8,9 @@ namespace TeamManager.Manual.Data
     public class User : IdentityUser<int>
     {
         public int AddressId { get; set; }
+
+        public virtual Address Address { get; set; }
+
         [PersonalData]
         public string FirstName { get; set; }
         [PersonalData]

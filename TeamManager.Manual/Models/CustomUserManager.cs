@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Core.Models;
+using TeamManager.Manual.Core.Repository;
 using TeamManager.Manual.Data;
 using TeamManager.Manual.Models.Exceptions;
 
@@ -18,13 +19,21 @@ namespace TeamManager.Manual.Models
 {
     public class CustomUserManager : UserManager<User>
     {
-        private TeamManagerDbContext DbContext { get; }
+        private UnitOfWork UnitOfWork { get; }
         private IConfiguration Configuration { get; }
         private IEmailSender EmailSender { get; }
 
         public CustomUserManager(TeamManagerDbContext dbContext, IConfiguration configuration, IEmailSender emailSender, IUserStore<User> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<User> passwordHasher, IEnumerable<IUserValidator<User>> userValidators, IEnumerable<IPasswordValidator<User>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<User>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
-            DbContext = dbContext;
+            UnitOfWork = new UnitOfWork(dbContext);
+            Configuration = configuration;
+            EmailSender = emailSender;
+        }
+
+        // For unit testing purposes
+        public CustomUserManager(UnitOfWork unitOfWork, IConfiguration configuration, IEmailSender emailSender, IUserStore<User> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<User> passwordHasher, IEnumerable<IUserValidator<User>> userValidators, IEnumerable<IPasswordValidator<User>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<User>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
+        {
+            UnitOfWork = unitOfWork;
             Configuration = configuration;
             EmailSender = emailSender;
         }
@@ -46,13 +55,10 @@ namespace TeamManager.Manual.Models
 
             try
             {
-                DbContext.Addresses.Add(address);
-                await DbContext.SaveChangesAsync();
+                await UnitOfWork.AddressRepository.CreateAsync(address);
+                UnitOfWork.UserRepository.SetUsersAddress(user.Id, address);
+                UnitOfWork.Save();
 
-                user.AddressId = address.Id;
-                DbContext.Entry(user).State = EntityState.Modified;
-
-                await DbContext.SaveChangesAsync();
                 return identityResult;
             }
             catch
@@ -65,14 +71,9 @@ namespace TeamManager.Manual.Models
         {
             if (!user.VerifiedByAdmin)
             {
-                user.VerifiedByAdmin = true;
-
-                DbContext.Entry(user).State = EntityState.Modified;
-                await DbContext.SaveChangesAsync();
-
-                Logger.LogDebug($"{user.Email} verified.");
-
+                UnitOfWork.UserRepository.VerifyUser(user.Id);
                 await EmailSender.SendAdminVerifiedEmailAsync(user.Email, user.FirstName, loginUrl);
+                Logger.LogDebug($"{user.Email} verified.");
             }
         }
 
@@ -111,7 +112,7 @@ namespace TeamManager.Manual.Models
                 return null;
             }
 
-            UserModel response = CreateUserModel(user);
+            UserModel response = await CreateUserModel(user);
             return response;
         }
 
@@ -123,16 +124,16 @@ namespace TeamManager.Manual.Models
                 return null;
             }
 
-            UserModel response = CreateUserModel(user);
+            UserModel response = await CreateUserModel(user);
             return response;
         }
 
         public async Task<IEnumerable<UserModel>> ListUsersAsync()
         {
             List<UserModel> response = new List<UserModel>();
-            foreach (var user in await DbContext.Users.ToListAsync())
+            foreach (var user in await UnitOfWork.UserRepository.ListAsync())
             {
-                response.Add(CreateUserModel(user));
+                response.Add(await CreateUserModel(user));
             }
 
             return response;
@@ -161,21 +162,21 @@ namespace TeamManager.Manual.Models
                 throw new IdentityException() { Errors = result.Errors };
             }
 
-            await DbContext.SaveChangesAsync();
 
-            Address address = DbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);
+            
+            Address address = await UnitOfWork.AddressRepository.GetByIDAsync(user.AddressId);
             address.HouseNumber = model.HouseNumber;
             address.Street = model.Street;
             address.ZipCode = model.ZipCode;
             address.City = model.City;
             address.Country = model.Country;
-            DbContext.Addresses.Update(address);
+            await UnitOfWork.AddressRepository.UpdateAsync(address);
 
-            await DbContext.SaveChangesAsync();
+            UnitOfWork.Save();
             Logger.LogInformation($"User {user.Email} updated successfully.");
         }
 
-        internal UserModel CreateUserModel(User user)
+        internal async Task<UserModel> CreateUserModel(User user)
         {
             try
             {
@@ -200,7 +201,7 @@ namespace TeamManager.Manual.Models
                     IsPro = user.IsPro
                 };
 
-                Address usersAddress = DbContext.Addresses.SingleOrDefault(x => x.Id == user.AddressId);
+                Address usersAddress = await UnitOfWork.AddressRepository.GetByIDAsync(user.AddressId);
                 if (usersAddress != null)
                 {
                     response.ZipCode = usersAddress.ZipCode;
