@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TeamManager.Manual.Models.Exceptions
+namespace TeamManager.Manual.Core.Exceptions
 {
     public class IdentityException : Exception
     {

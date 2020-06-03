@@ -13,7 +13,6 @@ using System.Globalization;
 using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Core.Services;
 using TeamManager.Manual.Data;
-using TeamManager.Manual.Models;
 using TeamManager.Manual.Web;
 
 namespace TeamManager.Manual

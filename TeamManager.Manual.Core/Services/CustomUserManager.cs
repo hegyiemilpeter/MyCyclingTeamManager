@@ -9,14 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using TeamManager.Manual.Core.Exceptions;
 using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Core.Models;
 using TeamManager.Manual.Core.Repository;
 using TeamManager.Manual.Data;
-using TeamManager.Manual.Models.Exceptions;
-using TeamManager.Manual.ViewModels;
 
-namespace TeamManager.Manual.Models
+namespace TeamManager.Manual.Core.Services
 {
     public class CustomUserManager : UserManager<User>
     {
@@ -39,7 +38,7 @@ namespace TeamManager.Manual.Models
             EmailSender = emailSender;
         }
 
-        public async Task<IdentityResult> CreateAsync(UserViewModel model, string password, string loginUrl)
+        public async Task<IdentityResult> CreateAsync(UserModel model, string password, string loginUrl)
         {
             Address address = new Address()
             {
@@ -177,8 +176,6 @@ namespace TeamManager.Manual.Models
             {
                 throw new IdentityException() { Errors = result.Errors };
             }
-
-
             
             Address address = await UnitOfWork.AddressRepository.GetByIDAsync(user.AddressId);
             address.HouseNumber = model.HouseNumber;

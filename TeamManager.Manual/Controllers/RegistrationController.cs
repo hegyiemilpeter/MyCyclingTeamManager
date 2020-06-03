@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using TeamManager.Manual.Data;
-using TeamManager.Manual.Models;
+using TeamManager.Manual.Core.Services;
 using TeamManager.Manual.ViewModels;
 using TeamManager.Manual.Web;
 
@@ -47,12 +43,7 @@ namespace TeamManager.Manual.Controllers
                 return View();
             }
 
-            return RedirectToAction(nameof(RegistrationSuccess));
-        }
-
-        public IActionResult RegistrationSuccess()
-        {
-            return View();
+            return View("RegistrationSuccess");
         }
 
         private void AddModelError(IdentityResult createResult)
