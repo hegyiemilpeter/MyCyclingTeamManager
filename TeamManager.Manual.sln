@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamManager.Manual.Notifica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamManager.Manual.Core", "TeamManager.Manual.Core\TeamManager.Manual.Core.csproj", "{4A38A27C-E8E7-4ADF-A8E7-AE2D79D516AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamManager.Manual.Tests", "TeamManager.Manual.Tests\TeamManager.Manual.Tests.csproj", "{1C1815BA-2823-4203-BE65-AAC5182596B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamManager.Manual.Web.Tests", "TeamManager.Manual.Tests\TeamManager.Manual.Web.Tests.csproj", "{1C1815BA-2823-4203-BE65-AAC5182596B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamManager.Manual.Core.Tests", "TeamManager.Manual.Core.Tests\TeamManager.Manual.Core.Tests.csproj", "{19944360-5FD0-4FF7-A4EE-DE8F0D89816A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{1C1815BA-2823-4203-BE65-AAC5182596B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C1815BA-2823-4203-BE65-AAC5182596B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C1815BA-2823-4203-BE65-AAC5182596B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19944360-5FD0-4FF7-A4EE-DE8F0D89816A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19944360-5FD0-4FF7-A4EE-DE8F0D89816A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19944360-5FD0-4FF7-A4EE-DE8F0D89816A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19944360-5FD0-4FF7-A4EE-DE8F0D89816A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

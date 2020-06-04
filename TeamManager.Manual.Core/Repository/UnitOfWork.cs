@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using TeamManager.Manual.Core.Interfaces.Repository;
 using TeamManager.Manual.Data;
 
@@ -21,7 +19,7 @@ namespace TeamManager.Manual.Core.Repository
             UserRepository = new UserRepository(dbContext);
         }
 
-        public void Save()
+        public virtual void Save()
         {
             DbContext.SaveChanges();
         }

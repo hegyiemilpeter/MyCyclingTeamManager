@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Web;
 using TeamManager.Manual.Core.Exceptions;
@@ -31,7 +32,7 @@ namespace TeamManager.Manual.Core.Services
         }
 
         // Only for unit testing purposes
-        protected internal CustomUserManager(UnitOfWork unitOfWork, IConfiguration configuration, IEmailSender emailSender) : base(null, null, null, null, null, null, null, null, null)
+        protected internal CustomUserManager(UnitOfWork unitOfWork, IConfiguration configuration, IEmailSender emailSender, IUserStore<User> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<User> passwordHasher, IEnumerable<IUserValidator<User>> userValidators, IEnumerable<IPasswordValidator<User>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<User>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
             UnitOfWork = unitOfWork;
             Configuration = configuration;
@@ -69,7 +70,7 @@ namespace TeamManager.Manual.Core.Services
                 Address = address
             };
 
-            IdentityResult identityResult = await base.CreateAsync(user, password);
+            IdentityResult identityResult = await CreateAsync(user, password);
             if (!identityResult.Succeeded)
             {
                 return identityResult;
@@ -82,7 +83,7 @@ namespace TeamManager.Manual.Core.Services
 
             return identityResult;
         }
-        public async Task VerifyUserAsync(User user, string loginUrl)
+        public virtual async Task VerifyUserAsync(User user, string loginUrl)
         {
             if (!user.VerifiedByAdmin)
             {
@@ -92,7 +93,7 @@ namespace TeamManager.Manual.Core.Services
             }
         }
 
-        private bool IsEmailOnWildCardList(string email)
+        protected internal virtual bool IsEmailOnWildCardList(string email)
         {
             var wildCardEmails = Configuration.GetSection("WildcardEmails").AsEnumerable();
             if(wildCardEmails == null || wildCardEmails.Count() == 0)
