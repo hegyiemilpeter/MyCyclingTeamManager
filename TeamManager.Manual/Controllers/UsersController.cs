@@ -33,7 +33,7 @@ namespace TeamManager.Manual.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await userManager.ListUsersAsync());
+            return View((await userManager.ListUsersAsync()).Select(x => new UserViewModel(x)).ToList());
         }
 
         public async Task<IActionResult> Details(int? id = null)
@@ -52,7 +52,7 @@ namespace TeamManager.Manual.Controllers
                 return NotFound();
             }
 
-            return View(userModel);
+            return View(new UserViewModel(userModel));
         }
 
         public async Task<IActionResult> Edit(int id)

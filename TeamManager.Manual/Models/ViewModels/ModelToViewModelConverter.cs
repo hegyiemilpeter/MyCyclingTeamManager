@@ -23,7 +23,11 @@ namespace TeamManager.Manual.Web.Models.ViewModels
 
             foreach (var property in model.GetType().GetProperties())
             {
-                viewModel.GetType().GetProperty(property.Name).SetValue(viewModel, property.GetValue(model));
+                var viewModelProperty = viewModel.GetType().GetProperty(property.Name);
+                if (viewModelProperty.CanWrite)
+                {
+                    viewModelProperty.SetValue(viewModel, property.GetValue(model));
+                }
             }
         }
     }

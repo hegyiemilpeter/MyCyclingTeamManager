@@ -22,7 +22,7 @@ namespace TeamManager.Manual.Core.Tests
         public void Setup()
         {
             unitOfWork = new Mock<UnitOfWork>((TeamManagerDbContext)null);
-            userManager = new Mock<CustomUserManager>(unitOfWork.Object, new Mock<IConfiguration>().Object, new Mock<IEmailSender>().Object, new Mock<IUserStore<User>>().Object, new Mock<IOptions<IdentityOptions>>().Object, new Mock<IPasswordHasher<User>>().Object, null, null, null, null, null, null);
+            userManager = new Mock<CustomUserManager>(MockBehavior.Loose, unitOfWork.Object, new Mock<IConfiguration>().Object, new Mock<IEmailSender>().Object, new Mock<IUserStore<User>>().Object, new Mock<IOptions<IdentityOptions>>().Object, new Mock<IPasswordHasher<User>>().Object, null, null, null, null, null, null);
         }
 
         [Test]
