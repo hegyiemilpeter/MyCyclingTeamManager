@@ -21,15 +21,15 @@ namespace TeamManager.Manual.Controllers
     public class PointsController : Controller
     {
         private readonly CustomUserManager userManager;
-        private readonly IUserRaceManager userRaceManager;
+        private readonly IRaceResultManager raceResultManager;
         private readonly IPointManager pointManager;
         private readonly ILogger<PointsController> logger;
         private readonly IBillManager billManager;
         private readonly IStringLocalizer<SharedResources> localizer;
-        public PointsController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IPointManager pointMgr, ILogger<PointsController> pointsControllerLogger, IBillManager bManager, IStringLocalizer<SharedResources> sharedResourcesLocalizer)
+        public PointsController(CustomUserManager customUserManager, IRaceResultManager raceResultMgr, IPointManager pointMgr, ILogger<PointsController> pointsControllerLogger, IBillManager bManager, IStringLocalizer<SharedResources> sharedResourcesLocalizer)
         {
             userManager = customUserManager;
-            userRaceManager = userRaceMgr;
+            raceResultManager = raceResultMgr;
             pointManager = pointMgr;
             logger = pointsControllerLogger;
             billManager = bManager;
@@ -52,7 +52,7 @@ namespace TeamManager.Manual.Controllers
                 return Challenge();
             }
 
-            IList<ResultModel> results = userRaceManager.GetRaceResultsByUser(user);
+            IList<ResultModel> results = raceResultManager.ListRaceResultsByUserId(user.Id).ToList();
             CollectedPointsViewModel model = new CollectedPointsViewModel()
             {
                 Results = results
@@ -77,7 +77,7 @@ namespace TeamManager.Manual.Controllers
                 return Challenge();
             }
 
-            IList<PointConsuption> consuptions = await pointManager.ListConsumedPointsAsync(userId);
+            IList<PointConsuption> consuptions = await pointManager.ListConsumedPointsAsync(int.Parse(userId));
             ConsumedPointsViewModel model = new ConsumedPointsViewModel()
             {
                 UserId = user.Id,
@@ -111,7 +111,7 @@ namespace TeamManager.Manual.Controllers
                 return NotFound();
             }
 
-            model.Validate(ModelState, await pointManager.GetAvailablePointAmountByUser(model.SelectedUserId), localizer);
+            model.Validate(ModelState, await pointManager.GetAvailablePointAmountByUser(int.Parse(model.SelectedUserId)), localizer);
             if(!ModelState.IsValid)
             {
                 logger.LogDebug($"Invalid model for AddConsumedPoints.");
@@ -120,7 +120,7 @@ namespace TeamManager.Manual.Controllers
             }
 
             string creatorUserId = userManager.GetUserId(User);
-            await pointManager.AddConsumedPointAsync(model.SelectedUserId, model.Amount, creatorUserId, model.Remark);
+            await pointManager.AddConsumedPointAsync(int.Parse(model.SelectedUserId), model.Amount, creatorUserId, model.Remark);
 
             return RedirectToAction(nameof(ConsumedPoints), new { id = model.SelectedUserId });
         }

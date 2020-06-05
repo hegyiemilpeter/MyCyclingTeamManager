@@ -13,25 +13,26 @@ using TeamManager.Manual.ViewModels;
 using TeamManager.Manual.Web;
 using TeamManager.Manual.Core.Models;
 using TeamManager.Manual.Core.Services;
+using System.IO;
 
 namespace TeamManager.Manual.Controllers
 {
     [Authorize]
     public class RaceResultsController : Controller
     {
-        private readonly IUserRaceManager userRaceManager; 
+        private readonly IRaceResultManager raceResultManager;
         private readonly CustomUserManager userManager; 
         private readonly IRaceManager raceManager;
         private readonly ILogger<RaceResultsController> logger;
         private readonly IStringLocalizer<SharedResources> localizer;
 
-        public RaceResultsController(IUserRaceManager userRaceMgr, IRaceManager raceMgr, CustomUserManager userMgr, ILogger<RaceResultsController> raceResultsLogger, IStringLocalizer<SharedResources> loc)
+        public RaceResultsController(IRaceResultManager raceResultMgr, IRaceManager raceMgr, CustomUserManager userMgr, ILogger<RaceResultsController> raceResultsLogger, IStringLocalizer<SharedResources> loc)
         {
-            userRaceManager = userRaceMgr;
             userManager = userMgr;
             raceManager = raceMgr;
             logger = raceResultsLogger;
             localizer = loc;
+            raceResultManager = raceResultMgr;
         }
 
         public async Task<IActionResult> Index(int? id = null)
@@ -46,7 +47,7 @@ namespace TeamManager.Manual.Controllers
             User user = await userManager.FindByIdAsync(userModel.Id.ToString());
             UserResultsViewModel model = new UserResultsViewModel
             {
-                Results = userRaceManager.GetRaceResultsByUser(user).OrderByDescending(x => x.RaceDate),
+                Results = raceResultManager.ListRaceResultsByUserId(user.Id).OrderByDescending(x => x.RaceDate),
                 FirstName = user.FirstName, 
                 LastName = user.LastName, 
                 UserId = user.Id
@@ -80,7 +81,15 @@ namespace TeamManager.Manual.Controllers
             }
 
             User user = await userManager.FindByNameAsync(User.Identity.Name);
-            await userRaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsStaff, model.Image);
+
+            MemoryStream imageStream = new MemoryStream();
+            if(model.Image != null)
+            {
+                await model.Image.CopyToAsync(imageStream);
+                imageStream.Position = 0;
+            }
+
+            await raceResultManager.AddResultAsync(user.Id, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsStaff, imageStream, model.Image.ContentType);
 
             return RedirectToAction("Index", "Points");
         }
@@ -108,9 +117,15 @@ namespace TeamManager.Manual.Controllers
                 return View(model);
             }
 
-            User user = await userManager.FindByIdAsync(model.SelectedUserId.Value.ToString());
-            await userRaceManager.AddResultAsync(user, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsStaff, model.Image);
+            MemoryStream imageStream = new MemoryStream();
+            if (model.Image != null)
+            {
+                await model.Image.CopyToAsync(imageStream);
+                imageStream.Position = 0;
+            }
 
+            await raceResultManager.AddResultAsync(model.SelectedUserId.Value, model.SelectedRaceId.Value, model.AbsoluteResult, model.CategoryResult, model.IsTakePartAsStaff, imageStream, model.Image.ContentType);
+            
             return RedirectToAction(nameof(Index), new { id = model.SelectedUserId });
         }
 
@@ -119,7 +134,7 @@ namespace TeamManager.Manual.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeImageValidationStatus(int resultId, int userId)
         {
-            await userRaceManager.ChangeValidatedStatus(resultId);
+            await raceResultManager.ChangeValidatedStatus(resultId);
             return RedirectToAction("Index", new { id = userId });
         }
     }

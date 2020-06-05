@@ -22,14 +22,14 @@ namespace TeamManager.Manual.Controllers
     {
         private readonly IRaceManager raceManager;
         private readonly CustomUserManager userManager;
-        private readonly IUserRaceManager userRaceManager;
+        private readonly IRaceEntryManager raceEntryManager;
         private readonly IStringLocalizer<SharedResources> localizer;
         private readonly ILogger<RacesController> logger;
 
-        public RacesController(IRaceManager raceMgr, IUserRaceManager userRaceMgr, CustomUserManager userMgr, IStringLocalizer<SharedResources> localizer, ILogger<RacesController> racesLogger)
+        public RacesController(IRaceManager raceMgr, IRaceEntryManager raceEntryMgr, CustomUserManager userMgr, IStringLocalizer<SharedResources> localizer, ILogger<RacesController> racesLogger)
         {
             raceManager = raceMgr;
-            userRaceManager = userRaceMgr;
+            raceEntryManager = raceEntryMgr;
             userManager = userMgr;
             this.localizer = localizer;
             logger = racesLogger;
@@ -90,7 +90,7 @@ namespace TeamManager.Manual.Controllers
             }
 
             model.BaseModel = new RaceViewModel(raceManager.GetRaceById(id));
-            model.EntriedRiders = await userRaceManager.ListEntriedUsersAsync(id);
+            model.EntriedRiders = await raceEntryManager.ListEntriedUsersAsync(id);
 
             User user = await userManager.FindByNameAsync(User.Identity.Name);
             model.UserApplied = model.EntriedRiders.Contains($"{user.FirstName} {user.LastName}");

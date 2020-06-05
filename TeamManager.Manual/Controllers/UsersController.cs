@@ -19,14 +19,14 @@ namespace TeamManager.Manual.Controllers
     public class UsersController : Controller
     {
         private readonly CustomUserManager userManager;
-        private readonly IUserRaceManager userRaceManager;
+        private readonly IRaceEntryManager raceEntryManager;
         private readonly IStringLocalizer<SharedResources> localizer;
         private readonly ILogger<UsersController> logger;
 
-        public UsersController(CustomUserManager customUserManager, IUserRaceManager userRaceMgr, IStringLocalizer<SharedResources> userLocalizer, ILogger<UsersController> usersLogger)
+        public UsersController(CustomUserManager customUserManager, IRaceEntryManager raceEntryMgr, IStringLocalizer<SharedResources> userLocalizer, ILogger<UsersController> usersLogger)
         {
             userManager = customUserManager;
-            userRaceManager = userRaceMgr;
+            raceEntryManager = raceEntryMgr;
             localizer = userLocalizer;
             logger = usersLogger;
         }

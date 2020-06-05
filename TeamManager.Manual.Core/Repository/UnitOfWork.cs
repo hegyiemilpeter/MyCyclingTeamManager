@@ -12,11 +12,17 @@ namespace TeamManager.Manual.Core.Repository
 
         public IAddressRepository AddressRepository { get; }
 
+        public IRaceRepository RaceRepository { get; }
+
+        public IUserRaceRepository UserRaceRepository { get; }
+
         public UnitOfWork(TeamManagerDbContext dbContext)
         {
             DbContext = dbContext;
             AddressRepository = new AddressRepository(dbContext);
             UserRepository = new UserRepository(dbContext);
+            RaceRepository = new RaceRepository(dbContext);
+            UserRaceRepository = new UserRaceRepository(dbContext);
         }
 
         public virtual void Save()
@@ -35,6 +41,8 @@ namespace TeamManager.Manual.Core.Repository
                 {
                     AddressRepository.Dispose();
                     UserRepository.Dispose();
+                    RaceRepository.Dispose();
+                    UserRaceRepository.Dispose();
                 }
 
                 disposedValue = true;

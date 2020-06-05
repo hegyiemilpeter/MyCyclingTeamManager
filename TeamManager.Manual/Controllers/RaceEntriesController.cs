@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TeamManager.Manual.Data;
-using TeamManager.Manual.Models;
 using TeamManager.Manual.Core.Interfaces;
 using TeamManager.Manual.Core.Models;
 using TeamManager.Manual.Core.Services;
@@ -13,13 +12,13 @@ namespace TeamManager.Manual.Controllers
     [Authorize]
     public class RaceEntriesController : Controller
     {
-        private readonly IUserRaceManager userRaceManager;
+        private readonly IRaceEntryManager raceEntryManager;
         private readonly CustomUserManager userManager;
         private readonly IRaceManager raceManager;
 
-        public RaceEntriesController(IUserRaceManager userRaceMgr, IRaceManager raceMgr, CustomUserManager userMgr)
+        public RaceEntriesController(IRaceEntryManager raceEntryMgr, IRaceManager raceMgr, CustomUserManager userMgr)
         {
-            userRaceManager = userRaceMgr;
+            raceEntryManager = raceEntryMgr;
             userManager = userMgr;
             raceManager = raceMgr;
         }
@@ -28,14 +27,14 @@ namespace TeamManager.Manual.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEntry(int id)
         {
-            return await EditEntry(id, userRaceManager.AddEntryAsync);
+            return await EditEntry(id, raceEntryManager.AddEntryAsync);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveEntry(int id)
         {
-            return await EditEntry(id, userRaceManager.RemoveEntryAsync);
+            return await EditEntry(id, raceEntryManager.RemoveEntryAsync);
         }
 
         private async Task<IActionResult> EditEntry(int id, Func<User, RaceModel, Task> functionToPerform)

@@ -6,10 +6,10 @@ namespace TeamManager.Manual.Core.Interfaces
 {
     public interface IPointManager
     {
-        Task<int> GetAvailablePointAmountByUser(string userId);
+        Task<int> GetAvailablePointAmountByUser(int userId);
 
-        Task<IList<PointConsuption>> ListConsumedPointsAsync(string userId);
+        Task<IList<PointConsuption>> ListConsumedPointsAsync(int userId);
 
-        Task AddConsumedPointAsync(string userId, int amount, string creatorUserId, string remark);
+        Task AddConsumedPointAsync(int userId, int amount, string creatorUserId, string remark);
     }
 }

@@ -12,11 +12,11 @@ namespace TeamManager.Manual.Core.Services
     public class PointManager : IPointManager
     {
         private readonly TeamManagerDbContext dbContext;
-        private readonly IUserRaceManager userRaceManager;
+        private readonly IRaceResultManager userRaceManager;
         private readonly ILogger<PointManager> logger;
         private readonly IBillManager billManager;
 
-        public PointManager(TeamManagerDbContext context, IUserRaceManager userRaceMgr, ILogger<PointManager> pmLogger, IBillManager billMgr)
+        public PointManager(TeamManagerDbContext context, IRaceResultManager userRaceMgr, ILogger<PointManager> pmLogger, IBillManager billMgr)
         {
             dbContext = context;
             userRaceManager = userRaceMgr;
@@ -24,7 +24,7 @@ namespace TeamManager.Manual.Core.Services
             billManager = billMgr;
         }
 
-        public async Task<int> GetAvailablePointAmountByUser(string userId)
+        public async Task<int> GetAvailablePointAmountByUser(int userId)
         {
             User user = await dbContext.Users.FindAsync(userId);
             if (user == null)
@@ -33,15 +33,15 @@ namespace TeamManager.Manual.Core.Services
                 throw new UserNotFoundException();
             }
 
-            int gainedPointsFromResults = userRaceManager.GetRaceResultsByUser(user).Sum(x => x.Points);
+            int gainedPointsFromResults = userRaceManager.ListRaceResultsByUserId(userId).Sum(x => x.Points);
             int gainedPointsFromBills = (await billManager.ListBillsByUserAsync(user.Id)).Points;
             int consumedPoints = (await ListConsumedPointsAsync(userId)).Sum(x => x.Amount);
             return (gainedPointsFromResults + gainedPointsFromBills) - consumedPoints;
         }
 
-        public async Task<IList<PointConsuption>> ListConsumedPointsAsync(string userId)
+        public async Task<IList<PointConsuption>> ListConsumedPointsAsync(int userId)
         {
-            User user = await dbContext.Users.FindAsync(int.Parse(userId));
+            User user = await dbContext.Users.FindAsync(userId);
             if(user == null)
             {
                 logger.LogWarning($"User with id {userId} is not found");
@@ -51,7 +51,7 @@ namespace TeamManager.Manual.Core.Services
             return dbContext.PointConsuptions.Where(x => x.UserId == user.Id).ToList();
         }
 
-        public async Task AddConsumedPointAsync(string userId, int amount, string creatorUserId, string remark)
+        public async Task AddConsumedPointAsync(int userId, int amount, string creatorUserId, string remark)
         {
             User user = await dbContext.Users.FindAsync(userId);
             if(user == null)
@@ -67,7 +67,7 @@ namespace TeamManager.Manual.Core.Services
                 throw new UserNotFoundException();
             }
 
-            int currentAmount = await GetAvailablePointAmountByUser(user.Id.ToString());
+            int currentAmount = await GetAvailablePointAmountByUser(userId);
             if(currentAmount < amount)
             {
                 logger.LogError($"User {creatorUserId} try to overdue to point limit of user {userId}");
